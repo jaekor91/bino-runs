@@ -46,7 +46,7 @@ ifield_cut = (ra < hr2deg(8.25+1.)) & (ra > hr2deg(8.25-1)) # & (dec < 5) & (dec
 # - Factor of two multiplication is to give the user more room to choose from
 # - Second tolerance factor is used to prevent the fields being too close to each other.
 tol = 0.28/2. * 3
-tol2 = 3.
+tol2 = 2.5
 
 # Controlling random seed
 np.random.seed(52)
