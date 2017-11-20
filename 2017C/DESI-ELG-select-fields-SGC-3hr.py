@@ -149,7 +149,7 @@ ax.set_xlabel("RA")
 ax.set_ylabel("DEC")
 ax.axis("equal")
 # plt.show()
-plt.savefig("DESI-ELG-field-candidates-SGC.png", dpi=200, bbox_inches="tight")
+plt.savefig("DESI-ELG-field-candidates-SGC-3hr.png", dpi=200, bbox_inches="tight")
 plt.close()    
 
 
@@ -158,5 +158,5 @@ for m in xrange(num_candidates):
     print "%.2f, %.2f (%.2f, %.2f)" % (ra_selected[m], dec_selected[m], list_coverage_fracs[m][0], list_coverage_fracs[m][1])
 
 
-np.save("DESI-ELG-fields-SGC-radec.npy", list_radec)
-np.save("DESI-ELG-fields-SGC-coverage-fracs.npy", list_coverage_fracs)    
+np.save("DESI-ELG-fields-SGC-3hr-radec.npy", list_radec)
+np.save("DESI-ELG-fields-SGC-3hr-coverage-fracs.npy", list_coverage_fracs)    
