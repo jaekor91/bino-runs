@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pylab as plt
 import astropy.io.fits as fits 
-from xd_elg_utils import *
+from utils import *
 
 
 def hr2deg(hr):
