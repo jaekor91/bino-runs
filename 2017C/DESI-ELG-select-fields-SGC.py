@@ -137,6 +137,11 @@ ax.axvline(x=hr2deg(3), c= "blue")
 ax.axvline(x=hr2deg(2), c= "blue", ls="--")
 ax.axvline(x=hr2deg(3.5), c= "blue", ls="--")
 
+
+n = range(ra_selected.size)
+for i, txt in enumerate(n):
+    ax.annotate(txt, (ra_selected[i], dec_selected[i]), size=15)
+
 # ax.axvline(x=hr2deg(8+25/60.), c="blue")
 ax.axhline(y=5, c="red")
 ax.axhline(y=-5, c="red")
