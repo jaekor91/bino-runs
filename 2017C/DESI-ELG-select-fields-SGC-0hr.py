@@ -49,13 +49,13 @@ print "\n"
 
 print "Spcify regions to target."
 # 3 hr. Equatorial.
-ifield_cut = (ra < hr2deg(1)) & (ra > hr2deg(-1)) & (dec > -10)
+ifield_cut = (ra < hr2deg(0.4)) & (ra > hr2deg(-0.4)) & (dec > -10)
 
 # For each field, randomly select a pixel until the following criteria area met.
 # - hpix pixels that lie within 0.28 x 0.28 brick has a high pass rate.
 # - Factor of two multiplication is to give the user more room to choose from
 # - Second tolerance factor is used to prevent the fields being too close to each other.
-tol = 0.28/2. * 3
+tol = 0.28/2. * 2
 tol2 = 0.5
 
 # Controlling random seed
