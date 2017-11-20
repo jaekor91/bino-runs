@@ -39,14 +39,14 @@ print "\n"
 
 
 print "Spcify regions to target."
-ifield_cut = (ra < hr2deg(8.25+1.)) & (ra > hr2deg(8.25-1)) # & (dec < 5) & (dec > -5)
+ifield_cut = (ra < hr2deg(11)) & (ra > hr2deg(7.5)) & (dec > -10)
 
 # For each field, randomly select a pixel until the following criteria area met.
 # - hpix pixels that lie within 0.28 x 0.28 brick has a high pass rate.
 # - Factor of two multiplication is to give the user more room to choose from
 # - Second tolerance factor is used to prevent the fields being too close to each other.
 tol = 0.28/2. * 3
-tol2 = 2.5
+tol2 = 4.
 
 # Controlling random seed
 np.random.seed(52)
@@ -54,7 +54,7 @@ np.random.seed(52)
 print "Find candidates for visual inspection."
 coverage_threshold = 0.9
 tycho_threashold = 0.9
-num_candidates = 14 # Number of candidates to choose from.
+num_candidates = 20 # Number of candidates to choose from.
 
 
 # Concentrating to the region specified above, and that 
@@ -132,9 +132,9 @@ ra_selected, dec_selected = list_radec[:, 0], list_radec[:, 1]
 print "Make scatter plots of regions selected"
 fig, ax = plt.subplots(1, figsize=(10, 5))
 ax.scatter(ra_selected, dec_selected, c="black", edgecolor="none", marker="o", s=50)
-ax.axvline(x=hr2deg(8.25), c= "blue")
-ax.axvline(x=hr2deg(9.25), c= "blue", ls="--")
-ax.axvline(x=hr2deg(7.25), c= "blue", ls="--")
+ax.axvline(x=hr2deg(9.5), c= "blue")
+ax.axvline(x=hr2deg(8), c= "blue", ls="--")
+ax.axvline(x=hr2deg(11), c= "blue", ls="--")
 
 # ax.axvline(x=hr2deg(8+25/60.), c="blue")
 # ax.axhline(y=5, c="red")
@@ -142,6 +142,11 @@ ax.axvline(x=hr2deg(7.25), c= "blue", ls="--")
 ax.set_xlabel("RA")
 ax.set_ylabel("DEC")
 ax.axis("equal")
+
+n = range(ra_selected.size)
+for i, txt in enumerate(n):
+    ax.annotate(txt, (ra_selected[i], dec_selected[i]), size=15)
+
 # plt.show()
 plt.savefig("DESI-ELG-field-candidates-NGC.png", dpi=200, bbox_inches="tight")
 plt.close()    
