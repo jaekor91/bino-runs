@@ -38,17 +38,19 @@ def mag2flux(mag):
 
 def apply_selection(fname, option=1):
     """
-    Take file name (fname), extract useful quantities, apply appropriate quality cuts,
+    Take a Tractor file name, extract useful quantities, apply appropriate quality cuts,
     and given gflux, rflux, zflux of samples, return a boolean vector that gives the selection.
 
     Temporary use only, beginning October 16, 2017. 
     """
     if option == 1:
-        cell_select = np.load("cell_select_002.npy")
+        cell_select = np.load("F34-2017C-DESI-ELG-case1-cell_select.npy")
     elif option == 2:
-        cell_select = np.load("cell_select_005.npy")        
+        cell_select = np.load("F34-2017C-DESI-ELG-case2-cell_select.npy")
+    elif option == 3:
+        cell_select = np.load("F34-2017C-DESI-ELG-case3-cell_select.npy")        
     else:
-        "Must choose either option 1 or 2."
+        "Must choose either option 1, 2, or 3."
         assert False
     
     # Extract necessary columns.
@@ -66,23 +68,21 @@ def apply_selection(fname, option=1):
     Nobjs = ra.size
     iselect = np.zeros(Nobjs, dtype=bool)
 
-
-
     # Quality and flux cuts
     ibool = bp & (g_allmask==0) & (r_allmask==0) & (z_allmask==0)\
     & (givar>0) & (rivar>0) & (zivar>0)\
-    & (gflux > mag2flux(24)) & (gflux < mag2flux(21))\
-    & np.logical_or( ((0.55*(var_x)+0.) > (var_y)) & (var_y < 1.3), var_y <0.3) # Reject most of low redshift conntaminants by line cuts
+    & (gflux > mag2flux(24)) & (gflux < mag2flux(19))\
+    & np.logical_or( ((0.55*(var_x)+0.) > (var_y)) & (var_y < 1.5), var_y <0.3) # Reject most of low redshift conntaminants by line cuts
 
 
     # Focusing on the subset that passes the above cut
     bid, objtype, bp, ra, dec, gflux_raw, rflux_raw, zflux_raw, gflux, rflux, zflux, givar, rivar, zivar, r_dev, r_exp, g_allmask, r_allmask, z_allmask = load_tractor_DR5(fname, ibool=ibool)
 
     # var_x, var_y, gmag. Width (0.01, 0.01, 0.01)
-    var_x_limits = [0.25, 2.45]
-    var_y_limits = [-0.25, 1.05]
-    gmag_limits = [21.5, 24.]
-    num_bins = [220, 130, 250]
+    var_x_limits = [-.25, 3.5] # g-z
+    var_y_limits = [-0.6, 1.5] # g-r
+    gmag_limits = [19.5, 24.]
+    num_bins = [375, 210, 450]
 
     # Compute parametrization again
     mu_g = flux2asinh_mag(gflux, band = "g")
