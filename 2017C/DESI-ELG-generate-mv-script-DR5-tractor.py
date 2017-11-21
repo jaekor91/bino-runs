@@ -39,7 +39,7 @@ ra_bricks = data["RA"]
 dec_bricks = data["DEC"]
 names_bricks = data["BRICKNAME"]
 
-tol = 1.
+tol = 0.6
 bricks = []
 for i in range(3):
     ra_c = ra[i]
