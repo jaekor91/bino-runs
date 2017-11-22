@@ -896,6 +896,13 @@ def asinh_mag2flux(mu, band = "g"):
     flux = 2* b * np.sinh((22.5-2.5 * np.log10(b) - mu) / (2.5 * np.log10(np.e)))
     return flux
 
+def med_x1_minus_x2(x1, x2):
+    """
+    Computer median difference
+    """
+    return np.median(x1-x2)
+    
+
 def FDR_cut(grz):
     """
     Given a list [g,r,z] magnitudes, apply the cut and return an indexing boolean vector.
