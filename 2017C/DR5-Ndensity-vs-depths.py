@@ -57,8 +57,8 @@ for path in paths:
         
         # tycho and gflux 
         gflux = data["flux_g"] / data["mw_transmission_g"]
-        rflux = data["flux_r"] / data["mw_transmission_g"]
-        zflux = data["flux_z"] / data["mw_transmission_g"]
+        rflux = data["flux_r"] / data["mw_transmission_r"]
+        zflux = data["flux_z"] / data["mw_transmission_z"]
         
         # Compute asinh parameterization
         mu_g = flux2asinh_mag(gflux, band = "g")
