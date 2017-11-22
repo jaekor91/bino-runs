@@ -27,10 +27,7 @@ for path in paths:
         data = rec.append_fields(data, ['NDM1'], data=[iselected1], dtypes=iselected1.dtype, usemask=False)
         data = rec.append_fields(data, ['NDM2'], data=[iselected2], dtypes=iselected1.dtype, usemask=False)
         data = rec.append_fields(data, ['NDM3'], data=[iselected3], dtypes=iselected1.dtype, usemask=False)
-        
-        # Apply Tycho column
-        data = apply_tycho(data, "./tycho2.fits", galtype="ELG")
-    
+            
         # Finding the union of three selections
         iselected = np.logical_or.reduce((iselected1, iselected2, iselected3))
         
@@ -44,4 +41,8 @@ for path in paths:
 #             assert False
 
 targets = np.hstack(targets)
+
+# Apply Tycho column
+targets = apply_tycho(targets, "./tycho2.fits", galtype="ELG")
+
 save_fits(targets, "DESI-ELG-NDM-targets.fits")
