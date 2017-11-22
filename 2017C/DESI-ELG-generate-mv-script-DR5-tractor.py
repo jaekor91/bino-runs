@@ -26,8 +26,15 @@ dec_list = []
 
 for f in flist:
     a = np.load(f)
-    ra_list.append(a[:,0])
-    dec_list.append(a[:,1])
+    ra = a[:,0]
+    dec = a[:,1]
+
+    # Correcting negative ra so that we can find the right bricks to use.
+    ibool = ra < 0
+    ra[ibool] = ra[ibool] + 360
+
+    ra_list.append(ra)
+    dec_list.append(dec)
     
 # ra = np.concatenate(ra_list)
 # dec = np.concatenate(dec_list)
