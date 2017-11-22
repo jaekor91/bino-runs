@@ -79,12 +79,42 @@ for path in paths:
         # Star
         if Nstar > 0:
             star_tmp = star_array[iselect_star]        
-            star_final.append(star_tmp)
+            ra_tmp, dec_tmp = star_tmp[:, 0], star_tmp[:, 1]
+            idx1, idx2 = crossmatch_cat1_to_cat2(ra_tmp, dec_tmp, ra, dec, tol=0.5/(deg2arcsec+1e-12))    
+            if idx1.size > 0:
+                ra_med_diff = med_x1_minus_x2(ra_tmp[idx1], ra[idx2])
+                dec_med_diff = med_x1_minus_x2(dec_tmp[idx1], dec[idx2])
+                star_tmp[:, 0] -= ra_med_diff
+                star_tmp[:, 1] -= dec_med_diff
+                star_final.append(star_tmp)
+                print "Stars"
+                print "Number of matches: %d" % idx1.size 
+                print "Corrections in ra, dec: %.5f, %.5f" % (ra_med_diff*3600, dec_med_diff*3600)
+                print"\n"
+            else: 
+                print "No star matched in this field."
+                print "No stars are included from here."
         
         # Gal
         if Ngal>0:
             gal_tmp = gal_array[iselect_gal]                
-            gal_final.append(gal_tmp)
+            ra_tmp, dec_tmp = gal_tmp[:, 0], gal_tmp[:, 1]
+            idx1, idx2 = crossmatch_cat1_to_cat2(ra_tmp, dec_tmp, ra, dec, tol=0.5/(deg2arcsec+1e-12))                
+            if idx1.size > 0:
+                ra_med_diff = med_x1_minus_x2(ra_tmp[idx1], ra[idx2])
+                dec_med_diff = med_x1_minus_x2(dec_tmp[idx1], dec[idx2])
+                gal_tmp[:, 0] -= ra_med_diff
+                gal_tmp[:, 1] -= dec_med_diff
+                gal_final.append(gal_tmp)
+                print "Gals"
+                print "Number of matches: %d" % idx1.size 
+                print "Corrections in ra, dec: %.5f, %.5f" % (ra_med_diff*3600, dec_med_diff*3600)
+                print"\n"
+            else: 
+                print "No gal matched in this field."
+                print "No gal are included from here."
+
+        print"\n"            
 
 # Concatenate all targets
 gal_final = np.vstack(gal_final)
