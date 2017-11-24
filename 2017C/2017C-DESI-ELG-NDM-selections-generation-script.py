@@ -87,8 +87,8 @@ print "\n"
 
 
 print "/----- Case 1:"
-print "NDM Typical depths, N_tot = 3050, Flat FoM"
-model.num_desired = 3050
+print "NDM Typical depths, N_tot = 3200, Flat FoM"
+model.num_desired = 3200
 model.FoM_NoZ = 0.25
 model.FoM_option = "flat"
 
@@ -128,8 +128,8 @@ print "\n"
 
 
 print "/----- Case 2:"
-print "NDM Typical depths, N_tot = 3050, Redshift dependent FoM. More precisely. Quadratic dependency"
-model.num_desired = 3050
+print "NDM Typical depths, N_tot = 3200, Redshift dependent FoM. More precisely. Quadratic dependency"
+model.num_desired = 3200
 model.FoM_NoZ = 0.25
 model.FoM_option = "Quadratic_redz"
 
@@ -172,8 +172,8 @@ print "\n"
 
 
 print "/----- Case 3:"
-print "NDM Typical depths, N_tot = 3050, Flat FoM, f_NoZ = 0.5 (rather than 0.25)"
-model.num_desired = 3050
+print "NDM Typical depths, N_tot = 3200, Flat FoM, f_NoZ = 0.5 (rather than 0.25)"
+model.num_desired = 3200
 model.FoM_NoZ = 0.5
 model.FoM_option = "flat"
 
