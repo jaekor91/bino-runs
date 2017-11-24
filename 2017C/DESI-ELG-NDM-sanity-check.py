@@ -23,4 +23,3 @@ for i in range(1, 4):
 	print "Raw number selected without area scaling: %.3f" % (iselected.sum())
 	print "\n"
 	# The resulting efficiency validated on DEEP2 data set. 
-	# Selected number of objects is only about 2245 after scaling with 0.8. 
