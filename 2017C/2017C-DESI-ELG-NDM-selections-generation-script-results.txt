@@ -21,36 +21,36 @@ Generating intrinsic sample proportional to simulation area of 2000
 NonELG sample number: 51737244
 NoZ sample number: 12783742
 ELG sample number: 20473307
-Time for generating sample: 92.91 seconds
+Time for generating sample: 85.73 seconds
 
 
 /----- Case 1:
-NDM Typical depths, N_tot = 3050, Flat FoM
+NDM Typical depths, N_tot = 3200, Flat FoM
 Convolving error and re-parametrizing
 NonELG
 NoZ
 ELG
-Time for convolving error sample: 43.67 seconds
+Time for convolving error sample: 32.62 seconds
 
 
 Start of computing selection region.
 Constructing histograms.
-Time taken: 65.50 seconds
+Time taken: 63.30 seconds
 Applying gaussian smoothing.
-Time taken: 5.81 seconds
+Time taken: 5.71 seconds
 Computing magnitude dependent regularization.
-Time taken: 2.05 seconds
+Time taken: 1.97 seconds
 Computing utility and sorting.
-Time taken: 14.05 seconds
+Time taken: 9.52 seconds
 Flattening the MD histograms.
-Time taken: 6.68 seconds
+Time taken: 5.83 seconds
 Sorting the flattened arrays.
-Time taken: 10.32 seconds
-Total time for generating selection volume: 106.57 seconds
+Time taken: 9.17 seconds
+Total time for generating selection volume: 97.46 seconds
 
 
 Eff_pred, Ntotal_pred, Ngood_pred, N_NonELG_pred, N_NoZ_pred, N_ELG_DESI_pred, N_ELG_NonDESI_pred
-0.622207626015 3023.23382463 1881.07914091 298.451928594 404.542468848 1779.9435237 426.860683742
+0.612439474259 3171.14741502 1942.13585565 327.206192286 436.688529047 1832.96372339 455.085961259
 Save the selection
 
 
@@ -106,32 +106,32 @@ Completed
 
 
 /----- Case 2:
-NDM Typical depths, N_tot = 3050, Redshift dependent FoM. More precisely. Quadratic dependency
+NDM Typical depths, N_tot = 3200, Redshift dependent FoM. More precisely. Quadratic dependency
 Convolving error and re-parametrizing
 NonELG
 NoZ
 ELG
-Time for convolving error sample: 47.38 seconds
+Time for convolving error sample: 44.82 seconds
 
 
 Start of computing selection region.
 Constructing histograms.
-Time taken: 76.88 seconds
+Time taken: 69.61 seconds
 Applying gaussian smoothing.
-Time taken: 6.21 seconds
+Time taken: 7.73 seconds
 Computing magnitude dependent regularization.
-Time taken: 2.65 seconds
+Time taken: 3.52 seconds
 Computing utility and sorting.
-Time taken: 11.01 seconds
+Time taken: 10.93 seconds
 Flattening the MD histograms.
-Time taken: 3.58 seconds
+Time taken: 7.90 seconds
 Sorting the flattened arrays.
-Time taken: 7.55 seconds
-Total time for generating selection volume: 110.49 seconds
+Time taken: 15.17 seconds
+Total time for generating selection volume: 118.22 seconds
 
 
 Eff_pred, Ntotal_pred, Ngood_pred, N_NonELG_pred, N_NoZ_pred, N_ELG_DESI_pred, N_ELG_NonDESI_pred
-0.611780863353 3030.44400527 1853.96764989 289.468715665 475.908671976 1734.99048189 413.042738178
+0.60248908368 3179.75398969 1915.76706757 316.856577572 507.881309422 1788.79674022 443.217245945
 Save the selection
 
 
@@ -187,32 +187,32 @@ Completed
 
 
 /----- Case 3:
-NDM Typical depths, N_tot = 3050, Flat FoM, f_NoZ = 0.5 (rather than 0.25)
+NDM Typical depths, N_tot = 3200, Flat FoM, f_NoZ = 0.5 (rather than 0.25)
 Convolving error and re-parametrizing
 NonELG
 NoZ
 ELG
-Time for convolving error sample: 49.20 seconds
+Time for convolving error sample: 44.61 seconds
 
 
 Start of computing selection region.
 Constructing histograms.
-Time taken: 76.47 seconds
+Time taken: 67.43 seconds
 Applying gaussian smoothing.
-Time taken: 6.53 seconds
+Time taken: 8.84 seconds
 Computing magnitude dependent regularization.
-Time taken: 2.69 seconds
+Time taken: 2.25 seconds
 Computing utility and sorting.
-Time taken: 11.27 seconds
+Time taken: 9.63 seconds
 Flattening the MD histograms.
-Time taken: 7.36 seconds
+Time taken: 5.76 seconds
 Sorting the flattened arrays.
-Time taken: 11.04 seconds
-Total time for generating selection volume: 117.38 seconds
+Time taken: 10.84 seconds
+Total time for generating selection volume: 106.80 seconds
 
 
 Eff_pred, Ntotal_pred, Ngood_pred, N_NonELG_pred, N_NoZ_pred, N_ELG_DESI_pred, N_ELG_NonDESI_pred
-0.613797494799 3030.83755633 1860.32049922 274.756740265 548.823136972 1723.11471497 370.450514278
+0.603652036615 3178.85306826 1918.92112875 298.901706807 597.530056651 1769.53861459 392.868948066
 Save the selection
 
 
