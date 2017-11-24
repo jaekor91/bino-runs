@@ -79,10 +79,11 @@ def apply_selection(fname, option=1):
     bid, objtype, bp, ra, dec, gflux_raw, rflux_raw, zflux_raw, gflux, rflux, zflux, givar, rivar, zivar, r_dev, r_exp, g_allmask, r_allmask, z_allmask = load_tractor_DR5(fname, ibool=ibool)
 
     # var_x, var_y, gmag. Width (0.01, 0.01, 0.01)
-    var_x_limits = [-.25, 3.5] # g-z
-    var_y_limits = [-0.6, 1.5] # g-r
+    var_x_limits = [-.50, 3.75] # g-z
+    var_y_limits = [-0.85, 1.75] # g-r
     gmag_limits = [19.5, 24.]
-    num_bins = [375, 210, 450]
+    num_bins = [425, 260, 450]
+
 
     # Compute parametrization again
     mu_g = flux2asinh_mag(gflux, band = "g")
