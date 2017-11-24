@@ -21,66 +21,70 @@ Generating intrinsic sample proportional to simulation area of 2000
 NonELG sample number: 51737244
 NoZ sample number: 12783742
 ELG sample number: 20473307
-Time for generating sample: 85.73 seconds
+Time for generating sample: 83.11 seconds
 
 
 /----- Case 1:
-NDM Typical depths, N_tot = 3200, Flat FoM
+NDM Typical depths, N_tot = 3500, Flat FoM
 Convolving error and re-parametrizing
 NonELG
 NoZ
 ELG
-Time for convolving error sample: 32.62 seconds
+Time for convolving error sample: 25.34 seconds
 
 
 Start of computing selection region.
 Constructing histograms.
-Time taken: 63.30 seconds
+Time taken: 68.22 seconds
 Applying gaussian smoothing.
-Time taken: 5.71 seconds
+Time taken: 10.17 seconds
 Computing magnitude dependent regularization.
-Time taken: 1.97 seconds
+Time taken: 3.57 seconds
 Computing utility and sorting.
-Time taken: 9.52 seconds
+Time taken: 15.29 seconds
 Flattening the MD histograms.
-Time taken: 5.83 seconds
+Time taken: 9.45 seconds
 Sorting the flattened arrays.
-Time taken: 9.17 seconds
-Total time for generating selection volume: 97.46 seconds
+Time taken: 17.37 seconds
+Total time for generating selection volume: 126.62 seconds
 
 
 Eff_pred, Ntotal_pred, Ngood_pred, N_NonELG_pred, N_NoZ_pred, N_ELG_DESI_pred, N_ELG_NonDESI_pred
-0.612439474259 3171.14741502 1942.13585565 327.206192286 436.688529047 1832.96372339 455.085961259
+0.598785133915 3465.99688222 2075.38740727 384.660505185 514.566148248 1946.74587021 520.763654266
 Save the selection
 
 
 Plotting boundary
 mu_gz
-0 $\mu_g - \mu_z$ [-0.250, -0.240]
-25 $\mu_g - \mu_z$ [0.000, 0.010]
-50 $\mu_g - \mu_z$ [0.250, 0.260]
-75 $\mu_g - \mu_z$ [0.500, 0.510]
-100 $\mu_g - \mu_z$ [0.750, 0.760]
-125 $\mu_g - \mu_z$ [1.000, 1.010]
-150 $\mu_g - \mu_z$ [1.250, 1.260]
-175 $\mu_g - \mu_z$ [1.500, 1.510]
-200 $\mu_g - \mu_z$ [1.750, 1.760]
-225 $\mu_g - \mu_z$ [2.000, 2.010]
-250 $\mu_g - \mu_z$ [2.250, 2.260]
-275 $\mu_g - \mu_z$ [2.500, 2.510]
-300 $\mu_g - \mu_z$ [2.750, 2.760]
-325 $\mu_g - \mu_z$ [3.000, 3.010]
-350 $\mu_g - \mu_z$ [3.250, 3.260]
+0 $\mu_g - \mu_z$ [-0.500, -0.490]
+25 $\mu_g - \mu_z$ [-0.250, -0.240]
+50 $\mu_g - \mu_z$ [0.000, 0.010]
+75 $\mu_g - \mu_z$ [0.250, 0.260]
+100 $\mu_g - \mu_z$ [0.500, 0.510]
+125 $\mu_g - \mu_z$ [0.750, 0.760]
+150 $\mu_g - \mu_z$ [1.000, 1.010]
+175 $\mu_g - \mu_z$ [1.250, 1.260]
+200 $\mu_g - \mu_z$ [1.500, 1.510]
+225 $\mu_g - \mu_z$ [1.750, 1.760]
+250 $\mu_g - \mu_z$ [2.000, 2.010]
+275 $\mu_g - \mu_z$ [2.250, 2.260]
+300 $\mu_g - \mu_z$ [2.500, 2.510]
+325 $\mu_g - \mu_z$ [2.750, 2.760]
+350 $\mu_g - \mu_z$ [3.000, 3.010]
+375 $\mu_g - \mu_z$ [3.250, 3.260]
+400 $\mu_g - \mu_z$ [3.500, 3.510]
 mu_gr
-0 $\mu_g - \mu_r$ [-0.600, -0.590]
-25 $\mu_g - \mu_r$ [-0.350, -0.340]
-50 $\mu_g - \mu_r$ [-0.100, -0.090]
-75 $\mu_g - \mu_r$ [0.150, 0.160]
-100 $\mu_g - \mu_r$ [0.400, 0.410]
-125 $\mu_g - \mu_r$ [0.650, 0.660]
-150 $\mu_g - \mu_r$ [0.900, 0.910]
-175 $\mu_g - \mu_r$ [1.150, 1.160]
-200 $\mu_g - \mu_r$ [1.400, 1.410]
+0 $\mu_g - \mu_r$ [-0.850, -0.840]
+25 $\mu_g - \mu_r$ [-0.600, -0.590]
+50 $\mu_g - \mu_r$ [-0.350, -0.340]
+75 $\mu_g - \mu_r$ [-0.100, -0.090]
+100 $\mu_g - \mu_r$ [0.150, 0.160]
+125 $\mu_g - \mu_r$ [0.400, 0.410]
+150 $\mu_g - \mu_r$ [0.650, 0.660]
+175 $\mu_g - \mu_r$ [0.900, 0.910]
+200 $\mu_g - \mu_r$ [1.150, 1.160]
+225 $\mu_g - \mu_r$ [1.400, 1.410]
+250 $\mu_g - \mu_r$ [1.650, 1.660]
 gmag
 0 $g$ [19.500, 19.510]
 25 $g$ [19.750, 19.760]
@@ -106,62 +110,66 @@ Completed
 
 
 /----- Case 2:
-NDM Typical depths, N_tot = 3200, Redshift dependent FoM. More precisely. Quadratic dependency
+NDM Typical depths, N_tot = 3500, Redshift dependent FoM. More precisely. Quadratic dependency
 Convolving error and re-parametrizing
 NonELG
 NoZ
 ELG
-Time for convolving error sample: 44.82 seconds
+Time for convolving error sample: 45.20 seconds
 
 
 Start of computing selection region.
 Constructing histograms.
-Time taken: 69.61 seconds
+Time taken: 66.20 seconds
 Applying gaussian smoothing.
-Time taken: 7.73 seconds
+Time taken: 9.00 seconds
 Computing magnitude dependent regularization.
-Time taken: 3.52 seconds
+Time taken: 2.46 seconds
 Computing utility and sorting.
-Time taken: 10.93 seconds
+Time taken: 13.41 seconds
 Flattening the MD histograms.
-Time taken: 7.90 seconds
+Time taken: 8.23 seconds
 Sorting the flattened arrays.
-Time taken: 15.17 seconds
-Total time for generating selection volume: 118.22 seconds
+Time taken: 13.69 seconds
+Total time for generating selection volume: 115.38 seconds
 
 
 Eff_pred, Ntotal_pred, Ngood_pred, N_NonELG_pred, N_NoZ_pred, N_ELG_DESI_pred, N_ELG_NonDESI_pred
-0.60248908368 3179.75398969 1915.76706757 316.856577572 507.881309422 1788.79674022 443.217245945
+0.590109697363 3475.39845837 2050.86633248 372.313226739 582.176744694 1905.32214631 512.132193365
 Save the selection
 
 
 Plotting boundary
 mu_gz
-0 $\mu_g - \mu_z$ [-0.250, -0.240]
-25 $\mu_g - \mu_z$ [0.000, 0.010]
-50 $\mu_g - \mu_z$ [0.250, 0.260]
-75 $\mu_g - \mu_z$ [0.500, 0.510]
-100 $\mu_g - \mu_z$ [0.750, 0.760]
-125 $\mu_g - \mu_z$ [1.000, 1.010]
-150 $\mu_g - \mu_z$ [1.250, 1.260]
-175 $\mu_g - \mu_z$ [1.500, 1.510]
-200 $\mu_g - \mu_z$ [1.750, 1.760]
-225 $\mu_g - \mu_z$ [2.000, 2.010]
-250 $\mu_g - \mu_z$ [2.250, 2.260]
-275 $\mu_g - \mu_z$ [2.500, 2.510]
-300 $\mu_g - \mu_z$ [2.750, 2.760]
-325 $\mu_g - \mu_z$ [3.000, 3.010]
-350 $\mu_g - \mu_z$ [3.250, 3.260]
+0 $\mu_g - \mu_z$ [-0.500, -0.490]
+25 $\mu_g - \mu_z$ [-0.250, -0.240]
+50 $\mu_g - \mu_z$ [0.000, 0.010]
+75 $\mu_g - \mu_z$ [0.250, 0.260]
+100 $\mu_g - \mu_z$ [0.500, 0.510]
+125 $\mu_g - \mu_z$ [0.750, 0.760]
+150 $\mu_g - \mu_z$ [1.000, 1.010]
+175 $\mu_g - \mu_z$ [1.250, 1.260]
+200 $\mu_g - \mu_z$ [1.500, 1.510]
+225 $\mu_g - \mu_z$ [1.750, 1.760]
+250 $\mu_g - \mu_z$ [2.000, 2.010]
+275 $\mu_g - \mu_z$ [2.250, 2.260]
+300 $\mu_g - \mu_z$ [2.500, 2.510]
+325 $\mu_g - \mu_z$ [2.750, 2.760]
+350 $\mu_g - \mu_z$ [3.000, 3.010]
+375 $\mu_g - \mu_z$ [3.250, 3.260]
+400 $\mu_g - \mu_z$ [3.500, 3.510]
 mu_gr
-0 $\mu_g - \mu_r$ [-0.600, -0.590]
-25 $\mu_g - \mu_r$ [-0.350, -0.340]
-50 $\mu_g - \mu_r$ [-0.100, -0.090]
-75 $\mu_g - \mu_r$ [0.150, 0.160]
-100 $\mu_g - \mu_r$ [0.400, 0.410]
-125 $\mu_g - \mu_r$ [0.650, 0.660]
-150 $\mu_g - \mu_r$ [0.900, 0.910]
-175 $\mu_g - \mu_r$ [1.150, 1.160]
-200 $\mu_g - \mu_r$ [1.400, 1.410]
+0 $\mu_g - \mu_r$ [-0.850, -0.840]
+25 $\mu_g - \mu_r$ [-0.600, -0.590]
+50 $\mu_g - \mu_r$ [-0.350, -0.340]
+75 $\mu_g - \mu_r$ [-0.100, -0.090]
+100 $\mu_g - \mu_r$ [0.150, 0.160]
+125 $\mu_g - \mu_r$ [0.400, 0.410]
+150 $\mu_g - \mu_r$ [0.650, 0.660]
+175 $\mu_g - \mu_r$ [0.900, 0.910]
+200 $\mu_g - \mu_r$ [1.150, 1.160]
+225 $\mu_g - \mu_r$ [1.400, 1.410]
+250 $\mu_g - \mu_r$ [1.650, 1.660]
 gmag
 0 $g$ [19.500, 19.510]
 25 $g$ [19.750, 19.760]
@@ -187,62 +195,66 @@ Completed
 
 
 /----- Case 3:
-NDM Typical depths, N_tot = 3200, Flat FoM, f_NoZ = 0.5 (rather than 0.25)
+NDM Typical depths, N_tot = 3500, Flat FoM, f_NoZ = 0.5 (rather than 0.25)
 Convolving error and re-parametrizing
 NonELG
 NoZ
 ELG
-Time for convolving error sample: 44.61 seconds
+Time for convolving error sample: 31.49 seconds
 
 
 Start of computing selection region.
 Constructing histograms.
-Time taken: 67.43 seconds
+Time taken: 64.13 seconds
 Applying gaussian smoothing.
-Time taken: 8.84 seconds
+Time taken: 9.03 seconds
 Computing magnitude dependent regularization.
-Time taken: 2.25 seconds
+Time taken: 2.75 seconds
 Computing utility and sorting.
-Time taken: 9.63 seconds
+Time taken: 13.21 seconds
 Flattening the MD histograms.
-Time taken: 5.76 seconds
+Time taken: 7.75 seconds
 Sorting the flattened arrays.
-Time taken: 10.84 seconds
-Total time for generating selection volume: 106.80 seconds
+Time taken: 12.44 seconds
+Total time for generating selection volume: 111.55 seconds
 
 
 Eff_pred, Ntotal_pred, Ngood_pred, N_NonELG_pred, N_NoZ_pred, N_ELG_DESI_pred, N_ELG_NonDESI_pred
-0.603652036615 3178.85306826 1918.92112875 298.901706807 597.530056651 1769.53861459 392.868948066
+0.588916874601 3474.18631753 2046.0069479 347.296087603 715.207356932 1867.20510867 442.878237448
 Save the selection
 
 
 Plotting boundary
 mu_gz
-0 $\mu_g - \mu_z$ [-0.250, -0.240]
-25 $\mu_g - \mu_z$ [0.000, 0.010]
-50 $\mu_g - \mu_z$ [0.250, 0.260]
-75 $\mu_g - \mu_z$ [0.500, 0.510]
-100 $\mu_g - \mu_z$ [0.750, 0.760]
-125 $\mu_g - \mu_z$ [1.000, 1.010]
-150 $\mu_g - \mu_z$ [1.250, 1.260]
-175 $\mu_g - \mu_z$ [1.500, 1.510]
-200 $\mu_g - \mu_z$ [1.750, 1.760]
-225 $\mu_g - \mu_z$ [2.000, 2.010]
-250 $\mu_g - \mu_z$ [2.250, 2.260]
-275 $\mu_g - \mu_z$ [2.500, 2.510]
-300 $\mu_g - \mu_z$ [2.750, 2.760]
-325 $\mu_g - \mu_z$ [3.000, 3.010]
-350 $\mu_g - \mu_z$ [3.250, 3.260]
+0 $\mu_g - \mu_z$ [-0.500, -0.490]
+25 $\mu_g - \mu_z$ [-0.250, -0.240]
+50 $\mu_g - \mu_z$ [0.000, 0.010]
+75 $\mu_g - \mu_z$ [0.250, 0.260]
+100 $\mu_g - \mu_z$ [0.500, 0.510]
+125 $\mu_g - \mu_z$ [0.750, 0.760]
+150 $\mu_g - \mu_z$ [1.000, 1.010]
+175 $\mu_g - \mu_z$ [1.250, 1.260]
+200 $\mu_g - \mu_z$ [1.500, 1.510]
+225 $\mu_g - \mu_z$ [1.750, 1.760]
+250 $\mu_g - \mu_z$ [2.000, 2.010]
+275 $\mu_g - \mu_z$ [2.250, 2.260]
+300 $\mu_g - \mu_z$ [2.500, 2.510]
+325 $\mu_g - \mu_z$ [2.750, 2.760]
+350 $\mu_g - \mu_z$ [3.000, 3.010]
+375 $\mu_g - \mu_z$ [3.250, 3.260]
+400 $\mu_g - \mu_z$ [3.500, 3.510]
 mu_gr
-0 $\mu_g - \mu_r$ [-0.600, -0.590]
-25 $\mu_g - \mu_r$ [-0.350, -0.340]
-50 $\mu_g - \mu_r$ [-0.100, -0.090]
-75 $\mu_g - \mu_r$ [0.150, 0.160]
-100 $\mu_g - \mu_r$ [0.400, 0.410]
-125 $\mu_g - \mu_r$ [0.650, 0.660]
-150 $\mu_g - \mu_r$ [0.900, 0.910]
-175 $\mu_g - \mu_r$ [1.150, 1.160]
-200 $\mu_g - \mu_r$ [1.400, 1.410]
+0 $\mu_g - \mu_r$ [-0.850, -0.840]
+25 $\mu_g - \mu_r$ [-0.600, -0.590]
+50 $\mu_g - \mu_r$ [-0.350, -0.340]
+75 $\mu_g - \mu_r$ [-0.100, -0.090]
+100 $\mu_g - \mu_r$ [0.150, 0.160]
+125 $\mu_g - \mu_r$ [0.400, 0.410]
+150 $\mu_g - \mu_r$ [0.650, 0.660]
+175 $\mu_g - \mu_r$ [0.900, 0.910]
+200 $\mu_g - \mu_r$ [1.150, 1.160]
+225 $\mu_g - \mu_r$ [1.400, 1.410]
+250 $\mu_g - \mu_r$ [1.650, 1.660]
 gmag
 0 $g$ [19.500, 19.510]
 25 $g$ [19.750, 19.760]

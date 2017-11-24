@@ -55,10 +55,10 @@ model.FoM_NonELG = 0.0
 
 # Selection grid limits and number of bins 
 # var_x, var_y, gmag. Width (0.01, 0.01, 0.01)
-model.var_x_limits = [-.25, 3.5] # g-z
-model.var_y_limits = [-0.6, 1.5] # g-r
+model.var_x_limits = [-.50, 3.75] # g-z
+model.var_y_limits = [-0.85, 1.75] # g-r
 model.gmag_limits = [19.5, 24.]
-model.num_bins = [375, 210, 450]
+model.num_bins = [425, 260, 450]
 
 # Number of pixels width to be used during Gaussian smoothing.
 model.sigma_smoothing = [5., 5., 5.]
@@ -87,8 +87,8 @@ print "\n"
 
 
 print "/----- Case 1:"
-print "NDM Typical depths, N_tot = 3200, Flat FoM"
-model.num_desired = 3200
+print "NDM Typical depths, N_tot = 3500, Flat FoM"
+model.num_desired = 3500
 model.FoM_NoZ = 0.25
 model.FoM_option = "flat"
 
@@ -128,8 +128,8 @@ print "\n"
 
 
 print "/----- Case 2:"
-print "NDM Typical depths, N_tot = 3200, Redshift dependent FoM. More precisely. Quadratic dependency"
-model.num_desired = 3200
+print "NDM Typical depths, N_tot = 3500, Redshift dependent FoM. More precisely. Quadratic dependency"
+model.num_desired = 3500
 model.FoM_NoZ = 0.25
 model.FoM_option = "Quadratic_redz"
 
@@ -172,8 +172,8 @@ print "\n"
 
 
 print "/----- Case 3:"
-print "NDM Typical depths, N_tot = 3200, Flat FoM, f_NoZ = 0.5 (rather than 0.25)"
-model.num_desired = 3200
+print "NDM Typical depths, N_tot = 3500, Flat FoM, f_NoZ = 0.5 (rather than 0.25)"
+model.num_desired = 3500
 model.FoM_NoZ = 0.5
 model.FoM_option = "flat"
 
