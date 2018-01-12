@@ -33,17 +33,18 @@ Lyman alpha catalog: Bouwens (2015).
 - Notes: N/A
 
 SDSS Standard stars:
-- File name:
+- File name: ./data/standards.goodsn_gr04.txt
 - Source: Daniel Eisenstin
 - Approx. RA/DEC:
 - Density per sq. deg.:
 - Notes from Daniel: "Attached are blue stars from SDSS in a 4 deg^2 region around GOODS-N. 0.2<g-r<0.4  187<RA<191  61<dec<63, 17<r<20. There will only be 5-6 in a given Binospec mask! You'll need to check this astrometry relative to Gaia.  For best accuracy, substitute the Gaia position, if for no other reason that any proper motion from ~2003 to 2016 will be removed."
 
 Gaia data: Used to correct the astrometry of main targets and standard stars.
-- File name: The former is the combined catalogs of the latter.
+- File name:
 	- ./data/gaia.fits
-	- ./data/gaia_dir/* 
 - Source: Doug Finkbeiner, private repository.
+- Script:
+	- retrive-gaia.py: Used to retrieve the file. Contains Terminal commands used.
 - Approx. RA/DEC:
 - Density per sq. deg.:
 - Notes from Daniel: "I suggest that you pull all the Gaia stars within 15' of this field. You'll need to go down to G=20.5 to find enough HST comparison points. Then the brighter Gaia stars can be guide stars."
