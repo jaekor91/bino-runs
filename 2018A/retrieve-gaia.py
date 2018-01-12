@@ -22,14 +22,18 @@ Nf = len(flist)# Number of files
 #---- Go through each files and extract objects we want.
 for i, fname in enumerate(flist): 
   print "File %d out of %d: %s" % (i, Nf, fname)
-  a = fits.open(mypath+fname)[1].data
+  hdr = fits.open(mypath+fname)
+  a = hdr[1].data
   ra, dec = a["ra"], a["dec"]  
   Gmag = a["phot_g_mean_mag"]
   w = np.where(reduce(np.logical_and,(Gmag>mlim[0], Gmag<mlim[1], a["phot_g_n_obs"]>10, \
     ra<ralim[1], ra>ralim[0], dec<declim[1], dec>declim[0])))[0]
   nw = w.size 
   print('%d stars found' % nw)
-  objs.append(a[w])
+  if nw>0:
+    objs.append(a[w])
+  hdr.close()
+
 
 # Stack all of the fount objects
 objs = np.vstack(objs)
