@@ -33,14 +33,14 @@ for i, fname in enumerate(flist):
   print('%d stars found so far' % nw)
   if nw>0:
     objs.append(a[w])
+    # Stack all of the fount objects
+    objs_all = np.vstack(objs)
+    # Save the new array.
+    cols = fits.ColDefs(objs_all)
+    tbhdu = fits.BinTableHDU.from_columns(cols)
+    tbhdu.writeto("~/gaia.fits", clobber=True)    
   hdr.close()
 
 
-# Stack all of the fount objects
-objs = np.vstack(objs)
 
-# Save the new array.
-cols = fits.ColDefs(objs)
-tbhdu = fits.BinTableHDU.from_columns(cols)
-tbhdu.writeto("./gaia.fits", clobber=True)
 print("Completed.")
