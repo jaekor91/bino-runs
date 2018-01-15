@@ -34,11 +34,11 @@ for i, fname in enumerate(flist):
   if nw>0:
     objs.append(a[w])
     # Stack all of the fount objects
-    objs_all = np.vstack(objs)
+    objs_all = np.hstack(objs)
     # Save the new array.
     cols = fits.ColDefs(objs_all)
     tbhdu = fits.BinTableHDU.from_columns(cols)
-    tbhdu.writeto("~/gaia.fits", clobber=True)    
+    tbhdu.writeto("/n/home06/jaelee/gaia.fits", clobber=True)    
   hdr.close()
 
 
