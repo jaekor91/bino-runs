@@ -4,7 +4,7 @@ This is a check list for creating slit-dot masks for 2018A February observation 
 - Binospec dimensions: Describe dimensions of the binospeck mask
 - Data: Describe all the data used and stored in ./data/
 - Data pre-processing: Generate astrometry corrected catalogs and store in ./data/derived/
-- Goals: Describe specs for the two sets of targets.
+- Goals/specs: Describe specs for the two sets of targets.
 - Strategy: Describe generally the strategy used to create masks.
 - Bit number: Describes the bit number of objects.
 - Results: Describe the results of masks designed using the above strategy.
@@ -78,11 +78,34 @@ Correct astrometric differences, extract necessary columns, and save the objects
 
 
 
-/---- Goals
+/---- Goals/specs
+- Sky slits:
+	- We want approximately 150 skies. (Fewer may work just fine.)
+	- We want sky slits on the edges to give a more uniform coverage of wavelength.
+- Special considerations:
+	- Jitter the mask by 10'' up and down and + 5'' left and right to avoid rows or columns of bad pixels.
+	- Gutter between the two arms should be at the center. Use (at least) two positions that do not overlap entirely.
+- Target priority:
+	- Priority 1: Standard stars
+	- Priority 2: Objects from target catalogs that so far did not receive slits.
+	- Priority 3: Objects from target catalogs that received slits in a previous mask.
+	- Priority 4: Sky (Vary the density to achieve the desired density.)
+	- Note
+- Exp Time/slit dimension:
+	- z~5,6: 6 x 2hr. 1.5" x 1.0" wide 
+	- z ~ 4: 12 x 2hr. 1.5" x 1.2" wide
+	- 8 x 15 mins per exposure
+- Gratings/Wavelength range:
+	- 600 line/mm grating covers 2400A range or Delta z = 2
+	- z~4  : 6,000 A centered for objects in the middle. Desired wavelenght coverage 3<z<5
+	- z~5,6: 7,700 A centered for objects in the middle. Desired wavelength coverage 4<z<6.5
+
+
+
 
 
 /---- Strategy
-
+A single directory with all mask information where the script can look for all objects assigned
 
 
 
