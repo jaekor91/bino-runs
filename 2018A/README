@@ -1,6 +1,7 @@
 This is a check list for creating slit-dot masks for 2018A February observation of GOODS-North Lyman-alpha targets.
 
 /---- Contents
+- Organization: A guide to how the directory is organized.
 - Binospec dimensions: Describe dimensions of the binospeck mask
 - Data: Describe all the data used and stored in ./data/
 - Data pre-processing: Generate astrometry corrected catalogs and store in ./data/derived/
@@ -9,6 +10,16 @@ This is a check list for creating slit-dot masks for 2018A February observation 
 - Bit number: Describes the bit number of objects.
 - Results: Describe the results of masks designed using the above strategy.
 
+
+
+
+
+/---- Organization
+./data/ 	All original data files are stored in here.
+	./data/derived/		Any derived data files are stored in here.
+./figure/		All figures generated are stored in here.
+./input-catalogs/ 		These are *.txt input catalogs to BinoMask.
+./output-catalogs/		These are *.json output files from BinoMask.
 
 
 
@@ -78,18 +89,21 @@ Correct astrometric differences, extract necessary columns, and save the objects
 
 
 
+
 /---- Goals/specs
 - Sky slits:
 	- We want approximately 150 skies. (Fewer may work just fine.)
 	- We want sky slits on the edges to give a more uniform coverage of wavelength.
+	- - In order to ensure the possibility that there are sky slits at the edge of the field bounadries, we create two priority classes of the sky.
 - Special considerations:
 	- Jitter the mask by 10'' up and down and + 5'' left and right to avoid rows or columns of bad pixels.
 	- Gutter between the two arms should be at the center. Use (at least) two positions that do not overlap entirely.
 - Target priority:
 	- Priority 1: Standard stars
-	- Priority 2: Objects from target catalogs that so far did not receive slits.
-	- Priority 3: Objects from target catalogs that received slits in a previous mask.
-	- Priority 4: Sky (Vary the density to achieve the desired density.)
+	- Priority 2: Sparse set of skies
+	- Priority 3: Objects from target catalogs that so far did not receive slits.
+	- Priority 4: Objects from target catalogs that received slits in a previous mask.
+	- Priority 5: Dense set of skies (Vary the density to achieve the desired density.)
 	- Note
 - Exp Time/slit dimension:
 	- z~5,6: 6 x 2hr. 1.5" x 1.0" wide 
@@ -105,11 +119,49 @@ Correct astrometric differences, extract necessary columns, and save the objects
 
 
 /---- Strategy
-A single directory with all mask information where the script can look for all objects assigned
+- Initially, the target files (targets-rset4.npz, targets-rset56.npz) are copied and used to create the first input catalogs following the scheme above. The copies are named *-input.npz
+- The intial mask is used to find the two feasible configurations as mentioned above. The two feasible configurations are recorded.
+- Next, the target files will be updated so as to indicate which objects received a slit during the initial run. This will be indicated by a bitmask whose first bit corresponds to whether an object received a slit in the first mask, etc.
+	- Note that we only have a single set of target files who bit information gets updated progressively.
+	- All mask files that contain slit assignment information are stored
+- We repeat the above steps until the desired number of masks are obtained.
+- We report the following statistics:
+	- Histogram of objects with bins corresponding to the number of times an object received a slit.
+	- Scatter plot of # of targets vs. # of skies distribution
+	- For each mask
+		- Expected wavelength range A/B
+		- # of guide stars A/B
+		- # of standard stars A/B
+		- # of skies A/B
+		- # of targets A/B
+		- Exact RA/DEC and PA
+- For each run, a script is used to precisely control which mask files are referenced before constructing the input catalog.
 
 
 
 
 
-/---- Bit number
+
 /---- Results
+rset4
+- rset4-mask-script1.py
+	- Notes:
+		- The script inputs the target catalog to 1) determine the two feasible configurations and 2) an appropriate number density of skies.
+		- We verify that the desired wavelength range is achieved as viewed on BinoMask.
+	- Output mask file:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
