@@ -3,7 +3,8 @@ This is a check list for creating slit-dot masks for 2018A February observation 
 /---- Contents
 - Binospec dimensions: Describe dimensions of the binospeck mask
 - Data: Describe all the data used and stored in ./data/
-- Astrometry: Generate astrometry corrected catalogs and store in ./data/derived/
+- Data pre-processing: Generate astrometry corrected catalogs and store in ./data/derived/
+- Goals: Describe specs for the two sets of targets.
 - Strategy: Describe generally the strategy used to create masks.
 - Bit number: Describes the bit number of objects.
 - Results: Describe the results of masks designed using the above strategy.
@@ -25,37 +26,63 @@ This is a check list for creating slit-dot masks for 2018A February observation 
 
 
 /---- Data
-Lyman alpha catalog: Bouwens (2015).
+Lyman alpha targets catalog: Bouwens (2015).
 - File name: ./data/apj508910t3_mrt.txt
 - Source: http://iopscience.iop.org/0004-637X/803/1/34/suppdata/apj508910t3_mrt.txt
-- Approx. RA/DEC:
-- Density per sq. deg.:
-- Notes: N/A
+- Notes: "dset == 6" and "rset == 4, 5, 6" are what we want. Put "rset==4" on one set of masks and the other on another.
+
+GOODS-N catalog
+- File name: ./data/h_goods_ni_r2.0z_cat.txt
+- Source: https://archive.stsci.edu/pub/hlsp/goods/catalog_r2/
+- Notes: Not the parent catalog of the above but used to correct the astrometry of targets to the GAIA system.
 
 SDSS Standard stars:
 - File name: ./data/standards.goodsn_gr04.txt
-- Source: Daniel Eisenstin
-- Approx. RA/DEC:
-- Density per sq. deg.:
+- Source: Daniel Eisenstein
 - Notes from Daniel: "Attached are blue stars from SDSS in a 4 deg^2 region around GOODS-N. 0.2<g-r<0.4  187<RA<191  61<dec<63, 17<r<20. There will only be 5-6 in a given Binospec mask! You'll need to check this astrometry relative to Gaia.  For best accuracy, substitute the Gaia position, if for no other reason that any proper motion from ~2003 to 2016 will be removed."
 
 Gaia data: Used to correct the astrometry of main targets and standard stars.
-- File name:
-	- ./data/gaia.fits
+- File name: ./data/gaia.fits
 - Source: Doug Finkbeiner, private repository.
 - Script:
 	- retrive-gaia.py: Used to retrieve the file. Contains Terminal commands used.
-- Approx. RA/DEC:
-- Density per sq. deg.:
 - Notes from Daniel: "I suggest that you pull all the Gaia stars within 15' of this field. You'll need to go down to G=20.5 to find enough HST comparison points. Then the brighter Gaia stars can be guide stars."
-- Note: We don't need to find our own guide stars. BinoMask provides appropriate guide stars.
+- Note: We don't need to find our own guide stars. BinoMask provides appropriate guide stars. I retrieved stars only down to 20 mag.
 
 
 
 
 
-/---- Astrometry
+/---- Data pre-processing
+Correct astrometric differences, extract necessary columns, and save the objects in a convenient form to use.
+- Script used: data-preprocess.py
+- Outputs:
+	- ./data/derived/targets-rset4.npz
+	- ./data/derived/targets-rset56.npz
+	- ./data/derived/sdss.npz	
+	- Columns extracted: Astometric corrections have already been applied
+		- SDSS: RA, DEC, g, r, objid
+		- Targets (rset==4): RA, DEC, ID
+		- Targets (rset==5 or 6): RA, DEC, ID	
+- Figures:
+	2018A-radec-all.png			RADEC-diff-CANDELS-vs-GOODS-N.png
+	2018A-radec-targets4-sdss.png		RADEC-diff-GOODS-N-vs-GAIA.png
+	2018A-radec-targets56-sdss.png		RADEC-diff-SDSS-vs-GAIA.png
+- Notes:
+	- Astrometric difference observations:
+		- CANDELS had a good match rate in GOODS-N (3,014/3,917). 0.3" difference in DEC!
+		- GOODS-N had a really low match rate in GAIA (54/39,432) but there does not appear to be a significant astrometric difference.
+		- Apply combined astrometric correction to CANDELS targets to bring them to GAIA system. 
+		- SDSS had a good match rate in GAIA (265/345). Sub 0.1" difference in RA/DEC. Direct substitutions for matched objects and median corrections for the rest.
+
+
+
+
+/---- Goals
+
+
 /---- Strategy
+
 
 
 
