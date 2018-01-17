@@ -35,7 +35,6 @@ This is a check list for creating slit-dot masks for 2018A February observation 
 
 
 
-
 /---- Data
 Lyman alpha targets catalog: Bouwens (2015).
 - File name: ./data/apj508910t3_mrt.txt
@@ -124,7 +123,7 @@ Correct astrometric differences, extract necessary columns, and save the objects
 - Next, the target files will be updated so as to indicate which objects received a slit during the initial run. This will be indicated by a bitmask whose first bit corresponds to whether an object received a slit in the first mask, etc.
 	- Note that we only have a single set of target files who bit information gets updated progressively.
 	- All mask files that contain slit assignment information are stored
-- We repeat the above steps until the desired number of masks are obtained.
+- We repeat the above steps until the desired number of masks are obtained. The two configurations are used alternatively.
 - We report the following statistics:
 	- Histogram of objects with bins corresponding to the number of times an object received a slit.
 	- Scatter plot of # of targets vs. # of skies distribution
@@ -144,11 +143,47 @@ Correct astrometric differences, extract necessary columns, and save the objects
 
 /---- Results
 rset4
-- rset4-mask-script1.py
-	- Notes:
-		- The script inputs the target catalog to 1) determine the two feasible configurations and 2) an appropriate number density of skies.
+- rset4-mask-script0.py
+	- Input catalog: 2018A-slitdot-rset4-mask0-input.txt
+	- Notes: 
+		- The script inputs the target catalog to determine the two feasible configurations.
+		Note that this input catalog is purely for finding the configurations.
 		- We verify that the desired wavelength range is achieved as viewed on BinoMask.
-	- Output mask file:
+		- Configuration 1
+			- RA/DEC/PA: 189.2513125/62.22623055555556/45.5	
+			- Slit width x length: 1 x 1.5
+			- 600 line/mm grating with 6000 A
+			- Side A
+				- Object on right edge: 5256 - 7745
+				- Object on the left field boundary: 5036 - 7525
+				- # of sdss stars: 2
+				- # of science targets: 215-2
+			- Side B
+				- Object on left edge: 5249 - 7738
+				- Object on the right field boundary: 4727 - 7215
+				- # of sdss stars: 3		
+				- # of science targets: 262-3
+		- Configuration 2
+			- RA/DEC/PA: 189.1909/62.247725/45
+			- Slit width x length: 1 x 1.5
+			- 600 line/mm grating with 6000 A
+			- Side A
+				- Object on right edge: 5207 - 7705
+				- Object on the left field boundary: 4740 - 7305
+				- # of sdss stars: 2
+				- # of science targets: 278-2
+			- Side B
+				- Object on left edge: 5236 - 7725 
+				- Object on the right field boundary: 5021 - 7510
+				- # of sdss stars: 1	
+				- # of science targets: 199-1
+
+- rset4-mask-script1.py
+	- Configuration used:
+	- Output mask file: ./output-catalogs/Eisenstein-rest4-mask1.json
+	- Note:
+		- The appropriate density of sky was determined by trial and error.
+		- The same random seed is used for sky generation.
 
 
 
