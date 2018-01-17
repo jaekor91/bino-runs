@@ -8,6 +8,7 @@ import time
 #---- Numbers used to tag output files and control bit mask
 current_mask_number = 1
 previous_mask_number = None
+np.random.seed(42)
 
 #---- Import rset4 targets ra, dec, ID
 data = np.load("./data/derived/targets-rset4.npz")
@@ -39,7 +40,7 @@ ra_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (ra_field_max - ra_
 dec_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (dec_field_max - dec_field_min) * 2. + dec_field_center
 
 # Generate dense random skies priority 5
-Nsample2 = int(1e5)
+Nsample2 = int(1e4)
 ra_sky_random_priority5 = (np.random.random(Nsample2)-0.5) * (ra_field_max - ra_field_min) * 2. + ra_field_center
 dec_sky_random_priority5 = (np.random.random(Nsample2)-0.5) * (dec_field_max - dec_field_min) * 2. + dec_field_center
 
@@ -56,7 +57,7 @@ plt.axis("equal")
 plt.legend(loc="upper left")
 plt.xlim([188.8, 189.65])
 plt.ylim([62., 62.5])
-plt.savefig("radec-rset4-mask%d.png" % current_mask_number, dpi=400, bbox_inches ="tight")
+plt.savefig("./figure/radec-rset4-mask%d.png" % current_mask_number, dpi=400, bbox_inches ="tight")
 # plt.show()
 plt.close()
 
@@ -88,8 +89,7 @@ for j in range(ra_sky_random_priority2.size):
 # ---- priority 3 ---- #
 # Targets unobserved so far
 for j in range(ra.size):
-    line = "redz,"
-    line += ",".join([str(x) for x in [ra[j], dec[j], 999, 3, 1]])
+    line = ",".join([str(x) for x in [ID[j], ra[j], dec[j], 999, 3, 1]])
     line += "\n"
     f.write(line)
     
