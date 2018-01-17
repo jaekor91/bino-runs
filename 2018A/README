@@ -275,3 +275,42 @@ rset4
 	# repeat targets: 206
 	# of skies: 166	
 
+- rset4-mask-script7.py
+	- Outputs:
+		./figure/radec-rset4-mask7.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask7-input.txt: Input catalog
+	- Mask name: Eisenstein-rset4-mask7
+	- Mask id: 293
+	- Configuration used: 1
+	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask7.json
+	- Tally:
+	Side A tally [  0   2   0  11 148 113]
+	Side B tally [  0   3   0 127 102  43]
+	# new targets: 138
+	# repeat targets: 250
+	# of skies: 156
+
+- rset4-mask-script8.py
+	- Outputs:
+		./figure/radec-rset4-mask8.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask8-input.txt: Input catalog
+	- Mask name: Eisenstein-rset4-mask8
+	- Mask id: 294
+	- Configuration used: 2
+	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask8.json
+	- Tally:
+	Side A tally [  0   2   0 110 146  35]
+	Side B tally [  0   1   0   3 168 114]
+	# new targets: 113
+	# repeat targets: 314
+	# of skies: 149
+
+- rset4-mask-script9.py
+	- Outputs:
+		./figure/radec-rset4-mask9.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask9-input.txt: Input catalog
+	- Mask name: Eisenstein-rset4-mask9
+	- Mask id: 
+	- Configuration used: 1
+	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask9.json
+	- Tally:
