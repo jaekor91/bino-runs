@@ -99,7 +99,7 @@ Correct astrometric differences, extract necessary columns, and save the objects
 	- Gutter between the two arms should be at the center. Use (at least) two positions that do not overlap entirely.
 - Target priority:
 	- Priority 1: Standard stars
-	- Priority 2: Sparse set of skies
+	- Priority 2: Sparse set of skies (This is not used. Priortize targets over skies.)
 	- Priority 3: Objects from target catalogs that so far did not receive slits.
 	- Priority 4: Objects from target catalogs that received slits in a previous mask.
 	- Priority 5: Dense set of skies (Vary the density to achieve the desired density.)
@@ -184,56 +184,31 @@ rset4
 	- Outputs:
 		./figure/radec-rset4-mask1.png: RA/DEC plot of input objects.
 		./input-catalogs/2018A-slitdot-rset4-mask1-input.txt: Input catalog
-	- Mask name: Eisenstein-rest4-mask1
-	- Mask id: 280 (NOT 279!)
+	- Mask name: Eisenstein-rset4-mask1
+	- Mask id: 285 (NOT Anything else!)
 	- Configuration used: 1
-	- Output mask file: ./output-catalogs/Eisenstein-rest4-mask1.json
+	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask1.json
 	- Note:
 		- The appropriate density of sky was determined by trial and error.
-		- The same random seed is used for sky generation.
+		- A different random seed is used for sky generation.
 	- Tally:
-	Side A tally [  0   2  10 205   0  69]
-	Side B tally [  0   3   8 252   0  36]
-	# new targets: 457
+	Side A tally [  0   2   0 161   0 114]
+	Side B tally [  0   3   0 274   0  31]
+	# new targets: 435
 	# repeat targets: 0
-	# of skies: 123
+	# of skies: 145
 
 - rset4-mask-script2.py
 	- Outputs:
 		./figure/radec-rset4-mask2.png: RA/DEC plot of input objects.
 		./input-catalogs/2018A-slitdot-rset4-mask2-input.txt: Input catalog
-	- Mask name: Eisenstein-rest4-mask2
-	- Mask id: 281
-	- Configuration used: 1
-	- Output mask file: ./output-catalogs/Eisenstein-rest4-mask1.json
-	- Note:
-		- The appropriate density of sky was determined by trial and error.
-		- The same random seed is used for sky generation.
+	- Mask name: Eisenstein-rset4-mask2
+	- Mask id: 287
+	- Configuration used: 2
+	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask2.json
 	- Tally:
-	Side A tally [  0   2  10 245   7  34]
-	Side B tally [  0   1   8 162  19  86]
-	# new targets: 407
-	# repeat targets: 26
-	# of skies: 138
-
-- rset4-mask-script3.py
-	- Outputs:
-		./figure/radec-rset4-mask3.png: RA/DEC plot of input objects.
-		./input-catalogs/2018A-slitdot-rset4-mask3-input.txt: Input catalog
-	- Mask name: Eisenstein-rest4-mask2
-	- Mask id: 281
-	- Configuration used: 1
-	- Output mask file: ./output-catalogs/Eisenstein-rest4-mask1.json
-	- Note:
-		- The appropriate density of sky was determined by trial and error.
-		- The same random seed is used for sky generation.
-	- Tally:
-	Side A tally [  0   2  10 245   7  34]
-	Side B tally [  0   1   8 162  19  86]
-	# new targets: 407
-	# repeat targets: 26
-	# of skies: 138
-
-
-
-Also, let the script spit out a new RA/DEC/PA.
+	Side A tally [  0   2   0 276   2  30]
+	Side B tally [  0   1   0 152  16 116]
+	# new targets: 428
+	# repeat targets: 18
+	# of skies: 146
