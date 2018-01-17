@@ -8,7 +8,14 @@ import time
 #---- Numbers used to tag output files and control bit mask
 current_mask_number = 1
 previous_mask_number = None
-np.random.seed(42)
+config_number = 1
+np.random.seed(42+current_mask_number)
+
+print "#---- Config number and corresponding RA, DEC, PA to be used (slightly random perturbation)"
+RA, DEC, PA = default_config(config_number)
+RA += (np.random.random()-0.5) * 5. / 3600.
+DEC += (np.random.random()-0.5) * 5. / 3600.
+print "RA/DEC/PA: %.9f/%.9f/%.9f" % (RA, DEC, PA)
 
 #---- Import rset4 targets ra, dec, ID
 data = np.load("./data/derived/targets-rset4.npz") # Yes, start from the original file!
