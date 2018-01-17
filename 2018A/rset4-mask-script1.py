@@ -41,10 +41,10 @@ ra_sdss, dec_sdss, ID_sdss, g_sdss= data["ra"], data["dec"], data["objid"], data
 
 
 #---- Generate sky randoms
-# Generate sparse random skies priority 2
-Nsample1 = 100
-ra_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (ra_field_max - ra_field_min) * 2. + ra_field_center
-dec_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (dec_field_max - dec_field_min) * 2. + dec_field_center
+# # Generate sparse random skies priority 2
+# Nsample1 = 100
+# ra_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (ra_field_max - ra_field_min) * 2. + ra_field_center
+# dec_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (dec_field_max - dec_field_min) * 2. + dec_field_center
 
 # Generate dense random skies priority 5
 Nsample2 = int(1e4)
@@ -85,13 +85,13 @@ for j in range(ra_sdss.size):
     f.write(line)        
 
     
-# ---- priority 2 ---- #
-# Add skies 1
-for j in range(ra_sky_random_priority2.size):
-    line = "sky2,"
-    line += ",".join([str(x) for x in [ra_sky_random_priority2[j], dec_sky_random_priority2[j], 999, 2, 2]])
-    line += "\n"
-    f.write(line)
+# # ---- priority 2 ---- #
+# # Add skies 1
+# for j in range(ra_sky_random_priority2.size):
+#     line = "sky2,"
+#     line += ",".join([str(x) for x in [ra_sky_random_priority2[j], dec_sky_random_priority2[j], 999, 2, 2]])
+#     line += "\n"
+#     f.write(line)
 
 # ---- priority 3 ---- #
 # Targets unobserved so far
