@@ -19,6 +19,18 @@ mpl.rcParams['ytick.labelsize'] = 15
 large_random_constant = -999119283571
 deg2arcsec=3600
 
+def default_config(num_config):
+	"""
+	Return default config to be used.
+	"""
+	if num_config == 1:
+		return [189.2669083333333, 62.21212777777778, 45]
+	elif num_config == 2:
+		return [189.1928166666667, 62.26021944444445, 45]		
+	else:
+		assert False
+
+	return 
 
 def load_fits_table(fname):
     """Given the file name, load  the first extension table."""
