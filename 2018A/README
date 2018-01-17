@@ -443,8 +443,41 @@ rset56
 	- Outputs:
 		./figure/radec-rset56-mask4.png: RA/DEC plot of input objects.
 		./input-catalogs/2018A-slitdot-rset56-mask4-input.txt: Input catalog
-	- Mask name: Eisenstein-rset56-mask4
+	- Mask name: Eisenstein-rset56-mask3 (Note that the name is incorrect!)
 	- Mask id: 305
 	- Configuration used: 2
 	- Output mask file: ./output-catalogs/Eisenstein-rset56-mask4.json
 	- Tally:
+	Side A tally [  0   2   0 131  85  99]
+	Side B tally [  0   1   0  15  82 231]
+	# new targets: 146
+	# repeat targets: 167
+	# of skies: 330
+
+- rset56-mask-script5.py
+	- Outputs:
+		./figure/radec-rset56-mask5.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset56-mask5-input.txt: Input catalog
+	- Mask name: Eisenstein-rset56-mask3 (Note that the name is incorrect!)
+	- Mask id: 306
+	- Configuration used: 1
+	- Output mask file: ./output-catalogs/Eisenstein-rset56-mask5.json	
+	Side A tally [  0   2   0   3  89 226]
+	Side B tally [  0   3   0  64 139 100]
+	# new targets: 67
+	# repeat targets: 228
+	# of skies: 326
+
+- rset56-mask-script6.py
+	- Outputs:
+		./figure/radec-rset56-mask6.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset56-mask6-input.txt: Input catalog
+	- Mask name: Eisenstein-rset56-mask6 (Note that the name is incorrect!)
+	- Mask id: 307
+	- Configuration used: 2
+	- Output mask file: ./output-catalogs/Eisenstein-rset56-mask6.json		
+	Side A tally [  0   2   0  71 149  97]
+	Side B tally [  0   1   0   4  97 216]
+	# new targets: 75
+	# repeat targets: 246
+	# of skies: 313
