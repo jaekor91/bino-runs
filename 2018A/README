@@ -245,13 +245,33 @@ rset4
 
 - rset4-mask-script5.py
 	- Outputs:
-		./figure/radec-rset4-mask5.png: RA/DEC plot of input objects.
-		./input-catalogs/2018A-slitdot-rset4-mask5-input.txt: Input catalog
+		./figure/radec-rset4-mask4.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask4-input.txt: Input catalog
 	- Mask name: Eisenstein-rset4-mask5
+	- Note:
+		- Note that the masks were saved with number 4 instead of 5. However, ID tag is correct.
 	- Mask id: 290
 	- Configuration used: 1
 	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask5.json
 	- Tally:
+	Side A tally [  0   2   0  34 136 167]
+	Side B tally [  0   3   0 199  88  63]
+	# new targets: 233
+	# repeat targets: 224
+	# of skies: 230	
 	
-
+- rset4-mask-script6.py
+	- Outputs:
+		./figure/radec-rset4-mask6.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask6-input.txt: Input catalog
+	- Mask name: Eisenstein-rset4-mask6
+	- Mask id: 292
+	- Configuration used: 2
+	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask6.json
+	- Tally:
+	Side A tally [  0   2   0 172  70  46]
+	Side B tally [  0   1   0  24 136 120]
+	# new targets: 196
+	# repeat targets: 206
+	# of skies: 166	
 
