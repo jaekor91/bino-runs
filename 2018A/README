@@ -365,3 +365,51 @@ rset4
 	# new targets: 45
 	# repeat targets: 390
 	# of skies: 145
+
+
+rset56
+- Default configurations: RA/DEC coordinates are the same as above. 
+	- Configuration 1
+		- RA/DEC/PA: 189.2669083333333/62.21212777777778/45	
+		- Slit width x length: 1 x 1.2
+		- 600 line/mm grating with 7700 A
+		- Side A
+			- Object on right edge: 6921 - 9432
+			- Object on the left field boundary: 6797 - 9300
+			- # of sdss stars: 2
+		- Side B
+			- Object on left edge: 
+			- Object on the right field boundary: 
+			- # of sdss stars: 3
+	- Configuration 2
+		- RA/DEC/PA: 189.1928166666667/62.26021944444445/45
+		- Slit width x length: 1 x 1.2
+		- 600 line/mm grating with 7700 A
+		- Side A
+			- Object on right edge: 
+			- Object on the left field boundary: 
+			- # of sdss stars: 2
+		- Side B
+			- Object on left edge: 
+			- Object on the right field boundary: 
+			- # of sdss stars: 1	
+
+- rset56-mask-script1.py
+	- Outputs:
+		./figure/radec-rset56-mask1.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset56-mask1-input.txt: Input catalog
+	- Mask name: Eisenstein-rset56-mask1
+	- Mask id: 300
+	- Configuration used: 1
+	- Output mask file: ./output-catalogs/Eisenstein-rset56-mask1.json
+	- Tally:
+
+- rset56-mask-script2.py
+	- Outputs:
+		./figure/radec-rset56-mask2.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset56-mask2-input.txt: Input catalog
+	- Mask name: Eisenstein-rset56-mask2
+	- Mask id: 	
+	- Configuration used: 2
+	- Output mask file: ./output-catalogs/Eisenstein-rset56-mask2.json
+	- Tally:
