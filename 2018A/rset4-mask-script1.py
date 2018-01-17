@@ -58,7 +58,7 @@ dec_sky_random_priority5 = (np.random.random(Nsample2)-0.5) * (dec_field_max - d
 fig, ax = plt.subplots(1, figsize=(7, 7))
 ax.scatter(ra, dec, c="black", edgecolors="none", s=5., marker="o", label="targets")
 ax.scatter(ra_sdss, dec_sdss, c="green", edgecolors="none", s=20., marker="s", label="sdss")
-ax.scatter(ra_sky_random_priority2, dec_sky_random_priority2, c="blue", edgecolors="none", s=5., marker="s", label="sky2")
+# ax.scatter(ra_sky_random_priority2, dec_sky_random_priority2, c="blue", edgecolors="none", s=5., marker="s", label="sky2")
 ax.scatter(ra_sky_random_priority5, dec_sky_random_priority5, c="gold", edgecolors="none", s=.1, marker="s", label="sky5")
 plt.axis("equal")
 plt.legend(loc="upper left")
