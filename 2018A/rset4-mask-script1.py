@@ -11,7 +11,7 @@ previous_mask_number = None
 np.random.seed(42)
 
 #---- Import rset4 targets ra, dec, ID
-data = np.load("./data/derived/targets-rset4.npz")
+data = np.load("./data/derived/targets-rset4.npz") # Yes, start from the original file!
 ra, dec, ID = data["ra"], data["dec"], data["ID"]
 
 ra_field_center = np.median(ra)
