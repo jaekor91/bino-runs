@@ -310,7 +310,15 @@ rset4
 		./figure/radec-rset4-mask9.png: RA/DEC plot of input objects.
 		./input-catalogs/2018A-slitdot-rset4-mask9-input.txt: Input catalog
 	- Mask name: Eisenstein-rset4-mask9
-	- Mask id: 
+	- Mask id: 295
 	- Configuration used: 1
 	- Output mask file: ./output-catalogs/Eisenstein-rset4-mask9.json
 	- Tally:
+	Side A tally [  0   2   0   4 152 123]
+	Side B tally [  0   3   0  64 188  42]
+	# new targets: 68
+	# repeat targets: 340
+	# of skies: 165
+
+- rset4-mask-script10.py
+
