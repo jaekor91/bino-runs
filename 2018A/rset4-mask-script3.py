@@ -13,8 +13,8 @@ np.random.seed(42+current_mask_number)
 
 print "#---- Config number and corresponding RA, DEC, PA to be used (slightly random perturbation)"
 RA, DEC, PA = default_config(config_number)
-RA += (np.random.random()-0.5) * 5. / 3600.
-DEC += (np.random.random()-0.5) * 5. / 3600.
+RA += (np.random.random()-0.5) * 2. / 3600.
+DEC += (np.random.random()-0.5) * 2. / 3600.
 print "RA/DEC/PA: %.9f/%.9f/%.9f" % (RA, DEC, PA)
 print "#---- Tally of last mask"
 data = json.load(open('./output-catalogs/Eisenstein-rset4-mask%d.json' % previous_mask_number))
@@ -52,7 +52,7 @@ ra, dec, ID, bitmask = data["ra"], data["dec"], data["ID"], data["bitmask"]
 
 ra_field_center = np.median(ra)
 dec_field_center = np.median(dec)
-print "Field medican coordinates: %.8f/%.8f" % (ra_field_center, dec_field_center)
+# print "Field medican coordinates: %.8f/%.8f" % (ra_field_center, dec_field_center)
 
 # min max ra/dec
 ra_field_min = np.min(ra)
