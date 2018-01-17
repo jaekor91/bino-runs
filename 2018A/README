@@ -152,33 +152,33 @@ rset4
 		Note that this input catalog is purely for finding the configurations.
 		- We verify that the desired wavelength range is achieved as viewed on BinoMask.
 		- Configuration 1
-			- RA/DEC/PA: 189.2513125/62.22623055555556/45.5	
+			- RA/DEC/PA: 189.2669083333333/62.21212777777778/45	
 			- Slit width x length: 1 x 1.5
 			- 600 line/mm grating with 6000 A
 			- Side A
-				- Object on right edge: 5256 - 7745
-				- Object on the left field boundary: 5036 - 7525
+				- Object on right edge: 5246 - 7727
+				- Object on the left field boundary: 5180 - 7655
 				- # of sdss stars: 2
-				- # of science targets: 215-2
+				- # of science targets: 162-2
 			- Side B
 				- Object on left edge: 5249 - 7738
 				- Object on the right field boundary: 4727 - 7215
-				- # of sdss stars: 3		
-				- # of science targets: 262-3
+				- # of sdss stars: 3
+				- # of science targets: 278-3
 		- Configuration 2
-			- RA/DEC/PA: 189.1909/62.247725/45
+			- RA/DEC/PA: 189.1928166666667/62.26021944444445/45
 			- Slit width x length: 1 x 1.5
 			- 600 line/mm grating with 6000 A
 			- Side A
-				- Object on right edge: 5207 - 7705
-				- Object on the left field boundary: 4740 - 7305
+				- Object on right edge: 5420 - 7732
+				- Object on the left field boundary: 4811 - 7222
 				- # of sdss stars: 2
-				- # of science targets: 278-2
+				- # of science targets: 287-2
 			- Side B
-				- Object on left edge: 5236 - 7725 
-				- Object on the right field boundary: 5021 - 7510
+				- Object on left edge: 5255 - 7725 
+				- Object on the right field boundary: 5069 - 7574
 				- # of sdss stars: 1	
-				- # of science targets: 199-1
+				- # of science targets: 169-1
 
 - rset4-mask-script1.py
 	- Outputs:
@@ -236,6 +236,4 @@ rset4
 
 
 
-
-
-The two configurations do not fully cover the whole field. This must be fixed and the whole process must start over!
+Also, let the script spit out a new RA/DEC/PA.
