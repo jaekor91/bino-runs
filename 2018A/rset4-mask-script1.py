@@ -35,7 +35,7 @@ ra_sdss, dec_sdss, ID_sdss, g_sdss= data["ra"], data["dec"], data["objid"], data
 
 #---- Generate sky randoms
 # Generate sparse random skies priority 2
-Nsample1 = 1000
+Nsample1 = 100
 ra_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (ra_field_max - ra_field_min) * 2. + ra_field_center
 dec_sky_random_priority2 = (np.random.random(Nsample1)-0.5) * (dec_field_max - dec_field_min) * 2. + dec_field_center
 
