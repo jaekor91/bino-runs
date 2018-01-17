@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 import time
 
 #---- Numbers used to tag output files and control bit mask
-current_mask_number = 3
-previous_mask_number = 2
-config_number = 1
+current_mask_number = 4
+previous_mask_number = 3
+config_number = 2
 np.random.seed(42+current_mask_number)
 
 print "#---- Config number and corresponding RA, DEC, PA to be used (slightly random perturbation)"
