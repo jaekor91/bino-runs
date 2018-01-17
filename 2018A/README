@@ -144,7 +144,9 @@ Correct astrometric differences, extract necessary columns, and save the objects
 /---- Results
 rset4
 - rset4-mask-script0.py
-	- Input catalog: 2018A-slitdot-rset4-mask0-input.txt
+	- Outputs:
+		./figure/radec-rset4-mask0.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask0-input.txt: Input catalog
 	- Notes: 
 		- The script inputs the target catalog to determine the two feasible configurations.
 		Note that this input catalog is purely for finding the configurations.
@@ -179,24 +181,61 @@ rset4
 				- # of science targets: 199-1
 
 - rset4-mask-script1.py
-	- Configuration used:
+	- Outputs:
+		./figure/radec-rset4-mask1.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask1-input.txt: Input catalog
+	- Mask name: Eisenstein-rest4-mask1
+	- Mask id: 280 (NOT 279!)
+	- Configuration used: 1
 	- Output mask file: ./output-catalogs/Eisenstein-rest4-mask1.json
 	- Note:
 		- The appropriate density of sky was determined by trial and error.
 		- The same random seed is used for sky generation.
+	- Tally:
+	Side A tally [  0   2  10 205   0  69]
+	Side B tally [  0   3   8 252   0  36]
+	# new targets: 457
+	# repeat targets: 0
+	# of skies: 123
+
+- rset4-mask-script2.py
+	- Outputs:
+		./figure/radec-rset4-mask2.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask2-input.txt: Input catalog
+	- Mask name: Eisenstein-rest4-mask2
+	- Mask id: 281
+	- Configuration used: 1
+	- Output mask file: ./output-catalogs/Eisenstein-rest4-mask1.json
+	- Note:
+		- The appropriate density of sky was determined by trial and error.
+		- The same random seed is used for sky generation.
+	- Tally:
+	Side A tally [  0   2  10 245   7  34]
+	Side B tally [  0   1   8 162  19  86]
+	# new targets: 407
+	# repeat targets: 26
+	# of skies: 138
+
+- rset4-mask-script3.py
+	- Outputs:
+		./figure/radec-rset4-mask3.png: RA/DEC plot of input objects.
+		./input-catalogs/2018A-slitdot-rset4-mask3-input.txt: Input catalog
+	- Mask name: Eisenstein-rest4-mask2
+	- Mask id: 281
+	- Configuration used: 1
+	- Output mask file: ./output-catalogs/Eisenstein-rest4-mask1.json
+	- Note:
+		- The appropriate density of sky was determined by trial and error.
+		- The same random seed is used for sky generation.
+	- Tally:
+	Side A tally [  0   2  10 245   7  34]
+	Side B tally [  0   1   8 162  19  86]
+	# new targets: 407
+	# repeat targets: 26
+	# of skies: 138
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+The two configurations do not fully cover the whole field. This must be fixed and the whole process must start over!
