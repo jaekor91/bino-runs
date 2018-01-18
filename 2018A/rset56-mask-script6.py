@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import time
 
 #---- Numbers used to tag output files and control bit mask
-current_mask_number = 4
-previous_mask_number = 3
+current_mask_number = 6
+previous_mask_number = 5
 config_number = 2
 np.random.seed(42+current_mask_number)
 

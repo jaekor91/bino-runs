@@ -70,13 +70,13 @@ for i in range(len(data['sidea'])):
     tmp = data['sidea'][i]
     if tmp["PRIORITY"] == 3:
         if tmp["OBJECT"] in ID:
-            bitmask[np.where(ID==tmp["OBJECT"])] = np.bitwise_or(bitmask[np.where(ID==tmp["OBJECT"])], 2**previous_mask_number)
+            bitmask[np.where(ID==tmp["OBJECT"])] += np.bitwise_or(bitmask[np.where(ID==tmp["OBJECT"])], 2**previous_mask_number)
 # Side B
 for i in range(len(data['sideb'])):
     tmp = data['sideb'][i]
     if tmp["PRIORITY"] == 3:
         if tmp["OBJECT"] in ID:
-            bitmask[np.where(ID==tmp["OBJECT"])] = np.bitwise_or(bitmask[np.where(ID==tmp["OBJECT"])], 2**previous_mask_number)    
+            bitmask[np.where(ID==tmp["OBJECT"])] += np.bitwise_or(bitmask[np.where(ID==tmp["OBJECT"])], 2**previous_mask_number)    
             
 np.savez("./data/derived/targets-rset56-input.npz", ra = ra, dec=dec, ID=ID, bitmask = bitmask)
 
