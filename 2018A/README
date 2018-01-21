@@ -7,7 +7,6 @@ This is a check list for creating slit-dot masks for 2018A February observation 
 - Data pre-processing: Generate astrometry corrected catalogs and store in ./data/derived/
 - Goals/specs: Describe specs for the two sets of targets.
 - Strategy: Describe generally the strategy used to create masks.
-- Bit number: Describes the bit number of objects.
 - Results: Describe the results of masks designed using the above strategy.
 
 
