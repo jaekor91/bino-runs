@@ -45,12 +45,19 @@ COSMOS
 - Constraints: Based on the region that overlaps with Christophe's geometry.
 - Data:
 	- List_RF_Cosmos.fits (From Christophe)
+	- ./data/DR3/COSMOS/ Tractor files for the same region.
+		- Scripts used: 
+			- generate-tractor-download-script-COSMOS.py
+			- tractor-download-COSMOS.sh
 - Notes: Because the Fields is void of bright stars and is small, rather than creating a small catalog for each mask, I generate targets for the whole field and simply select two non-overlapping fields on BinoMask.
 
 HSC (16h+44)
 - Number of masks: 6
 - Legacy Survey/DR: 6
 - Constraints: Based on the region that overlaps with Christophe's geometry.
+- Fields selected visually (RA/DEC)
+	- Eisenstein-HSC-1: 
+
 - Data:
 	- From Christophe:
 		- List_RF_HSC_dr6.fits				
@@ -74,7 +81,7 @@ DR6 (7-8h+33)
 			- 
 
 RADEC plots of COSMOS, HSC, and DR6 Fields
-- Notes: RA/DEC of RF targets, SDSS stars, and SDSS galaxies. Tycho-2 masking is applied. Used to pick fields for observation.
+- Notes: RA/DEC of RF targets, SDSS stars, and SDSS galaxies. Tycho-2 masking is applied. Used to pick fields for observation. Show the fields that were picked for observation.
 - Script used: plot-RADEC-RF-stars-gals.py
 - Products:
 	- RADEC-HSC.png
@@ -118,7 +125,7 @@ survey-bricks-dr3.fits
 		- 9: RF2, RF tuned for 3000 deg
 		- 10: RF3, RF tuned for 3000 deg with an additional gmag cut.
 
-Make color transformation
+Make color transformation of the model before
 
 
 
