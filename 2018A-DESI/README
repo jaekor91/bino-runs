@@ -142,13 +142,12 @@ Combine Tractor files, apply masks, and create a bit vector and calculate area.
 - Notes: For convenience, I combine Tractor files in each Field. Note I compute area using MC methods. Only the following fields are saved. 
 	- RA, DEC
 	- gflux, rflux, zflux
-	- bit vector
-	- OBJID
 The following cuts are imposed. 
 	- allmasks
 	- Tycho-2
 	- invar > 0
 	- g < 24
+	- brick_primary
 I create RA/DEC plots of individual field
 - Scripts used:
 	- COSMOS-combine-tractor.py
@@ -159,6 +158,8 @@ I create RA/DEC plots of individual field
 	- DR6-union-tractor-{1..6}.npy/RADEC-DR6-union-{1..6}.png
 	- HSC-union-tractor-{1..6}.npy/RADEC-HSC-union-{1..6}.png
 
+
+Check whether the calibration data uses de-reddened fluxes. Does NDM use de-reddened flux in modeling and applying selection?
 
 /---- Results
 COSMOS
