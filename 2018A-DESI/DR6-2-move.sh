@@ -1,0 +1,10 @@
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/115/tractor-1159p352.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/115/tractor-1153p352.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/115/tractor-1158p350.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/115/tractor-1154p347.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/115/tractor-1156p352.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/115/tractor-1158p347.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/115/tractor-1155p350.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/116/tractor-1162p352.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/116/tractor-1161p347.fits /global/homes/j/jaehyeon/DR6-2
+cp /global/project/projectdirs/cosmo/work/legacysurvey/dr6/tractor/116/tractor-1161p350.fits /global/homes/j/jaehyeon/DR6-2
