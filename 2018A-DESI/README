@@ -165,6 +165,14 @@ I create RA/DEC plots of individual field
 	- DR6-union-tractor-{1..6}.npz/RADEC-DR6-union-{1..6}.png
 	- HSC-union-tractor-{1..6}.npz/RADEC-HSC-union-{1..6}.png
 
+COSMOS depths checking
+- Notes: COSMOS field may be deeper so we verify the COSMOS depths. 
+- Script used: 
+	- COSMOS-DR3-union-tractor-depth-check.py
+- Product:
+	- COSMOS-DR3-union-tractor-depths.png
+
+
 Check astrometry of COSMOS region
 - Notes: We check the astrometry of COSMOS DR3 using DR5. We first combine the DR5 Tractor files in COSMOS. Next, we check the astrometry. There ended up being a minor difference. But still.
 - Scripts used:
