@@ -25,7 +25,7 @@ ra_min, ra_max = ra.min(), ra.max()
 dec_min, dec_max = dec.min(), dec.max()
 dec_med = np.median(dec) # For making cosine correction
 
-Nsample = int(1e5)
+Nsample = int(1e4)
 ra_random = np.random.rand(Nsample) * (ra_max - ra_min) + ra_min
 dec_random = np.random.rand(Nsample) * (dec_max - dec_min) + dec_min
 
