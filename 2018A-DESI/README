@@ -90,9 +90,10 @@ RADEC plots of COSMOS, HSC, and DR6 Fields
 
 
 /---- Other data
-SDSS Standard stars:
-
-SDSS Standard galaxies:
+SDSS Standard stars/galaxies: 
+Notes: These files were obtained from Daniel and cover the entire necessary ranges.
+boss.r105_150.dp30_p45.txt		boss.r240_250.dp40_p45.txt		standard_bino.r110_170.dm10_p35.txt
+boss.r110_170.dm10_p35.txt		standard_bino.r105_150.dp30_p45.txt	standard_bino.r240_250.dp40_p45.txt
 
 
 
