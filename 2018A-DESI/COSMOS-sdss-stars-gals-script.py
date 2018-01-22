@@ -18,8 +18,8 @@ dec_min, dec_max = dec3.min(), dec3.max()
 data = ascii.read("./data/standard_bino.r110_170.dm10_p35.txt")
 ra_star, dec_star, gmag_star = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
 # Trim to a region of interest
-ibool = (ra_star > ra_min-0.5) & (ra_star < ra_min+0.5) \
-& (dec_star > dec_min-0.5) & (dec_star < dec_min+0.5)
+ibool = (ra_star > ra_min-10) & (ra_star < ra_min+10) \
+& (dec_star > dec_min-10) & (dec_star < dec_min+10)
 data = data[ibool]
 ra_star, dec_star, gmag_star = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
 
@@ -27,8 +27,8 @@ ra_star, dec_star, gmag_star = data["col1"].data, data["col2"].data, data["col4"
 # Galaxies near COSMOS
 data = ascii.read("./data/boss.r110_170.dm10_p35.txt")
 ra_gal, dec_gal, gmag_gal = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
-ibool = (ra_gal > ra_min-0.5) & (ra_gal < ra_min+0.5) \
-& (dec_gal > dec_min-0.5) & (dec_gal < dec_min+0.5)
+ibool = (ra_gal > ra_min-10) & (ra_gal < ra_min+10) \
+& (dec_gal > dec_min-10) & (dec_gal < dec_min+10)
 data = data[ibool]
 ra_gal, dec_gal, gmag_gal = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
 
@@ -110,4 +110,4 @@ print "RA/DEC med diff in arcsec %.3f/%.3f" %(ra_med_diff * 3600, dec_med_diff *
 # print (np.median((ra3-ra_med_diff)[idx3] - ra_gal[idx_gal])) * 3600
 # print (np.median((dec3-dec_med_diff)[idx3] - dec_gal[idx_gal])) * 3600
 
-np.savez("./data/COSMOS-sdss-gals.npz", ra=ra_star-ra_med_diff, dec=dec_star-dec_med_diff, g=gmag_star)
+np.savez("./data/COSMOS-sdss-gals.npz", ra=ra_gal-ra_med_diff, dec=dec_gal-dec_med_diff, g=gmag_gal)
