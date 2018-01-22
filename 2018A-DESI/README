@@ -55,13 +55,17 @@ HSC (16h+44)
 - Number of masks: 6
 - Legacy Survey/DR: 6
 - Constraints: Based on the region that overlaps with Christophe's geometry.
-- Field centers
+- Field centers:
+ra_cs = [244.1, 245, 246, 244.1, 244.75, 245]
+dec_cs = [43.5, 43.5, 43.5, 44., 44., 42.75]
 - Data:
 	- From Christophe:
 		- List_RF_HSC_dr6.fits				
-	- ./data/DR6/DR6-HSC-{1..6}
+	- ./data/DR6/HSC-{1..6}
 		- Scripts used: 
-			- 
+			- HSC-mv-script.py: Generate script used to move files within NERSC. 
+			- HSC-{1..6}-move.sh: Same function as aboev.
+
 
 DR6 (7-8h+33)
 - Number of masks: 6
