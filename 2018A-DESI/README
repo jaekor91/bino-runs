@@ -116,7 +116,7 @@ General plan: For each Field
 - Combine all the Tractor files in the region. 
 - Apply allmasks, invar > 0, and Tycho-2 mask.
 - Create a bit vector.
-- Apply NDM selections. (Make color term corrections for DR4/6. Apply to the intrinsic model before addition of noise.)
+- Apply NDM selections. (Make color term corrections for DR4/6. Apply to the intrinsic model before addition of noise. For DR4/6, the union of all Tractor files available on local directory can be used as the calibration file. Note that this is perhaps done best by first creating union catalogs in each field and computing the area therein.)
 - Cross-match RF targets onto the combined and trimmed catalog.
 - Apply FDR cut.
 - Import SDSS stars and galaxies. Make astrometric correction by cross-matching.
@@ -138,8 +138,26 @@ General plan: For each Field
 	- Priority 3: All targets (name = bit number)
 	- Priority 4: Skies
 
-
-
+Combine Tractor files, apply masks, and create a bit vector and calculate area.
+- Notes: For convenience, I combine Tractor files in each Field. Note I compute area using MC methods. Only the following fields are saved. 
+	- RA, DEC
+	- gflux, rflux, zflux
+	- bit vector
+	- OBJID
+The following cuts are imposed. 
+	- allmasks
+	- Tycho-2
+	- invar > 0
+	- g < 24
+I create RA/DEC plots of individual field
+- Scripts used:
+	- COSMOS-combine-tractor.py
+	- DR6-combine-tractor.py
+	- HSC-combine-tractor.py
+- Products: All data products contain area as Field A. Destination directory ./data/
+	- COSMOS-union-tractor.npy/RADEC-COSMOS-union.png
+	- DR6-union-tractor-{1..6}.npy/RADEC-DR6-union-{1..6}.png
+	- HSC-union-tractor-{1..6}.npy/RADEC-HSC-union-{1..6}.png
 
 
 /---- Results
