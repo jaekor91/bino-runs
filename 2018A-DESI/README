@@ -66,7 +66,6 @@ dec_cs = [43.5, 43.5, 43.5, 44., 44., 42.75]
 			- HSC-mv-script.py: Generate script used to move files within NERSC. 
 			- HSC-{1..6}-move.sh: Same function as aboev.
 
-
 DR6 (7-8h+33)
 - Number of masks: 6
 - Legacy Survey/DR: 6
@@ -84,7 +83,6 @@ dec_cs = [37, 35, 35, 35.5, 35, 33]
 		- Scripts used:
 			- DR6-mv-script.py: Generate script used to move files within NERSC. 
 			- DR6-{1..6}-move.sh: Same function as aboev.
-
 
 RADEC plots of COSMOS, HSC, and DR6 Fields
 - Notes: RA/DEC of RF targets, SDSS stars, and SDSS galaxies. Tycho-2 masking is applied. Used to pick fields for observation. Show the fields that were picked for observation.
@@ -114,24 +112,33 @@ survey-bricks-dr3.fits
 
 
 /---- Generate input catalogs
-- For each filed
-	- Combine all the Tractor files for the region. 
-	- Apply allmasks, invar > 0, and Tycho-2 mask
-	- Cross-match RF targets onto the combined and trimmed catalog.
-	- Apply FDR cut
-	- Import SDSS stars and galaxies. Make astrometric correction.
-	- Save bit numbers
-		- 1: SDSS stars
-		- 2: SDSS galaxies	
-	    - 3: FDR cut as reported in FDR.
-		- 4: NDM fiducial. Ndesired = 3000
-		- 6: NDM fiducial but U_Gold = 2. Ndesired = 3000
-		- 7: NDM fiducial but U_NoZ = 1. Ndesired = 3000
-		- 8: RF1, RF tuned for 2400 deg
-		- 9: RF2, RF tuned for 3000 deg
-		- 10: RF3, RF tuned for 3000 deg with an additional gmag cut.
+General plan: For each Field
+- Combine all the Tractor files in the region. 
+- Apply allmasks, invar > 0, and Tycho-2 mask.
+- Create a bit vector.
+- Apply NDM selections. (Make color term corrections for DR4/6. Apply to the intrinsic model before addition of noise.)
+- Cross-match RF targets onto the combined and trimmed catalog.
+- Apply FDR cut.
+- Import SDSS stars and galaxies. Make astrometric correction by cross-matching.
+- Save bit numbers
+	- 1: SDSS stars
+	- 2: SDSS galaxies	
+    - 3: FDR cut as reported in FDR.
+	- 4: NDM fiducial. Ndesired = 3000
+	- 6: NDM fiducial but U_Gold = 2. Ndesired = 3000
+	- 7: NDM fiducial but U_NoZ = 1. Ndesired = 3000
+	- 8: RF1, RF tuned for 2400 deg
+	- 9: RF2, RF tuned for 3000 deg
+	- 10: RF3, RF tuned for 3000 deg with an additional gmag cut.
+- Create input catalogs with the following: 
+	- Name, ra, dec, gmag, priority, type
+	- Dense set of skies as the last priority.
+	- Priority 1: SDSS stars
+	- Priority 2: SDSS galaxies
+	- Priority 3: All targets (name = bit number)
+	- Priority 4: Skies
 
-Make color transformation of the model before
+
 
 
 
