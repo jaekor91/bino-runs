@@ -139,11 +139,9 @@ General plan: For each Field
 	- 10: RF3, RF tuned for 3000 deg with an additional gmag cut.
 - Create input catalogs with the following: 
 	- Name, ra, dec, gmag, priority, type
-	- Dense set of skies as the last priority.
 	- Priority 1: SDSS stars
 	- Priority 2: SDSS galaxies
 	- Priority 3: All targets (name = bit number)
-	- Priority 4: Skies
 
 Combine Tractor files, apply masks, and create a bit vector and calculate area.
 - Notes: For convenience, I combine Tractor files in each Field. Note I compute area using MC methods. Only the following fields are saved. 
@@ -208,11 +206,24 @@ NDM selection modules
 	- 2018A-DR6-NDM{1..3} (glim/rlim/zlim = 23.8+0.5, 23.4+0.5, 22.4+0.5 with color transformation)
 
 Create input catalogs
-- Notes: Create input catalogs for each field.
+- Notes: Create input catalogs for each field. RA/DEC plots of targets (NDM, FDR, RF, all)
+	- Load the Tractor catalog. 
+	- Generate bit vector of the same length.
+	- Record RF.
+	- Record FDR.
+	- Apply NDM and record NDM.
+	- Load stars/gals
 - Scripts used:
+	- NDM_utils.py, NDM_models.py: Only used for selecting objects given already produced selection region. (See above.)
 	- COSMOS-generate-inputs.py
 	- DR6-generate-inputs.py
 	- HSC-generate-inputs.py
+- Products:
+	- COSMOS-inputs.py, RADEC-COSMOS-inputs.png
+	- DR6-{1..6}-inputs.py, RADEC-DR6-{1..6}-inputs.png
+	- HSC-{1..6}-inputs.py, RADEC-HSC-{1..6}-inputs.png
+
+	
 
 
 
