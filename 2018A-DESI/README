@@ -38,22 +38,38 @@ This is a check list for creating DESI masks for 2018A February observation.
 COSMOS
 - Number of masks: 2
 - Legacy Survey/DR: 3
+- Constraints: Based on the region that overlaps with Christophe's geometry.
 - Data:
-	- From Christpohe
-		- List_RF_Cosmos.fits
+	- List_RF_Cosmos.fits (From Christophe)
 
-
-HSC 
-- Number of masks:
-	- Six in 16h+44
-	- Six near 7-8h +33 range
+HSC (16h+44)
+- Number of masks: 6
 - Legacy Survey/DR: 6
+- Constraints: Based on the region that overlaps with Christophe's geometry.
 - Data:
 	- From Christophe:
 		- List_RF_HSC_dr6.fits				
+	- ./data/DR6/HSC/ Collection of files that cover the same field as Christophe's.
+		- Scripts used: 
+			- 
+********************** Apply Tycho catalog to the Fields to see if there are any bad spots!
+Select Fields by eye
+DR6 (7-8h+33)
+- Number of masks: 6
+- Legacy Survey/DR: 6
+- Constraints: 
+	- Based on the region that overlaps with Christophe's geometry.
+	- Also, we want as early as we can in the NGC.
+	- Notes from Daniel: I'm trying to give priority to the BASS/DECaLS overlap region, but if that's really not possible, then we could go further north.  
+- Data:
+	- From Christophe:
 		- List_RF_Stripe_ra_32_40_dec_100_270_dr6.fits
+	- ./data/DR6/HSC/general/
+		- Scripts used:
+			- 
 
-- Note from Daniel: I suggest we design 6 masks in the HSC region (16h+44) and 6 masks in the 7-8h +33 range. The former is constrained to the map that Christophe sent.  For the latter, I don't know the geometry; you'll have to grab the data and see. Basically we want to fill the LST gap between 2h30+0 and 10h+0, which means we want to go as early as we can in the NGC.  I'm trying to give priority to the BASS/DECaLS overlap region, but if that's really not possible, then we could go further north.  
+RADEC plots of COSMOS, HSC, and DR6 Fields
+- Notes: Show both
 
 
 2017C SGC set
@@ -66,6 +82,7 @@ HSC
 SDSS Standard stars:
 
 SDSS Standard galaxies:
+
 
 
 
