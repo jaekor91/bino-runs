@@ -109,13 +109,13 @@ for j in range(ra_star.size):
 # ---- priority 2 ---- #
 # Add gals
 for j in range(ra_gal.size):
-    line = "gals,"
+    line = "gal,"
     line += ",".join([str(x) for x in [ra_gal[j], dec_gal[j], g_gal[j], 2, 1]])
     line += "\n"
     f.write(line)        
 
 # ---- priority 3 ---- #
-# Add gals
+# Add targets
 for j in range(ra_final.size):
     line = ",".join([str(x) for x in [bitmask_final[j], ra_final[j], dec_final[j], g_final[j], 3, 1]])
     line += "\n"
@@ -124,3 +124,49 @@ for j in range(ra_final.size):
 f.close()    
 
 print "Completed."
+
+
+
+
+fig, ax_list = plt.subplots(2, 2, figsize=(16, 16))
+
+# All targets
+ax_list[0, 0].scatter(ra_final, dec_final, c="black", s=2)
+ax_list[0, 0].scatter(ra_star, dec_star, c="red", s=10, edgecolors="none")
+ax_list[0, 0].scatter(ra_gal, dec_gal, c="blue", s=10, edgecolors="none")
+ax_list[0, 0].set_title("ALL", fontsize=25)
+ax_list[0, 0].axis("equal")
+ax_list[0, 0].set_xlim([149, 151])
+ax_list[0, 0].set_ylim([1, 3])
+
+
+# FDR
+ibool = np.bitwise_and(bitmask_final, 2**3) > 0
+ax_list[0, 1].scatter(ra_final[ibool], dec_final[ibool], c="black", s=2)
+ax_list[0, 1].set_title("FDR", fontsize=25)
+ax_list[0, 1].axis("equal")
+ax_list[0, 1].set_xlim([149, 151])
+ax_list[0, 1].set_ylim([1, 3])
+
+
+# RF 
+ibool = np.bitwise_and(bitmask_final, 2**8 + 2**9 +2**10) > 0
+ax_list[1, 1].scatter(ra_final[ibool], dec_final[ibool], c="black", s=2)
+ax_list[1, 1].set_title("RF", fontsize=25)
+ax_list[1, 1].axis("equal")
+ax_list[1, 1].set_xlim([149, 151])
+ax_list[1, 1].set_ylim([1, 3])
+
+
+# NDM
+ibool = np.bitwise_and(bitmask_final, 2**4 + 2**6 +2**7) > 0
+ax_list[1, 0].scatter(ra_final[ibool], dec_final[ibool], c="black", s=2)
+ax_list[1, 0].set_title("NDM", fontsize=25)
+ax_list[1, 0].axis("equal")
+ax_list[1, 0].set_xlim([149, 151])
+ax_list[1, 0].set_ylim([1, 3])
+
+
+plt.savefig("./figures/RADEC-COSMOS-inputs.png")
+# plt.show()
+plt.close()
