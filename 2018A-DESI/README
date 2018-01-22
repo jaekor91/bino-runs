@@ -6,7 +6,7 @@ This is a check list for creating DESI masks for 2018A February observation.
 - Fields/Masks/Data: Describe Fields and the description of masks to be used.
 - Other data: Describe other data used and stored in ./data/
 - Data pre-processing: Generate astrometry corrected catalogs and store in ./data/derived/
-- Strategy: Describe generally the strategy used to create masks.
+- Target selection: Describe how NDM selection was applied to generate targets.
 - Results: Describe the results of masks designed using the above strategy.
 
 
@@ -35,12 +35,18 @@ This is a check list for creating DESI masks for 2018A February observation.
 
 
 /---- Fields/Masks/Data
+Specs
+- Grating: 600 lines/mm, 5500–7900 and 7500–9900 
+- 2 x 15 mins per grating configuration
+- Slit width/length: 1" x 6"
+
 COSMOS
 - Number of masks: 2
 - Legacy Survey/DR: 3
 - Constraints: Based on the region that overlaps with Christophe's geometry.
 - Data:
 	- List_RF_Cosmos.fits (From Christophe)
+- Notes: Because the Fields is void of bright stars and is small, rather than creating a small catalog for each mask, I generate targets for the whole field and simply select two non-overlapping fields on BinoMask.
 
 HSC (16h+44)
 - Number of masks: 6
@@ -52,8 +58,8 @@ HSC (16h+44)
 	- ./data/DR6/HSC/ Collection of files that cover the same field as Christophe's.
 		- Scripts used: 
 			- 
-********************** Apply Tycho catalog to the Fields to see if there are any bad spots!
-Select Fields by eye
+
+
 DR6 (7-8h+33)
 - Number of masks: 6
 - Legacy Survey/DR: 6
@@ -69,7 +75,12 @@ DR6 (7-8h+33)
 			- 
 
 RADEC plots of COSMOS, HSC, and DR6 Fields
-- Notes: Show both
+- Notes: RA/DEC of RF targets, SDSS stars, and SDSS galaxies. Tycho-2 masking is applied. Used to pick fields for observation.
+- Script used: plot-RADEC-RF-stars-gals.py
+- Products:
+	- RADEC-HSC.png
+	- RADEC-DR6.png
+	- RADEC-COSMOS.png
 
 
 2017C SGC set
@@ -88,39 +99,20 @@ SDSS Standard galaxies:
 
 
 /---- Data pre-processing
-Correct astrometric differences, extract necessary columns, and save the objects in a convenient form to use.
-- Script used: data-preprocess.py
-- Outputs:
-	- ./data/derived/targets-rset4.npz
-	- ./data/derived/targets-rset56.npz
-	- ./data/derived/sdss.npz	
-	- Columns extracted: Astometric corrections have already been applied
-		- SDSS: RA, DEC, g, r, objid
-		- Targets (rset==4): RA, DEC, ID
-		- Targets (rset==5 or 6): RA, DEC, ID	
-- Figures:
-	2018A-radec-all.png			RADEC-diff-CANDELS-vs-GOODS-N.png
-	2018A-radec-targets4-sdss.png		RADEC-diff-GOODS-N-vs-GAIA.png
-	2018A-radec-targets56-sdss.png		RADEC-diff-SDSS-vs-GAIA.png
-- Notes:
-	- Astrometric difference observations:
-		- CANDELS had a good match rate in GOODS-N (3,014/3,917). 0.3" difference in DEC!
-		- GOODS-N had a really low match rate in GAIA (54/39,432) but there does not appear to be a significant astrometric difference.
-		- Apply combined astrometric correction to CANDELS targets to bring them to GAIA system. 
-		- SDSS had a good match rate in GAIA (265/345). Sub 0.1" difference in RA/DEC. Direct substitutions for matched objects and median corrections for the rest.
 
 
 
 
-
-
-
-
-
-/---- Strategy
 
 
 
 
 
 /---- Results
+COSMOS
+- Eisenstein-COSMOS-1
+- Eisenstein-COSMOS-2	
+
+HSC
+
+DR6
