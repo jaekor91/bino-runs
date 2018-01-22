@@ -1,0 +1,267 @@
+This is a check list for creating masks for 2017C December observation. There are two sets of masks to be prepared, one for DESI ELG target selection validation and one for slit-dot mode validation.
+
+/----- Principles
+- Use seperate scripts to choose fields, collect catalogs, and generate targets for the two different applications.
+
+
+/----- Basic dimensions:
+- Mask dimension (including gap): 17.33' x 15'
+- One-arm mask dimension: 8' x 15' 
+- Area covered by a mask (including gap): 0.0722 sq. deg.
+	- 5K/deg^2 --> 361 targets
+- Area covered by a mask (exluding the gap): 0.0667 sq. deg. 
+	- 5K/deg^2 --> 333 targets
+
+
+/----- Ndensity vs. depths
+- In order to study Ndensity variation as a function of depths, we will look at how different objects change
+- Script used:
+	- DR5-Ndensity-vs-depths.py
+- Output file:
+	- Ndensity-vs-depths.npy: Contains the following quantities
+		0-1: ra, dec center of the brick 
+		2-4: g, r, z depths quoted by tractor
+		5-7: g, r, z depths computed based on all objects
+		8-11: Ntot, Ntot_g24, Nred_g24, Nblue_g24
+		12-15: Ntot, Ntot_g24, Nred_g24, Nblue_g24 (with Tycho-mask)
+
+- Note that these bricks were selected such that their approximate 2 pass and Tycho coverage fraction is above 90%.
+However, since the bricks may not correspond to the smaller inner field for which the coverage fractions were calculated, this may give rise to bias.
+
+
+/----- DESI ELG target selection validation
+- Field selection: 
+	- Scripts used:
+		- DESI-ELG-select-fields-SGC-0hr.py
+		- DESI-ELG-select-fields-SGC-3hr.py		
+		- DESI-ELG-select-fields-NGC.py
+	- Fields summarized in: 
+		- DESI-ELG-selected-fields.txt
+
+- Download relevant Tractor files:
+	- Script used:
+		- DESI-ELG-generate-mv-script-DR5-tractor.py
+	- Move scripts produced
+		DESI-ELG-tractor-move-binospec-test-0.sh	DESI-ELG-tractor-move-binospec-test-1.sh	DESI-ELG-tractor-move-binospec-test-2.sh
+	- Files stored in: DR5-tractor
+
+- Generate NDM selections:
+	Use the below selection script to generate and combine all targets into one single file.
+	- Script used:
+		- selection_script.py
+		- 2017C-DESI-ELG-NDM-selections-generation-script.py: To generate cell-select that can be used for selections.
+		- DESI-ELG-apply-NDM-selection.py: Note that at this point, all_mask, positive inverse variance, and brick_primary cuts have been applied. No Tycho mask has been applied though the column is appended.
+	- NDM selections:
+		- NDM Typical depths, N_tot = 3500, Flat FoM
+		- NDM Typical depths, N_tot = 3500, Redshift dependent FoM. More precisely. Quadratic dependency
+		- NDM Typical depths, N_tot = 3500, Flat FoM, f_NoZ = 0.5 (rather than 0.25)
+	- Resulting file: 
+		- DESI-ELG-NDM-targets.fits
+	- Note that the point of this script is not the exact reproducibility but to show a snap shot what was used.
+
+- Trim RF targets based on the same criteria as for NDM:
+	Christophe sent me RF targets over a large area. I will trim them as follows using the following scripts.
+	- Take objects only if they are found in one of the catalogs.
+	- Take objects only if they pass all_mask, positive inverse variance, and brick primary conditions.
+	- Append Tycho-2 mask.
+
+	- Script used:
+		- DESI-ELG-clean-RF-targets.py
+
+	- Output: A single file that contains all RF targets together with Tycho-2 mask.
+		- DESI-ELG-RF-targets.npy
+
+- Obtain FDR color-cut:
+	- Script used:
+		- DESI-ELG-apply-FDR-selection.py
+	- Output:
+		- DESI-ELG-FDR-targets.fits
+
+- Trim standard stars and galaxies into the region of interest
+	Note that astrometric corrections are made at this point.
+	- Script used:
+		- DESI-ELG-trim-standards.py
+
+	- Input catalogs:
+		boss.r0_45.dm6_p6.txt		boss.r110_170.dm10_p35.txt	boss.r335_360.dm6_p6.txt
+		standard_bino.r0_45.dm6_p6.txt		standard_bino.r110_170.dm10_p35.txt	standard_bino.r335_360.dm6_p6.txt
+
+	- Output catalogs:
+		- DESI-ELG-boss.npy
+		- DESI-ELG-standards.npy
+
+- Combine RF, NDM, and FDR targets, standard stars, and standard galaxies into a target.
+	-Script used:
+		- DESI-ELG-produce-input-catalogs.py
+
+	-Output: 
+		- Each field gets its own file named e.g., SGC-0hr-1.txt.
+		- DESI-ELG-input-catalogs-stats.npy
+			- 0: Value 0 means SGC-0hr, 1 SGC-3hr, and 2 NGC
+			- 1: Field number
+			- 2-3: ra, dec of the field
+			- 4-13: Number in each bit. e.g, 4 --> Bit 1: Standard stars
+			- 14: Number in NDM
+			- 15: Number in RF
+			- 16: Number in NDM and RF intersection
+			- 17: Number in NDM and FDR intersection
+			- 18: Number in RF and FDR intersection
+			- 19: Approximate area of the field
+		- RA/DEC image corresponding to each field.
+
+	- Bit information
+    # - Bit 1: Standard stars
+    # - Bit 2: Standard galaxies
+    # - Bit 3: FDR targets tuned for 2,400
+    # - Bit 4: NDM1, NDM Typical depths, N_tot = 3500, Flat FoM
+    # - Bit 5: NOT USED
+    # - Bit 6: NDM2, NDM Typical depths, N_tot = 3500, Redshift dependent FoM. More precisely. Quadratic dependency
+    # - Bit 7: NDM3, NDM Typical depths, N_tot = 3500, Flat FoM, f_NoZ = 0.5 (rather than 0.25)
+    # - Bit 8: RF1, RF tuned for 2400 deg
+    # - Bit 9: RF2, RF tuned for 3000 deg
+    # - Bit 10: RF3, RF tuned for 3000 deg with an additional gmag cut.
+
+
+	Note: 
+	- Tycho mask is imposed. 
+	- all_mask and pos_flux_ivar is already implemented.
+	- Astrometric correction for standards was made upstream.
+
+- Print the stats on input catalogs per field.
+	- Script used:
+		- DESI-ELG-print-field-stats.py
+
+	- Input
+		- DESI-ELG-input-catalogs-stats.npy
+
+- Summary file of mask placement.
+	- File:
+		- DESI-ELG-mask-summary.txt
+
+
+
+
+/----- DESI ELG target selection validation - COSMOS
+- Prepare masks for COSMOS fields:
+	COSMOS fields are treated separately following the same procedure as above.
+
+We ended up not doing this one for 2017C run.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/----- Slit-dot mode validation
+Lyman Alpha 
+4 x 10 mins: 600 mm -- 6300 A
+4 x 10 mins: 600 mm -- 8700 A
+4 x 10 mins: 270 mm -- 6000 A
+
+Two hours per grating setting over three nights
+
+
+Notes:
+- Goal: >250 science targets and 40 skies per arm
+- Need 10 targets per sq. arcmin  = 36K science targets per sq. arcmin
+- UNION of g<24 OR z<22.5 from DEEP2 matched to DECaLS set, so that we're getting depth for both blue and red galaxies.  
+- Require S/N>3 in the r band. Require flux inverse variance to be positive. Impose all mask so we don't observe garbage for this run.
+- Strategy
+	- Standard stars and galaxies priority 1
+	- Sparse sky slits in priority 1
+	- Obtain very high target density
+		- Priority 2: ELG
+		- Priority 3: g < 24 or z < 22.5
+	- Dense sky slits in priority 4
+        - Remember that sky needs to be very dense.
+
+
+
+- Generate the input catalog
+	- Standard stars and galaxies should be selected and be put in the same region. Astrometric check applied. Create a seperate file.
+	- Use DR5-matched-to-DEEP2 file
+
+
+
+Bit number
+# - Bit 1: Standard stars
+# - Bit 2: Standard galaxies
+# - Bit 3: g < 24
+# - Bit 4: z < 22.5
+# - Bit 5: ELG known
+# - Bit 6: Sky priority 1
+# - Bit 7: Sky priority 4
+
+
+Input file name: 2017-slitdot-input.txt
+
+Configuration 
+RA/DEC: 37.45, 0.55
+PA -86
+
+ARM A
+star	4
+sky1	15
+sky4	25
+boss	11
+target	122
+redz	111
+Science	244
+Total	288
+
+ARM B
+star	2
+sky1	15
+sky4	37
+boss	4
+target	104
+redz	136
+Science	244
+Total	298
+
+
+
+
+
+
+
+/----- Notes from Daniel
+
+- Strategies for adding sky slits: If there are fewer number of targets than what the maximal capacity of the mode allows, then the mask should be filled with sky slits. 
+
+With 1.5" slits and 0.75" gutters, each slit consumes 2.25" of linear space.  Given the 900" high field, that would be 400 objects per arm at maximal packing.  For a given target density and the dispersion-direction field size (8' by default, but we may prefer to use less to make the spectra more uniform in wavelength), one can compute the number of targets per linear distance along the slit.  For example, for the 8' field and for 10 targets per square arcmin, that would be a density of 80 targets per linear arcmin.  Convert that to the density per 2.25" slit dot, and call that x.  x = 3.0 per dot in this case.
+
+Then for a Poisson target distribution, we expect to incur an average of 1/x dots worth of blank space.  That gives N = 400/(1+1/x) targets per arm on average; N=300 for this case.  Similarly, we will have room for a sky only if there is one dot of blank space, which happens exp(-x) of the time.  So we could place 300*exp(-3) sky slits "for free", if we have a sufficiently dense set of skies.  That's not really enough: only 15 skies.  If we tune to x=2, then we get 36 skies and 266 targets per arm.
+
+.....We can always augment the number used by including a sparse set of skies into the primary sample and then having the dense set as lower priority.  Adjusting the density of the first set will then tune the total number of skies.
+
+I'd love to optimize this toward >250 science targets per arm, with at least 40 skies.  I note that the skies need to sample the full transverse dimension too, because we want to get sky spectra at the edge of the wavelength coverage. Indeed, in the cases where the science targets are restricted to a slightly narrower field (so as to make the wavelength coverage more homogeneous), we probably want the skies to sample the wider field, so as to get the wavelength coverage and sample the slightly broader sky anisotropy.
+
+Those requirements appear to be satisfied with only the filler sample for x=1.8.  That projects to 257 science targets and 42 skies.  Going to x=2.2 makes it 275 science targets but only 30 skies, so to make it equal one has to put 12 skies into the primary sample, dropping the science yield to 263.  In other words, this appears to be a pretty soft trade.
+
+Getting the skies to work out for free requires a very dense filler set, so that any 2.25" gap can have a sky to insert.  One could adjust the formulae to compute for that.  But I think that one better have several sky targets per linear arc sec, so 200 per linear arcmin, i.e., at least 4 times the science object density.  I wouldn't complain about 8-10x.  We'll see if the Bino software can do that!
+
+x=1.8 is 48 targets per linear arcmin.  I.e., 6 per square arcmin over an 8 arcmin transverse spread, or 8 per square arcmin over a 6 arcmin spread.  That said, I note that this density implies a parent sample of 48*15 = 720 targets per arm, of which we're observing 257, so only 35%.  That is, getting to high completeness always involves multiple masks.  The second mask is at x=1.17, which yields 215 targets, bringing the completeness to 65%.  The third mask is at x=0.62, yielding 153 targets, and 86% completeness.  Obviously this is leaving room for a second priority class of targets, if one wanted to do that instead.
+
+There is a "magic point" at about 5.8 arcmin spread, where the gap between the two arms is also 5.8 arcmin, so that two pointings with a 5.8' step cover a contiguous 23' transverse field (15' high).  That projects to just over 20 masks per square degree.  That's a good choice for a field survey.  So we'd like a parent target density of >8 per square arcmin.
+
+Given our interest in DECaLS, I suggest that a useful depth for a field survey would be the UNION of g<24 OR z<22.5, so that we're getting depth for both blue and red galaxies.  But we need some quality control to avoid single-band garbage, e.g., require S/N>3 in the r band.  I'm not sure what the target density of that would be, but I'm guessing it's in the 8-10 range.
+
+So I would recommend that for December, we do a piece of the DEEP2 02h30 field with the DEEP2 known redshifts as the top priority, followed by all other objects in that above Union sample, and then the skies.
+
+If we can get the data for the VVDS field around 02h, then that would be good too.  I think there's VIPERS data, at the least.  But if those are too vexing, then doing a second field in DEEP2 is ok with me.
+
+I think we definitely want to observe with 600/mm in the far red, centered around 8500A.  And 270/mm.  We should discuss whether to do a second 600/mm pointing centered around 6500A.  Also need to discuss whether we'd rather have 1 mask with longer exposures in all 3 grating settings, or 2 masks in only 2.  I'm wondering whether we'd want 1 mask, observed for 30 min in each of the 3 settings, and then repeating that on three *different* nights.  We might care more about reproducibility than getting new objects.
+
+
+For the GOODS-N campaign, the field geometry is more restricted, and we may play more with the priorities to account for the gaps.
