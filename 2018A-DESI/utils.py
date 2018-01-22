@@ -52,6 +52,9 @@ def check_astrometry(ra1,dec1,ra2,dec2,pt_size=0.3):
 
 
 
+def mag2flux(mag):
+    return 10**(0.4*(22.5-mag))
+        
 def crossmatch_cat1_to_cat2(ra1, dec1, ra2, dec2, tol=1./(deg2arcsec+1e-12)):
     """
     Return indices of cat1 (e.g., DR3) and cat2 (e.g., DEE2) cross matched to tolerance. 
