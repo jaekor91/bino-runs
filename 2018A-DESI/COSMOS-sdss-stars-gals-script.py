@@ -18,8 +18,8 @@ dec_min, dec_max = dec3.min(), dec3.max()
 data = ascii.read("./data/standard_bino.r110_170.dm10_p35.txt")
 ra_star, dec_star, gmag_star = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
 # Trim to a region of interest
-ibool = (ra_star > ra_min-10) & (ra_star < ra_min+10) \
-& (dec_star > dec_min-10) & (dec_star < dec_min+10)
+ibool = (ra_star > ra_min-2) & (ra_star < ra_min+2) \
+& (dec_star > dec_min-2) & (dec_star < dec_min+2)
 data = data[ibool]
 ra_star, dec_star, gmag_star = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
 
@@ -27,8 +27,8 @@ ra_star, dec_star, gmag_star = data["col1"].data, data["col2"].data, data["col4"
 # Galaxies near COSMOS
 data = ascii.read("./data/boss.r110_170.dm10_p35.txt")
 ra_gal, dec_gal, gmag_gal = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
-ibool = (ra_gal > ra_min-10) & (ra_gal < ra_min+10) \
-& (dec_gal > dec_min-10) & (dec_gal < dec_min+10)
+ibool = (ra_gal > ra_min-2) & (ra_gal < ra_min+2) \
+& (dec_gal > dec_min-2) & (dec_gal < dec_min+2)
 data = data[ibool]
 ra_gal, dec_gal, gmag_gal = data["col1"].data, data["col2"].data, data["col4"].data # ra, dec, g-mag
 
@@ -44,7 +44,7 @@ ra_diff = (ra3[idx3] - ra_star[idx_star]) * 3600
 dec_diff = (dec3[idx3] - dec_star[idx_star]) * 3600
 plt.close()
 fig, ax_list = plt.subplots(2, 2, figsize=(16, 16))
-ax_list[0, 0].scatter(ra_diff, dec_diff, c="black", edgecolors="none", s=10)
+ax_list[0, 0].scatter(ra_diff, dec_diff, c="black", edgecolors="none", s=2)
 ax_list[0, 0].axis("equal")
 ax_list[0, 0].set_xlim([-1, 1])
 ax_list[0, 0].set_ylim([-1, 1])
@@ -84,7 +84,7 @@ ra_diff = (ra3[idx3] - ra_gal[idx_gal]) * 3600
 dec_diff = (dec3[idx3] - dec_gal[idx_gal]) * 3600
 plt.close()
 fig, ax_list = plt.subplots(2, 2, figsize=(16, 16))
-ax_list[0, 0].scatter(ra_diff, dec_diff, c="black", edgecolors="none", s=10)
+ax_list[0, 0].scatter(ra_diff, dec_diff, c="black", edgecolors="none", s=2)
 ax_list[0, 0].axis("equal")
 ax_list[0, 0].set_xlim([-1, 1])
 ax_list[0, 0].set_ylim([-1, 1])
