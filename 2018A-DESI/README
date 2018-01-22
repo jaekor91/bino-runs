@@ -5,8 +5,7 @@ This is a check list for creating DESI masks for 2018A February observation.
 - Binospec dimensions: Describe dimensions of the binospeck mask
 - Fields/Masks/Data: Describe Fields and the description of masks to be used.
 - Other data: Describe other data used and stored in ./data/
-- Data pre-processing: Generate astrometry corrected catalogs and store in ./data/derived/
-- Target selection: Describe how NDM selection was applied to generate targets.
+- Generate input catalogs: Describe how the input catalogs were compiled.
 - Results: Describe the results of masks designed using the above strategy.
 
 
@@ -101,12 +100,13 @@ survey-bricks-dr3.fits
 
 
 
-/---- Data pre-processing
+/---- Generate input catalogs
 - For each filed
 	- Combine all the Tractor files for the region. 
 	- Apply allmasks, invar > 0, and Tycho-2 mask
 	- Cross-match RF targets onto the combined and trimmed catalog.
 	- Apply FDR cut
+	- Import SDSS stars and galaxies. Make astrometric correction.
 	- Save bit numbers
 		- 1: SDSS stars
 		- 2: SDSS galaxies	
@@ -118,7 +118,7 @@ survey-bricks-dr3.fits
 		- 9: RF2, RF tuned for 3000 deg
 		- 10: RF3, RF tuned for 3000 deg with an additional gmag cut.
 
-
+Make color transformation
 
 
 
