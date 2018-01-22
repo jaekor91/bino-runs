@@ -161,16 +161,30 @@ I create RA/DEC plots of individual field
 	- DR6-combine-tractor.py
 	- HSC-combine-tractor.py
 - Products: All data products contain area as Field A. Destination directory ./data/
-	- COSMOS-union-tractor.npy/RADEC-COSMOS-union.png
-	- DR6-union-tractor-{1..6}.npy/RADEC-DR6-union-{1..6}.png
-	- HSC-union-tractor-{1..6}.npy/RADEC-HSC-union-{1..6}.png
+	- COSMOS-union-tractor.npz/RADEC-COSMOS-union.png
+	- DR6-union-tractor-{1..6}.npz/RADEC-DR6-union-{1..6}.png
+	- HSC-union-tractor-{1..6}.npz/RADEC-HSC-union-{1..6}.png
 
 Check astrometry of COSMOS region
-
+- Notes: We check the astrometry of COSMOS DR3 using DR5. We first combine the DR5 Tractor files in COSMOS. Next, we check the astrometry. There ended up being a minor difference. But still.
+- Scripts used:
+	- COSMOS-combine-tractor-DR5.py
+	- COSMOS-DR3-DR5-astrometry-check.py
+- Product:
+	- COSMOS-DR5-union-tractor.npz/RADEC-COSMOS-DR5-union.png
+	- COSMOS-DR5-DR3-subtractive-correction.npz: Med diff to be subtracted from DR3.
+	- COSMOS-DR3-DR5-astrometry-diff.png
 
 Given union Tractor files, take the standard star/galaxy files and perform astrometric correction.
 
+RF and FDR selections.
+- Notes: Generate bit vector and indicate FDR and RF selections. 
 
+NDM selections
+- Notes: Add NDM selections.
+
+Create input catalogs
+- Notes: 
 
 
 
