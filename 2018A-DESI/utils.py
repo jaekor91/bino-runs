@@ -50,6 +50,13 @@ def check_astrometry(ra1,dec1,ra2,dec2,pt_size=0.3):
     dec_med_diff = np.median(dec_diff)
     return ra_med_diff, dec_med_diff
 
+def FDR_cut(grz):
+    """
+    Given a list [g,r,z] magnitudes, apply the cut and return an indexing boolean vector.
+    """
+    g,r,z=grz; yrz = (r-z); xgr = (g-r)
+    ibool = (r<23.4) & (yrz>.3) & (yrz<1.6) & (xgr < (1.15*yrz)-0.15) & (xgr < (1.6-1.2*yrz))
+    return ibool
 
 
 def mag2flux(mag):
