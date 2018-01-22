@@ -114,4 +114,4 @@ for i in range(1,7):
     # print (np.median((ra-ra_med_diff)[idx] - ra_gal[idx_gal])) * 3600
     # print (np.median((dec-dec_med_diff)[idx] - dec_gal[idx_gal])) * 3600
 
-    np.savez("./data/HSC-%d-sdss-gals.npz" % i, ra=ra_star-ra_med_diff, dec=dec_star-dec_med_diff, g=gmag_star)
+    np.savez("./data/HSC-%d-sdss-gals.npz" % i, ra=ra_gal-ra_med_diff, dec=dec_gal-dec_med_diff, g=gmag_gal)
