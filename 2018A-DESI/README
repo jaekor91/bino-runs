@@ -127,21 +127,6 @@ General plan: For each Field
 - Cross-match RF targets onto the combined and trimmed catalog.
 - Apply FDR cut.
 - Import SDSS stars and galaxies. Make astrometric correction by cross-matching.
-- Save bit numbers
-	- 1: SDSS stars
-	- 2: SDSS galaxies	
-    - 3: FDR cut as reported in FDR.
-	- 4: NDM fiducial. Ndesired = 3000
-	- 6: NDM fiducial but U_Gold = 2. Ndesired = 3000
-	- 7: NDM fiducial but U_NoZ = 1. Ndesired = 3000
-	- 8: RF1, RF tuned for 2400 deg
-	- 9: RF2, RF tuned for 3000 deg
-	- 10: RF3, RF tuned for 3000 deg with an additional gmag cut.
-- Create input catalogs with the following: 
-	- Name, ra, dec, gmag, priority, type
-	- Priority 1: SDSS stars
-	- Priority 2: SDSS galaxies
-	- Priority 3: All targets (name = bit number)
 
 Combine Tractor files, apply masks, and create a bit vector and calculate area.
 - Notes: For convenience, I combine Tractor files in each Field. Note I compute area using MC methods. Only the following fields are saved. 
@@ -213,15 +198,31 @@ Create input catalogs
 	- Record FDR.
 	- Apply NDM and record NDM.
 	- Load stars/gals
+	- Generate the input catalogs.
 - Scripts used:
 	- NDM_utils.py, NDM_models.py: Only used for selecting objects given already produced selection region. (See above.)
 	- COSMOS-generate-inputs.py
 	- DR6-generate-inputs.py
 	- HSC-generate-inputs.py
 - Products:
-	- COSMOS-inputs.py, RADEC-COSMOS-inputs.png
-	- DR6-{1..6}-inputs.py, RADEC-DR6-{1..6}-inputs.png
-	- HSC-{1..6}-inputs.py, RADEC-HSC-{1..6}-inputs.png
+	- COSMOS-inputs.txt, RADEC-COSMOS-inputs.png
+	- DR6-{1..6}-inputs.txt, RADEC-DR6-{1..6}-inputs.png
+	- HSC-{1..6}-inputs.txt, RADEC-HSC-{1..6}-inputs.png
+- Create input catalogs with the following: 
+	- Name, ra, dec, gmag, priority, type
+	- Priority 1: SDSS stars
+	- Priority 2: SDSS galaxies
+	- Priority 3: All targets (name = bit number)	
+- Bit numbers have the following meaning.
+	- 1: SDSS stars
+	- 2: SDSS galaxies	
+    - 3: FDR cut as reported in FDR.
+	- 4: NDM fiducial. Ndesired = 3000
+	- 6: NDM fiducial but U_Gold = 2. Ndesired = 3000
+	- 7: NDM fiducial but U_NoZ = 1. Ndesired = 3000
+	- 8: RF1, RF tuned for 2400 deg
+	- 9: RF2, RF tuned for 3000 deg
+	- 10: RF3, RF tuned for 3000 deg with an additional gmag cut.	
 
 	
 
