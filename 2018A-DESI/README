@@ -55,16 +55,13 @@ HSC (16h+44)
 - Number of masks: 6
 - Legacy Survey/DR: 6
 - Constraints: Based on the region that overlaps with Christophe's geometry.
-- Fields selected visually (RA/DEC)
-	- Eisenstein-HSC-1: 
-
+- Field centers
 - Data:
 	- From Christophe:
 		- List_RF_HSC_dr6.fits				
-	- ./data/DR6/HSC/ Collection of files that cover the same field as Christophe's.
+	- ./data/DR6/DR6-HSC-{1..6}
 		- Scripts used: 
 			- 
-
 
 DR6 (7-8h+33)
 - Number of masks: 6
@@ -73,12 +70,17 @@ DR6 (7-8h+33)
 	- Based on the region that overlaps with Christophe's geometry.
 	- Also, we want as early as we can in the NGC.
 	- Notes from Daniel: I'm trying to give priority to the BASS/DECaLS overlap region, but if that's really not possible, then we could go further north.  
+- Field centers:
+ra_cs = [115.75, 115.75, 117, 118, 119, 119]
+dec_cs = [37, 35, 35, 35.5, 35, 33]	
 - Data:
 	- From Christophe:
 		- List_RF_Stripe_ra_32_40_dec_100_270_dr6.fits
-	- ./data/DR6/HSC/general/
+	- ./data/DR6/DR6-{1..6}
 		- Scripts used:
-			- 
+			- DR6-mv-script.py: Generate script used to move files within NERSC. 
+			- DR6-{1..6}-move.sh: Same function as aboev.
+
 
 RADEC plots of COSMOS, HSC, and DR6 Fields
 - Notes: RA/DEC of RF targets, SDSS stars, and SDSS galaxies. Tycho-2 masking is applied. Used to pick fields for observation. Show the fields that were picked for observation.
