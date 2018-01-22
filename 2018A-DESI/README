@@ -36,8 +36,8 @@ This is a check list for creating DESI masks for 2018A February observation.
 
 /---- Fields/Masks/Data
 Specs
-- Grating: 600 lines/mm, 5500–7900 and 7500–9900 
-- 2 x 15 mins per grating configuration
+- Grating: 600 lines/mm, 8750A and 6450A
+- 2 x 15 mins per grating configuration (one hour with overhead)
 - Slit width/length: 1" x 6"
 
 COSMOS
@@ -91,15 +91,19 @@ RADEC plots of COSMOS, HSC, and DR6 Fields
 
 /---- Other data
 SDSS Standard stars/galaxies: 
-Notes: These files were obtained from Daniel and cover the entire necessary ranges.
+- Notes: These files were obtained from Daniel and cover the entire necessary ranges.
 boss.r105_150.dp30_p45.txt		boss.r240_250.dp40_p45.txt		standard_bino.r110_170.dm10_p35.txt
 boss.r110_170.dm10_p35.txt		standard_bino.r105_150.dp30_p45.txt	standard_bino.r240_250.dp40_p45.txt
 
-
+DR3/6 bricks files: 
+- Notes: These files tell which files should be downloaded.
+survey-bricks-dr3.fits 
 
 
 
 /---- Data pre-processing
+- Combine all the Tractor files per region, apply allmasks, invar > 0.
+- 
 
 
 
