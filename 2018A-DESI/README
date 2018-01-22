@@ -105,9 +105,16 @@ SDSS Standard stars/galaxies:
 boss.r105_150.dp30_p45.txt		boss.r240_250.dp40_p45.txt		standard_bino.r110_170.dm10_p35.txt
 boss.r110_170.dm10_p35.txt		standard_bino.r105_150.dp30_p45.txt	standard_bino.r240_250.dp40_p45.txt
 
-DR3/6 bricks files: 
-- Notes: These files tell which files should be downloaded.
+DR3/5 bricks files: 
+- Notes: These files tell which files should be downloaded. There is currently no DR6 bricks file available.
 survey-bricks-dr3.fits 
+survey-bricks-dr3.fits 
+
+DR5 COSMOS field data:
+- Scripts used: generate-tractor-download-script-COSMOS-DR5.py, tractor-download-COSMOS-DR5.sh
+- Notes: These are used to check the astrometry of DR3 COSMOS Field Tractor files.
+
+
 
 
 
