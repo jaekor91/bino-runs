@@ -175,7 +175,18 @@ Check astrometry of COSMOS region
 	- COSMOS-DR5-DR3-subtractive-correction.npz: Med diff to be subtracted from DR3.
 	- COSMOS-DR3-DR5-astrometry-diff.png
 
-Given union Tractor files, take the standard star/galaxy files and perform astrometric correction.
+Stars and galaxies files.
+- Notes: For each field, given union Tractor files, take the standard star/galaxy files and perform astrometric correction. Save ra, dec, gmag of galaxies.
+- Scripts used:
+	- COSMOS-sdss-stars-gals-script.py
+	- DR6-sdss-stars-gals-script.py
+	- HSC-sdss-stars-gals-script.py
+- Products:
+	- COSMOS-sdss-stars/gals.npz
+	- DR6-{1..6}-sdss-stars/gals.npz
+	- HSC-{1..6}-sdss-stars/gals.npz
+
+
 
 RF and FDR selections.
 - Notes: Generate bit vector and indicate FDR and RF selections. 
