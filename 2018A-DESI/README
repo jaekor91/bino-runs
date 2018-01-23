@@ -179,6 +179,7 @@ Stars and galaxies files.
 
 NDM selection modules
 - Notes: NDM selection was produced using NDM module under NDM-paper/. The outputs moved into the current directory for documentation.
+(1/23/2018: Though later there was discovered an error in marginal efficiency computation, since that doesn't affect the actual calculation, we do not correct the saved result.)
 - Scripts used: 
 	- NDM_utils.py (For archival purpose only. Did not use to produce results.)
 	- NDM_models.py (For archival purpose only. Did not use to produce results.)
