@@ -1,0 +1,30 @@
+/---- COSMOS
+OR: Union of NDM and RF
+AND: Intersection of NDM and RF
+star	 gal	 FDR	NDM1	NDM2	NDM3	 NDM	 RF1	 RF2	 RF3	  RF	  OR	 AND	 Tot	
+  10	   7	  71	  86	  90	  89	 101	  58	  74	  53	  74	 115	  60	 158	
+   4	   6	  57	  98	  97	  89	 108	  62	  74	  53	  74	 122	  60	 144	
+
+
+/---- DR6
+OR: Union of NDM and RF
+AND: Intersection of NDM and RF
+star	 gal	 FDR	NDM1	NDM2	NDM3	 NDM	 RF1	 RF2	 RF3	  RF	  OR	 AND	 Tot	
+   9	  10	  76	  76	  72	  68	  83	  43	  52	  43	  52	  94	  41	 149	
+  11	  10	  68	  68	  69	  68	  76	  52	  68	  52	  68	 100	  44	 150	
+  10	  10	  74	  55	  52	  54	  61	  60	  75	  55	  75	  94	  42	 153	
+   9	   4	  83	  69	  72	  70	  79	  51	  59	  46	  59	 101	  37	 161	
+  10	   9	  83	  56	  53	  53	  61	  41	  57	  42	  57	  92	  26	 152	
+   8	   8	  89	  75	  72	  70	  85	  59	  74	  59	  74	 108	  51	 164	
+
+
+/---- HSC
+OR: Union of NDM and RF
+AND: Intersection of NDM and RF
+star	 gal	 FDR	NDM1	NDM2	NDM3	 NDM	 RF1	 RF2	 RF3	  RF	  OR	 AND	 Tot	
+  11	   6	  96	  81	  77	  78	  87	  63	  80	  62	  80	 107	  60	 177	
+  11	   4	  86	  76	  76	  75	  83	  69	  86	  63	  86	 115	  54	 167	
+   9	   6	  92	  69	  66	  68	  82	  43	  61	  49	  61	 101	  42	 164	
+  15	   3	  80	  67	  67	  64	  76	  58	  70	  54	  70	 105	  41	 167	
+   6	   9	  98	  71	  71	  72	  76	  63	  77	  68	  77	  94	  59	 166	
+  14	   5	  83	  86	  78	  81	  93	  83	  95	  81	  95	 119	  69	 176	

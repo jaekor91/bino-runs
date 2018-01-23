@@ -231,10 +231,4 @@ Create input catalogs
 
 
 /---- Results
-COSMOS
-- Eisenstein-COSMOS-1
-- Eisenstein-COSMOS-2	
-
-HSC
-
-DR6
+tally_results.py produces table in results.txt which summarizes the result of all masks designed and submitted. 
