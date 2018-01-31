@@ -232,3 +232,14 @@ Create input catalogs
 
 /---- Results
 tally_results.py produces table in results.txt which summarizes the result of all masks designed and submitted. 
+
+
+
+
+
+/---- 1/30/2018
+- 3 x 600 seconds per mask. (If good sky condition, then we would prefer obsering 2 x 600 sec exposures and moving onto other unobserved masks.)
+- 600 line/mm grating  8750 and 6500.
+- COSMOS fields get priority 1.
+- SGC and DR6 with DEC < 34 get priority 2.
+- NGC get priority 3.
