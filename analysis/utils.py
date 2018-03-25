@@ -69,7 +69,7 @@ def parse_tanveer_file():
 
 def load_train_data_files():
     Nobjs = 64
-	
+
     #---- Loading in the 2D data for St82-1hr
     data2D_270 = fits.open("../../data/from_vulcan/st82-1hr-270/obj_counts_slits_lin.fits")
     data2D_600 = fits.open("../../data/from_vulcan/st82-1hr-600/obj_counts_slits_lin.fits")
@@ -136,3 +136,33 @@ def post_stamp_from_HDU(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 2
     post_stamp[abs(post_stamp - np.median(post_stamp)) > m * np.std(post_stamp)] = 0            
     
     return post_stamp
+
+
+def idx_peaks(wavegrid, redz):
+    """
+    Given a wavelength grid and a redshift, return the indices corresponding to
+    the following emission line peaks: OII, Ha, Hb, OIII (1, 2)
+    """
+    names = ["OII", "Ha", "Hb", "OIII1", "OIII3"]
+    OII = 3727
+    Ha = 6563
+    Hb = 4861
+    OIII1 = 4959
+    OIII2 = 5007
+    peak_list = [OII, Ha, Hb, OIII1, OIII2]
+    
+    # Compute redshifted location
+    peak_redshifted_list = []            
+    for pk in peak_list:
+        peak_redshifted_list.append(pk * (1+redz))
+        
+    # Compute wavegrid index corresponding to the location. Return -1 if outside the bound.
+    index_list = []
+    for pk in peak_redshifted_list:
+        idx = find_nearest_idx(wavegrid, pk)
+        if (idx >=1) and (idx < wavegrid.size-1):
+            index_list.append(idx)
+        else:
+            index_list.append(-1)
+    
+    return names, index_list
