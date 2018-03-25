@@ -68,6 +68,8 @@ def parse_tanveer_file():
     return z_270, z_600, objnums
 
 def load_train_data_files():
+    Nobjs = 64
+	
     #---- Loading in the 2D data for St82-1hr
     data2D_270 = fits.open("../../data/from_vulcan/st82-1hr-270/obj_counts_slits_lin.fits")
     data2D_600 = fits.open("../../data/from_vulcan/st82-1hr-600/obj_counts_slits_lin.fits")
