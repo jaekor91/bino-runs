@@ -113,3 +113,26 @@ def load_train_data_files():
 
 
 
+def post_stamp_from_HDU(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 20):
+    """
+    Create a post stamp of size (32, 32) where the relevant spectrum is placed in the middle.
+    """
+    post_stamp = np.zeros((32, 32))
+    row_range = row_max - row_min
+    center = 16 # In the post stamp
+    row_low = center - row_range // 2
+    row_high = center + row_range // 2
+    col_low = center - width//2
+    col_high = center + width//2
+    
+    post_stamp[row_low:row_high, col_low:col_high] \
+        = np.copy(HDU[objnum].data)[row_min:row_max, idx-width//2:idx+width//2]            
+    
+    # ---- Perform additiona pre-processing
+    # Zero-out NaN values
+    post_stamp[np.isnan(post_stamp)] = 0
+    
+    # Eliminate extreme outliers
+    post_stamp[abs(post_stamp - np.median(post_stamp)) > m * np.std(post_stamp)] = 0            
+    
+    return post_stamp
