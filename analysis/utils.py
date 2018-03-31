@@ -23,7 +23,7 @@ def OII_model_simple(x, red_z, A, sig0=0.75, A_ratio = 1, side=None):
 			return N1
 		else:
 			return N2
-#     print x_center
+#     print(x_center)
 	return A * (N1 + A_ratio * N2)
 
 def find_nearest_idx(arr, x):
@@ -56,14 +56,14 @@ def parse_tanveer_file():
 
 
     # ---- Check whether the redshifts agree
-    # If unresolved disagreement, then there should be prints.
+    # If unresolved disagreement, then there should be print(.)
     counter = 0
     z_union = np.ones_like(z_600)
     for i in xrange(Nobjs):
         if (z_600[i] > 0) or (z_270[i] >0):
             counter += 1
             if (z_600[i] > 0) and (z_270[i] >0) and np.abs(z_600[i] - z_270[i]) > 1e-2:
-                print z_270[i], z_600[i]
+                print(z_270[i], z_600[i])
                 
     return z_270, z_600, objnums
 
@@ -88,9 +88,9 @@ def load_train_data_files():
         tmp1 = float(str(data2D_270[i].header).split("CRVAL1")[1].split("=")[1].split("/")[0])
         tmp2 = float(str(data2D_270[i].header).split("CRVAL1")[1].split("=")[2].split("/")[0])    
         if np.abs(tmp1-crval1_270)>1e-6:
-            print tmp1
+            print(tmp1)
         if np.abs(tmp2-cdelt1_270)>1e-6:
-            print tmp2
+            print(tmp2)
     wave_grid_270 = crval1_270 + cdelt1_270 * np.arange(data2D_270[1].shape[1])
     wave_grid_270 *= 10
 
@@ -102,9 +102,9 @@ def load_train_data_files():
         tmp1 = float(str(data2D_600[i].header).split("CRVAL1")[1].split("=")[1].split("/")[0])
         tmp2 = float(str(data2D_600[i].header).split("CRVAL1")[1].split("=")[2].split("/")[0])    
         if np.abs(tmp1-crval1_600)>1e-6:
-            print tmp1
+            print(tmp1)
         if np.abs(tmp2-cdelt1_600)>1e-6:
-            print tmp2
+            print(tmp2)
 
     wave_grid_600 = crval1_600 + cdelt1_600 * np.arange(data2D_600[1].shape[1])
     wave_grid_600 *= 10
