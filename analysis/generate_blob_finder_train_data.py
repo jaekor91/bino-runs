@@ -1,21 +1,21 @@
 from utils import *
 
-im_arr_blobs = np.load("./blob_finder_training_data/real-blobs.npz")["image"]
-im_arr_blanks = np.load("./blob_finder_training_data/blanks-filtered.npz")["image"]
+im_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["image"])
+im_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["image"])
 
 # Basic parameters
 # - Total flux could range 2,500 to 25,000
 # - Diagonal 2D covariance 16 = r^2 of varying from 0.1 to 0.9 randomly
 
 
-def blob_im_generator(nrows=32, ncols=32, double=False):
+def blob_im_generator(nrows=32, ncols=32, double=False, fmin=0):
     """
     Generate an emission line peak blob.
     """
-    fmax = 25000
-    fmin = 20000
-    FWHM_min = 5
-    FWHM_max = 7
+    fmin = max(20000, fmin)
+    fmax = fmin * 1.1    
+    FWHM_min = 4
+    FWHM_max = 6
     rho_min = -0.8
     rho_max = 0.8
     num_comps_max = 10
@@ -49,54 +49,75 @@ def blob_im_generator(nrows=32, ncols=32, double=False):
     
     return poisson_realization(im)
 
-Nsample = 10000
-im_sim_training = np.zeros((Nsample, 32, 32))
-label_training = np.zeros(Nsample, dtype=int)
+Nsample = 512 * 100
+im_sim_training = np.zeros((Nsample, 32, 32, 1))
+label_training = np.zeros(Nsample, dtype=bool)
 
 idx = 0 
 num_blanks = xrange(im_arr_blanks.shape[0]) # Number of blanks
-B = 100
 while idx < Nsample:
+    if (idx % 5000) == 0:
+        print idx
     idx_blank = np.random.choice(num_blanks) # Choose a random blank
-    im = im_arr_blanks[idx_blank] # Take the blank
+    im = np.copy(im_arr_blanks[idx_blank]) # Take the blank
+    
+    B = max(np.percentile(im, 80), 100) # Noise level
+    fmin = np.percentile(im, 80) * 400 * (5 + 2 * np.random.random()) # Assume the blob spans 400 pixels and the "S2N > 10".
     r = np.random.random()
 #     r = 0
     if (r < 0.5): # Add the blank to the training data
         pass
     elif (r > 0.5) and (r < 0.75):
-        im_blob = blob_im_generator(double=False)
+        im_blob = blob_im_generator(double=False, fmin=fmin)
         im += im_blob
-        label_training[idx] = 1
+        label_training[idx] = True
     else:
-        im_blob = blob_im_generator(double=True)
+        im_blob = blob_im_generator(double=True, fmin=fmin)
         im += im_blob
-        label_training[idx] = 2
+        label_training[idx] = True
         
     # Add poisson noise to the image
     # Generate poisson noise image, add the to the blank and subtract
     im_poisson = poisson_realization(np.ones((32, 32)) * B) - B    
     im += im_poisson
+    im[:5, :] = 0
+    im[26:, :] = 0
     
     # Save the image
-    im_sim_training[idx] = im
+    im_sim_training[idx] = im.reshape((1, 32, 32, 1))
     idx += 1
-        
-# # ---- View a sample of images.
-# plt.close()
-# fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
+    
+# ---- View a sample of images.
+plt.close()
+fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
 
-# i_start = 0
-# i_end = i_start + 81
-# for i in range(i_start, i_end):
-#     idx_row = (i-i_start) // 9
-#     idx_col = (i-i_start) % 9
-#     ax_list[idx_row, idx_col].imshow(im_sim_training[i, :, :], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+i_start = 10000
+i_end = i_start + 81
+for i in range(i_start, i_end):
+    idx_row = (i-i_start) // 9
+    idx_col = (i-i_start) % 9
+    ax_list[idx_row, idx_col].imshow(im_sim_training[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
 #     title_str = "%4d" % (label_training[i])
-#     ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
-#     ax_list[idx_row, idx_col].axis("off")    
+    title_str = label_training[i]
+    ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
+    ax_list[idx_row, idx_col].axis("off")    
 
-# # plt.savefig("blob_sim_training_examples.png", dpi=200, bbox_inches="tight")
+plt.savefig("blob_sim_training_examples.png", dpi=200, bbox_inches="tight")
 # plt.show()
-# plt.close()
+plt.close()    
+
 
 np.savez("./blob_finder_training_data/blob_finder_train_data.npz", image=im_sim_training, label=label_training)
+
+im_arr_blobs = np.load("./blob_finder_training_data/real-blobs.npz")["image"]
+im_arr_blanks = np.load("./blob_finder_training_data/blanks-filtered.npz")["image"]
+
+
+N_blanks = im_arr_blanks.shape[0]
+N_blobs = im_arr_blobs.shape[0]
+N_total = N_blanks + N_blobs
+label = np.zeros(N_total, dtype=bool)
+label[:N_blanks] = False # Blank is False
+label[N_blanks:] = True
+im_arr = np.vstack((im_arr_blanks, im_arr_blobs))
+np.savez("./blob_finder_training_data/blob_finder_test_data.npz", image=im_arr, label=label)
