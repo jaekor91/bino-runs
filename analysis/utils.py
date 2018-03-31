@@ -59,7 +59,7 @@ def parse_tanveer_file():
     # If unresolved disagreement, then there should be print(.)
     counter = 0
     z_union = np.ones_like(z_600)
-    for i in xrange(Nobjs):
+    for i in range(Nobjs):
         if (z_600[i] > 0) or (z_270[i] >0):
             counter += 1
             if (z_600[i] > 0) and (z_270[i] >0) and np.abs(z_600[i] - z_270[i]) > 1e-2:
@@ -84,7 +84,7 @@ def load_train_data_files():
     crval1_270 = float(str(data2D_270[i].header).split("CRVAL1")[1].split("=")[1].split("/")[0])
     cdelt1_270 = float(str(data2D_270[i].header).split("CRVAL1")[1].split("=")[2].split("/")[0])
 
-    for i in xrange(2, Nobjs):
+    for i in range(2, Nobjs):
         tmp1 = float(str(data2D_270[i].header).split("CRVAL1")[1].split("=")[1].split("/")[0])
         tmp2 = float(str(data2D_270[i].header).split("CRVAL1")[1].split("=")[2].split("/")[0])    
         if np.abs(tmp1-crval1_270)>1e-6:
@@ -98,7 +98,7 @@ def load_train_data_files():
     crval1_600 = float(str(data2D_600[i].header).split("CRVAL1")[1].split("=")[1].split("/")[0])
     cdelt1_600 = float(str(data2D_600[i].header).split("CRVAL1")[1].split("=")[2].split("/")[0])
 
-    for i in xrange(2, Nobjs):
+    for i in range(2, Nobjs):
         tmp1 = float(str(data2D_600[i].header).split("CRVAL1")[1].split("=")[1].split("/")[0])
         tmp2 = float(str(data2D_600[i].header).split("CRVAL1")[1].split("=")[2].split("/")[0])    
         if np.abs(tmp1-crval1_600)>1e-6:
@@ -188,7 +188,7 @@ def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, s
     yv = np.arange(0.5, num_cols)
     yv, xv = np.meshgrid(xv, yv) # In my convention xv corresponds to rows and yv to columns
     
-    for _ in xrange(num_comps):
+    for _ in range(num_comps):
         dx, dy = np.random.randn(2) * scatter
         PSF = np.exp(-(np.square(xv-x-dx) + np.square(yv-y-dy) - 2 * rho * (yv-y-dy) * (xv - x -dx))/(2*sigma**2 * (1-rho**2))) \
             /(np.pi * 2 * sigma**2 * np.sqrt(1 - rho**2))
