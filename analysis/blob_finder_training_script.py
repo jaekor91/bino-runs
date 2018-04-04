@@ -34,13 +34,13 @@ val_targets = targets_test
 print("Train")
 # ---- View a sample of images.
 plt.close()
-fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
+fig, ax_list = plt.subplots(8, 8, figsize=(10, 10))
 
 i_start = 0
-i_end = i_start + 81
+i_end = i_start + 64
 for i in range(i_start, i_end):
-    idx_row = (i-i_start) // 9
-    idx_col = (i-i_start) % 9
+    idx_row = (i-i_start) // 8
+    idx_col = (i-i_start) % 8
     ax_list[idx_row, idx_col].imshow(train_data[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
 #     title_str = "%4d" % (label_training[i])
     title_str = train_targets[i]
@@ -53,13 +53,13 @@ plt.close()
 print("Val")
 # ---- View a sample of images.
 plt.close()
-fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
+fig, ax_list = plt.subplots(8, 8, figsize=(10, 10))
 
 i_start = 0
-i_end = i_start + 81
+i_end = i_start + 64
 for i in range(i_start, i_end):
-    idx_row = (i-i_start) // 9
-    idx_col = (i-i_start) % 9
+    idx_row = (i-i_start) // 8
+    idx_col = (i-i_start) % 8
     ax_list[idx_row, idx_col].imshow(val_data[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
 #     title_str = "%4d" % (label_training[i])
     title_str = val_targets[i]
@@ -71,16 +71,16 @@ plt.close()
 
 
 
-# ---- Making the model and training
-model = ResnetBuilder.build(input_shape=(1, 32, 32), num_outputs=1, block_fn='basic_block', repetitions=[3, 4, 6, 3])
+# # ---- Making the model and training
+# model = ResnetBuilder.build(input_shape=(1, 32, 32), num_outputs=1, block_fn='basic_block', repetitions=[3, 4, 6, 3])
 
-import keras
-callbacks_list = [keras.callbacks.ModelCheckpoint(filepath = 'classification_model.h5', monitor = "val_loss", save_best_only=True)]
+# import keras
+# callbacks_list = [keras.callbacks.ModelCheckpoint(filepath = 'classification_model.h5', monitor = "val_loss", save_best_only=True)]
 
 
-model.compile(optimizer=optimizers.RMSprop(lr=0.00001), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
+# model.compile(optimizer=optimizers.RMSprop(lr=0.00001), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
 
-history = model.fit(train_data, train_targets, epochs=2, batch_size=256, validation_data=(val_data, val_targets))
+# history = model.fit(train_data, train_targets, epochs=2, batch_size=256, validation_data=(val_data, val_targets))
 
-# model.save('classification_model.h5')
+# # model.save('classification_model.h5')
 
