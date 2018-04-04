@@ -50,7 +50,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fmin=0):
     
     return poisson_realization(im)
 
-Nsample = 512 * 100
+Nsample = 512 * 1000
 im_sim_training = np.zeros((Nsample, 32, 32, 1))
 label_training = np.zeros(Nsample, dtype=bool)
 
