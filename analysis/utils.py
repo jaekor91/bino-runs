@@ -71,11 +71,10 @@ def load_train_data_files():
     Nobjs = 64
 
     #---- Loading in the 2D data for St82-1hr
-    data2D_270 = fits.open("../../data/from_vulcan/st82-1hr-270/obj_counts_slits_lin.fits")
-    data2D_600 = fits.open("../../data/from_vulcan/st82-1hr-600/obj_counts_slits_lin.fits")
-    data1D_270 = fits.open("../../data/from_vulcan/st82-1hr-270/obj_counts_slits_extr.fits")[1].data
-    data1D_600 = fits.open("../../data/from_vulcan/st82-1hr-600/obj_counts_slits_extr.fits")[1].data
-    
+    data2D_270 = fits.open("/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-270/obj_abs_slits_lin.fits")
+    data2D_600 = fits.open("/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-600/obj_abs_slits_lin.fits")
+   
+
     #---- Confirm that all spectra are on the same linear grid scale.
     # CRVAL1  =        231.216992188
     # CDELT1  =       0.128999996185
@@ -109,7 +108,7 @@ def load_train_data_files():
     wave_grid_600 = crval1_600 + cdelt1_600 * np.arange(data2D_600[1].shape[1])
     wave_grid_600 *= 10
 
-    return data2D_270, data2D_600, data1D_270, data1D_600, wave_grid_270, wave_grid_600
+    return data2D_270, data2D_600, wave_grid_270, wave_grid_600
 
 
 
