@@ -5,6 +5,9 @@ from scipy.stats import sigmaclip
 from scipy.signal import medfilt 
 import pandas as pd
 
+# ---- Global variables
+SN_thres = 25
+
 def OII_model_simple(x, red_z, A, sig0=0.75, A_ratio = 1, side=None):
 	"""
 	Simple OII model as double gaussians with the amplitude (in flux)
