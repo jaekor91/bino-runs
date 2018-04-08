@@ -73,6 +73,8 @@ def load_train_data_files():
     #---- Loading in the 2D data for St82-1hr
     data2D_270 = fits.open("/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-270/obj_abs_slits_lin.fits")
     data2D_600 = fits.open("/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-600/obj_abs_slits_lin.fits")
+    data2D_270_err = fits.open("/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-270/obj_abs_err_slits_lin.fits")
+    data2D_600_err = fits.open("/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-600/obj_abs_err_slits_lin.fits")
    
 
     #---- Confirm that all spectra are on the same linear grid scale.
@@ -108,7 +110,7 @@ def load_train_data_files():
     wave_grid_600 = crval1_600 + cdelt1_600 * np.arange(data2D_600[1].shape[1])
     wave_grid_600 *= 10
 
-    return data2D_270, data2D_600, wave_grid_270, wave_grid_600
+    return data2D_270, data2D_270_err, data2D_600, data2D_600_err, wave_grid_270, wave_grid_600
 
 
 
@@ -130,12 +132,12 @@ def post_stamp_from_HDU(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 2
     post_stamp[row_low:row_high, col_low:col_high] \
         = np.copy(HDU[objnum].data)[row_min:row_max, idx-width//2:idx+width//2]            
     
-    # ---- Perform additiona pre-processing
+    # ---- Perform additional pre-processing
     # Zero-out NaN values
     post_stamp[np.isnan(post_stamp)] = 0
     
-    # Eliminate extreme outliers
-    post_stamp[abs(post_stamp - np.median(post_stamp)) > m * np.std(post_stamp)] = 0            
+    # # Eliminate extreme outliers
+    # post_stamp[abs(post_stamp - np.median(post_stamp)) > m * np.std(post_stamp)] = 0            
     
     return post_stamp
 
