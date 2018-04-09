@@ -36,8 +36,8 @@ for i in range(1, Nobjs+1):
                 idx = indices[k]
                 name = names[k]
                 if idx > -1: # If the peak is within the wave_grid range.
-                    im = post_stamp_from_HDU(data2D, objnum, idx) # Get the post stamp
-                    err = post_stamp_from_HDU(err2D, objnum, idx) # Get the post stamp of error file.
+                    im = post_stamp_from_HDU(data2D, objnum, idx, remove_outlier=True) # Get the post stamp
+                    err = post_stamp_from_HDU(err2D, objnum, idx, remove_outlier=True) # Get the post stamp of error file.
                     if (im==0).all(): # If post stamp is all zero, then turn off the axis.
                         pass
                     else: # Otherwise make a plot.
@@ -48,12 +48,12 @@ for i in range(1, Nobjs+1):
 # ---- Collect the post stamps into a single numpy array
 im_arr = np.zeros((len(post_stamp_collection), 32, 32))
 err_arr = np.zeros((len(post_stamp_collection), 32, 32))
-SN_arr = np.zeros((len(post_stamp_collection), 32, 32))
+# SN_arr = np.zeros((len(post_stamp_collection), 32, 32))
 for i, x in enumerate(post_stamp_collection):
     im_arr[i] = x
     err_arr[i] = err_post_stamp_collection[i]
-    SN_arr[i] = im_arr[i] / err_arr[i] # Error is unit of flux.
-    SN_arr[i][np.isnan(SN_arr[i])] = 0
+    # SN_arr[i] = im_arr[i] / err_arr[i] # Error is unit of flux.
+    # SN_arr[i][np.isnan(SN_arr[i])] = 0
 
 # # --- To explore how outliers should be handled.
 # plt.hist(SN_arr[44].ravel())
@@ -100,24 +100,24 @@ plt.close()
 
 
 
-# ---- Corresponding SN image
-SN_thres = 30
-fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
-for i in range(81):
-    idx_row = i // 9
-    idx_col = i % 9    
-    if i < err_arr.shape[0]:
-        im  = im_arr[i]
-        im[SN_arr[i] > SN_thres] = 0
-        ax_list[idx_row, idx_col].imshow(im, cmap="gray", interpolation ="none")
-        if i in flagged:
-            ax_list[idx_row, idx_col].set_title(i, fontsize=10, color="red")          
-        else:
-            ax_list[idx_row, idx_col].set_title(i, fontsize=5, color="black")                      
-    ax_list[idx_row, idx_col].axis("off")
-plt.savefig("./st82-1hr-sideA/all-peaks-SN-corrected.png", dpi=200, bbox_inches ="tight")
-# plt.show()
-plt.close()
+# # ---- Corresponding SN image
+# SN_thres = 30
+# fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
+# for i in range(81):
+#     idx_row = i // 9
+#     idx_col = i % 9    
+#     if i < err_arr.shape[0]:
+#         im  = im_arr[i]
+#         im[SN_arr[i] > SN_thres] = 0
+#         ax_list[idx_row, idx_col].imshow(im, cmap="gray", interpolation ="none")
+#         if i in flagged:
+#             ax_list[idx_row, idx_col].set_title(i, fontsize=10, color="red")          
+#         else:
+#             ax_list[idx_row, idx_col].set_title(i, fontsize=5, color="black")                      
+#     ax_list[idx_row, idx_col].axis("off")
+# plt.savefig("./st82-1hr-sideA/all-peaks-SN-corrected.png", dpi=200, bbox_inches ="tight")
+# # plt.show()
+# plt.close()
 
 
 im_arr_filtered = np.zeros((im_arr.shape[0] - len(flagged), 32, 32))
@@ -186,8 +186,8 @@ for i in range(1, Nobjs+1):
             pass
         else:
             for idx in indices:
-                im = post_stamp_from_HDU(data2D, objnum, idx) # Get the post stamp
-                err = post_stamp_from_HDU(err2D, objnum, idx) # Get the post stamp for errors
+                im = post_stamp_from_HDU(data2D, objnum, idx, remove_outlier=True) # Get the post stamp
+                err = post_stamp_from_HDU(err2D, objnum, idx, remove_outlier=False) # Get the post stamp for errors
                 if ((im==0).sum() / 32**2) > 0.8: # If post stamp is all zero, then turn off the axis.
                     pass
                 else: # Otherwise make a plot.
@@ -232,9 +232,9 @@ for l in range(im_arr.shape[0]//81):
         idx_col = (i-i_start) % 9    
         if i < im_arr.shape[0]:
             im = np.copy(im_arr[i])
-            SN = im/err_arr[i]
-            SN[np.isnan(SN)] = 0
-            im[SN>SN_thres] = 0
+            # SN = im/err_arr[i]
+            # SN[np.isnan(SN)] = 0
+            # im[SN>SN_thres] = 0
             ax_list[idx_row, idx_col].imshow(im, cmap="gray", interpolation ="none")
             if i in flagged:
                 ax_list[idx_row, idx_col].set_title(i, fontsize=10, color="red")          
@@ -292,9 +292,9 @@ for l in range(im_arr_filtered.shape[0]//81):
         idx_col = (i-i_start) % 9    
         if i < im_arr_filtered.shape[0]:
             im = np.copy(im_arr_filtered[i])
-            SN = im/err_arr_filtered[i]
-            SN[np.isnan(SN)] = 0
-            im[SN>SN_thres] = 0            
+            # SN = im/err_arr_filtered[i]
+            # SN[np.isnan(SN)] = 0
+            # im[SN>SN_thres] = 0            
             ax_list[idx_row, idx_col].imshow(im, cmap="gray", interpolation ="none")
             ax_list[idx_row, idx_col].set_title(i, fontsize=5, color="black")                      
         ax_list[idx_row, idx_col].axis("off")
