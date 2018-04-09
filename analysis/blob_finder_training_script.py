@@ -24,7 +24,7 @@ targets_test = samples_test['label'] # True if not blank
 data_test, targets_test = shuffle(data_test, targets_test) #, random_state=0)
 
 # Splitting the data
-N_train = min(512 * 10, Nsample_train)
+N_train = min(512 * 1000, Nsample_train)
 train_data = data_train[:N_train, :, :]
 train_targets = targets_train[:N_train]
 
