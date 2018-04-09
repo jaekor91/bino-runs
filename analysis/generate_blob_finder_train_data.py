@@ -57,7 +57,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return poisson_realization(im * 10) / 10 # Use arbitrary counts-to-flux conversion.
 
-Nsample = 512 * 1000
+Nsample = 512 * 10
 im_sim_training = np.zeros((Nsample, 32, 32, 2))
 label_training = np.zeros(Nsample, dtype=bool)
 
@@ -101,14 +101,14 @@ while idx < Nsample:
         im_poisson = (poisson_realization(np.ones((32, 32)) * B * 10) - B) / 10
         ibool = im == 0
         im += im_poisson
+        im[(im/err) > SN_thres] = 0           
         im[ibool] = 0 # Restore zero positions
         
         # Save the image
         im_sim_training[idx, :, :, 0] = im
         im_sim_training[idx, :, :, 1] = err
         idx += 1
-    
-np.savez("./blob_finder_training_data/blob_finderx_train_data.npz", sample=im_sim_training, label=label_training)
+
 
 # ---- View only the positives
 plt.close()
@@ -182,13 +182,19 @@ im_arr = np.zeros((N_total, 32, 32, 2))
 
 # ---- Blanks first
 for i in range(N_blanks):
-    im_arr[i, :, :, 0] = im_arr_blanks[i]
-    im_arr[i, :, :, 1] = err_arr_blanks[i]    
+    im = im_arr_blanks[i]
+    err = err_arr_blanks[i]
+    im[(im/err) > SN_thres] = 0
+    im_arr[i, :, :, 0] = im
+    im_arr[i, :, :, 1] = err
 
 # ---- Blobs second
 for i in range(N_blobs):
-    im_arr[i + N_blanks, :, :, 0] = im_arr_blobs[i]
-    im_arr[i + N_blanks, :, :, 1] = err_arr_blobs[i]    
+    im = im_arr_blobs[i]
+    err = err_arr_blobs[i]
+    im[(im/err) > SN_thres] = 0    
+    im_arr[i + N_blanks, :, :, 0] = im
+    im_arr[i + N_blanks, :, :, 1] =  err 
 
 np.savez("./blob_finder_training_data/blob_finder_test_data.npz", sample=im_arr, label=label)
 print("Completed")
