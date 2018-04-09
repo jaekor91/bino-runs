@@ -69,45 +69,48 @@ while idx < Nsample:
     idx_blank = np.random.choice(num_blanks) # Choose a random blank
     im = np.copy(im_arr_blanks[idx_blank]) # Take the blank and err
     err = np.copy(err_arr_blanks[idx_blank])
-    
-    im_strip = im[6:25, :].flatten()
-    im_strip_low = np.percentile(im_strip, 80) # Noise level
-    im_strip_high = np.percentile(im_strip, 20)
-    if im_strip_low == im_strip_high:
-        pass
-    else:
-        # print(im_strip_low, im_strip_high)x
-        ibool = np.logical_and((im_strip > im_strip_low), (im_strip < im_strip_high))
-        if ibool.sum() > 0:
-            B = min(np.std(im_strip), np.std(im_strip[ibool]))
-        else:
-            B = np.std(im_strip)
 
-        r = np.random.random()
-    #     r = 0
-        if (r < 0.5): # Add the blank to the training data
+    ibool = (im == 0)
+    if (((ibool).sum() / float(32**2)) > 0.70): # If more than 70% of pixels are zeros
+        pass
+    else: # Otherwise continue
+        im_strip = im[6:25, :].flatten()
+        im_strip_low = np.percentile(im_strip, 80) # Noise level
+        im_strip_high = np.percentile(im_strip, 20)
+        if im_strip_low == im_strip_high:
             pass
-        elif (r > 0.5) and (r < 0.55):
-            im_blob = blob_im_generator(double=False, fdensity = B)
-            im += im_blob
-            label_training[idx] = True
         else:
-            im_blob = blob_im_generator(double=True, fdensity = B)
-            im += im_blob
-            label_training[idx] = True
+            # print(im_strip_low, im_strip_high)x
+            ibool2 = np.logical_and((im_strip > im_strip_low), (im_strip < im_strip_high))
+            if ibool2.sum() > 0:
+                B = min(np.std(im_strip), np.std(im_strip[ibool]))
+            else:
+                B = np.std(im_strip)
+
+            r = np.random.random()
+        #     r = 0
+            if (r < 0.5): # Add the blank to the training data
+                pass
+            elif (r > 0.5) and (r < 0.55):
+                im_blob = blob_im_generator(double=False, fdensity = B)
+                im += im_blob
+                label_training[idx] = True
+            else:
+                im_blob = blob_im_generator(double=True, fdensity = B)
+                im += im_blob
+                label_training[idx] = True
+                
+            # Add poisson noise to the image
+            # Generate poisson noise image, add the to the blank and subtract
+            im_poisson = (poisson_realization(np.ones((32, 32)) * B * 10) - B) / 10
+            im += im_poisson
+            # im[(im/err) > SN_thres] = 0           
+            im[ibool] = 0 # Restore zero positions
             
-        # Add poisson noise to the image
-        # Generate poisson noise image, add the to the blank and subtract
-        im_poisson = (poisson_realization(np.ones((32, 32)) * B * 10) - B) / 10
-        ibool = im == 0
-        im += im_poisson
-        # im[(im/err) > SN_thres] = 0           
-        im[ibool] = 0 # Restore zero positions
-        
-        # Save the image
-        im_sim_training[idx, :, :, 0] = im
-        im_sim_training[idx, :, :, 1] = err
-        idx += 1
+            # Save the image
+            im_sim_training[idx, :, :, 0] = im
+            im_sim_training[idx, :, :, 1] = err
+            idx += 1
 
 
 # ---- View only the positives
