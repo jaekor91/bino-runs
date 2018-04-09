@@ -57,7 +57,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return poisson_realization(im * 10) / 10 # Use arbitrary counts-to-flux conversion.
 
-Nsample = 512 * 1000
+Nsample = 256 * 1000
 im_sim_training = np.zeros((Nsample, 32, 32, 2))
 label_training = np.zeros(Nsample, dtype=bool)
 
@@ -76,7 +76,7 @@ while idx < Nsample:
     if im_strip_low == im_strip_high:
         pass
     else:
-        # print(im_strip_low, im_strip_high)
+        # print(im_strip_low, im_strip_high)x
         ibool = np.logical_and((im_strip > im_strip_low), (im_strip < im_strip_high))
         if ibool.sum() > 0:
             B = min(np.std(im_strip), np.std(im_strip[ibool]))
@@ -157,7 +157,7 @@ for l in range(num_panels):
 # plt.show()
 plt.close()    
 
-np.savez("./blob_finder_training_data/blob_finder_train_data.npz", sample=im_sim_training[:50000], label=label_training[:50000])
+np.savez("./blob_finder_training_data/blob_finder_train_data.npz", sample=im_sim_training, label=label_training)
 
 print("Completed")
 
