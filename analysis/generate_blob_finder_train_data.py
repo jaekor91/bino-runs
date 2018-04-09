@@ -101,7 +101,7 @@ while idx < Nsample:
         im_poisson = (poisson_realization(np.ones((32, 32)) * B * 10) - B) / 10
         ibool = im == 0
         im += im_poisson
-        im[(im/err) > SN_thres] = 0           
+        # im[(im/err) > SN_thres] = 0           
         im[ibool] = 0 # Restore zero positions
         
         # Save the image
@@ -184,7 +184,7 @@ im_arr = np.zeros((N_total, 32, 32, 2))
 for i in range(N_blanks):
     im = im_arr_blanks[i]
     err = err_arr_blanks[i]
-    im[(im/err) > SN_thres] = 0
+    # im[(im/err) > SN_thres] = 0
     im_arr[i, :, :, 0] = im
     im_arr[i, :, :, 1] = err
 
@@ -192,7 +192,7 @@ for i in range(N_blanks):
 for i in range(N_blobs):
     im = im_arr_blobs[i]
     err = err_arr_blobs[i]
-    im[(im/err) > SN_thres] = 0    
+    # im[(im/err) > SN_thres] = 0    
     im_arr[i + N_blanks, :, :, 0] = im
     im_arr[i + N_blanks, :, :, 1] =  err 
 
