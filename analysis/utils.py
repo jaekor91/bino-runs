@@ -138,15 +138,20 @@ def post_stamp_from_HDU(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 2
     # ---- Perform additional pre-processing
     # Zero-out NaN values
     post_stamp[np.isnan(post_stamp)] = 0
+
+    ibool = np.abs(post_stamp) < 1e-25 # Zero regions
+
+    # if (ibool.sum() / float(width**2)) < 1e-1: # If not even 10 percent has real coverage, then return immediately.
+    #     return post_stamp
+    # This one is commented out because otherwise it will mess up down stream analysis.
     
     # Eliminate extreme outliers -- within non-zero footprint.
     if remove_outlier:
-        ibool = post_stamp != 0
-        post_stamp_strip = post_stamp[ibool].ravel()
-        val_median = np.median(post_stamp_strip)
+        post_stamp_strip = post_stamp[~ibool].ravel()
+        val_median = np.median(post_stamp_strip) # Calculate median based on non-zero region
         val_std = np.std(post_stamp_strip)
-        post_stamp[abs(post_stamp - val_median) > m * val_std] = 0
-        post_stamp[~ibool] = 0 # Set equal to zero originally zero positions.
+        post_stamp[abs(post_stamp - val_median) > (m * val_std)] = 0
+        post_stamp[ibool] = 0 # Set equal to zero originally zero positions.
     
     return post_stamp
 
