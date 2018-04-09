@@ -17,33 +17,35 @@ model = load_model('classification_model.h5')
 # Loading and shuffling the test data
 fname = "./blob_finder_training_data/blob_finder_test_data.npz"
 samples_test = np.load(fname)
-Nsample_test = samples_test["image"].shape[0]
-data_test = samples_test['image'].reshape((Nsample_test, 32, 32, 1))
+Nsample_test = samples_test["sample"].shape[0]
+data_test = samples_test['sample'].reshape((Nsample_test, 32, 32, 2))
 targets_test = samples_test['label'] # True if not blank
 data_test, targets_test = shuffle(data_test, targets_test) #, random_state=0)
 test_preds = model.predict(data_test)
 
 precision, recall, thresholds = metrics.precision_recall_curve(targets_test, test_preds)
 
-recall_thres = 0.97
-# ---- Compute TPR and FPR
+# ---- Compute estimated recall given thres = 0.5
+thres = 0.5
+recall_est = recall[find_nearest_idx(thresholds, thres)]
+print("Estimated recall rate: %.4f" % recall_est)
+
+# ---- Compute Precisin and Recall
 fig, ax = plt.subplots(1, figsize = (7, 5))
 ax.plot(recall, precision, c="black", lw=2)
 ax.set_xlim([0.5, 1.01])
 ax.set_ylim([0., 1.05])
-ax.axvline(x=recall_thres, c="red", lw=2, ls="--")
+ax.axvline(x=recall_est, c="red", lw=2, ls="--")
 ax.set_xlabel("Recall", fontsize=15)
 ax.set_ylabel("Precision", fontsize=15)
 plt.savefig("blob_finder_model_precision_recall.png", dpi=200, bbox_inches="tight")
 plt.close()
 
-# ---- Find out the threshold
-thres = thresholds[find_nearest_idx(recall, recall_thres)]
-print(thres)
 
 
 # --- For a given threshold look at the failure cases.
 idx_failures = (test_preds.reshape(Nsample_test) > thres) != targets_test
+print("Total number of sample: %d" % Nsample_test)
 print("Number of failures: %d" %idx_failures.sum())
 
 test_data_fail = data_test[idx_failures, :, :]
