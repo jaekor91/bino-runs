@@ -57,7 +57,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return poisson_realization(im * 10) / 10 # Use arbitrary counts-to-flux conversion.
 
-Nsample = 256 * 1000
+Nsample = 256 * 10
 im_sim_training = np.zeros((Nsample, 32, 32, 2))
 label_training = np.zeros(Nsample, dtype=bool)
 
@@ -111,6 +111,7 @@ while idx < Nsample:
 
 
 # ---- View only the positives
+# -- Image
 plt.close()
 fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
 
@@ -132,8 +133,33 @@ for l in range(num_panels):
 
     plt.savefig("blob_sim_training_examples_%d.png" % l, dpi=200, bbox_inches="tight")
 # plt.show()
+plt.close()
+# -- Error
+plt.close()
+fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
+
+num_panels = 10
+idx = 0
+for l in range(num_panels):
+    counter = 0
+    while counter < 81:
+        if label_training[idx]: 
+            idx_row = counter // 9
+            idx_col = counter % 9
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+        #     title_str = "%4d" % (label_training[i])
+            title_str = label_training[idx]
+            ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
+            ax_list[idx_row, idx_col].axis("off") 
+            counter += 1
+        idx +=1
+
+    plt.savefig("blob_sim_training_examples_%d_err.png" % l, dpi=200, bbox_inches="tight")
+# plt.show()
 plt.close()    
 
+# --- Blank images
+# -- Image
 plt.close()
 fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
 
@@ -156,6 +182,31 @@ for l in range(num_panels):
     plt.savefig("blanks_sim_training_examples_%d.png" % l, dpi=200, bbox_inches="tight")
 # plt.show()
 plt.close()    
+
+# Err
+plt.close()
+fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
+
+num_panels = 10
+idx = 0
+for l in range(num_panels):
+    counter = 0
+    while counter < 81:
+        if not label_training[idx]: 
+            idx_row = counter // 9
+            idx_col = counter % 9
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+        #     title_str = "%4d" % (label_training[i])
+            title_str = label_training[idx]
+            ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
+            ax_list[idx_row, idx_col].axis("off") 
+            counter += 1
+        idx +=1
+
+    plt.savefig("blanks_sim_training_examples_%d_err.png" % l, dpi=200, bbox_inches="tight")
+# plt.show()
+plt.close()    
+
 
 np.savez("./blob_finder_training_data/blob_finder_train_data.npz", sample=im_sim_training, label=label_training)
 
