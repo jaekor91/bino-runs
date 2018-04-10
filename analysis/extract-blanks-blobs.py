@@ -37,7 +37,7 @@ for i in range(1, Nobjs+1):
                 name = names[k]
                 if idx > -1: # If the peak is within the wave_grid range.
                     im = post_stamp_from_HDU(data2D, objnum, idx, remove_outlier=True) # Get the post stamp
-                    err = post_stamp_from_HDU(err2D, objnum, idx, remove_outlier=True) # Get the post stamp of error file.
+                    err = post_stamp_from_HDU(err2D, objnum, idx, remove_outlier=False) # Get the post stamp of error file.
                     if (im==0).all(): # If post stamp is all zero, then turn off the axis.
                         pass
                     else: # Otherwise make a plot.
