@@ -113,7 +113,17 @@ def load_train_data_files():
     wave_grid_600 = crval1_600 + cdelt1_600 * np.arange(data2D_600[1].shape[1])
     wave_grid_600 *= 10
 
-    return data2D_270, data2D_270_err, data2D_600, data2D_600_err, wave_grid_270, wave_grid_600
+    fname_270 = "/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-270/obj_abs_slits_lin.fits"
+    fname_err_270 = "/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-270/obj_abs_err_slits_lin.fits"
+    fname_600 = "/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-600/obj_abs_slits_lin.fits"
+    fname_err_600 = "/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-600/obj_abs_err_slits_lin.fits"
+
+    data2D_270 = bino_data_preprocess(fname_270, fname_err_270)
+    data2D_600 = bino_data_preprocess(fname_600, fname_err_600)
+
+    return data2D_270, data2D_600, wave_grid_270, wave_grid_600
+
+
 
 
 
