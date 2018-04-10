@@ -86,6 +86,79 @@ for m in range((N_fail // num_per_row**2)+1):
 
 
 
+
+# ----------- Set recall rate, estimate threshold
+# ---- Compute estimated recall given thres = 0.5
+recall_thres = 0.95
+thres = thresholds[find_nearest_idx(recall, recall_thres)]
+print("Recall rate: %.4f" % recall_thres)
+print("Estimated thres: %.4f" % thres)
+
+
+# ---- Compute Precisin and Recall
+fig, ax = plt.subplots(1, figsize = (7, 5))
+ax.plot(recall, precision, c="black", lw=2)
+ax.set_xlim([0.5, 1.01])
+ax.set_ylim([0., 1.05])
+ax.axvline(x=recall_thres, c="red", lw=2, ls="--")
+ax.set_xlabel("Recall", fontsize=15)
+ax.set_ylabel("Precision", fontsize=15)
+plt.savefig("blob_finder_model_precision_recall95.png", dpi=200, bbox_inches="tight")
+plt.close()
+
+
+
+# --- For a given threshold look at the failure cases.
+idx_failures = (test_preds.reshape(Nsample_test) > thres) != targets_test
+print("Total number of sample: %d" % Nsample_test)
+print("Number of failures: %d" %idx_failures.sum())
+
+test_data_fail = data_test[idx_failures, :, :]
+test_targets_fail = test_preds[idx_failures, 0]
+targets_failed = targets_test[idx_failures]
+N_fail = test_data_fail.shape[0]
+
+
+
+print("Val -- Failed")
+# ---- View a sample of images.
+plt.close()
+num_per_row = 6
+
+for m in range((N_fail // num_per_row**2)+1):
+    fig, ax_list = plt.subplots(num_per_row, num_per_row, figsize=(10, 10))
+    i_start = m * num_per_row**2
+    i_end = i_start + num_per_row**2
+    for i in range(i_start, i_end):
+        idx_row = (i-i_start) // num_per_row
+        idx_col = (i-i_start) % num_per_row 
+        axis_off = True
+        if i < N_fail:
+            ax_list[idx_row, idx_col].imshow(test_data_fail[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            title_str = "%.3f" % test_targets_fail[i]
+            if targets_failed[i]: # If true positive
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="red")
+            elif (test_targets_fail[i] > 0.8): # If strong false negative 
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="orange")
+            else:
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=10)                
+        ax_list[idx_row, idx_col].axis("off")    
+    plt.savefig("blob_test_examples_failed_recall95_%d.png" % m, dpi=200, bbox_inches="tight")
+#     plt.show()
+    plt.close()    
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ----- Better to think in terms of precision and recall
 # fpr_thres = 0.1
 
