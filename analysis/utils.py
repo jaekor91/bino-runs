@@ -203,6 +203,41 @@ def post_stamp_from_HDU(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 2
     
     return post_stamp
 
+
+def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 20, remove_outlier = False):
+    """
+    Create a post stamp of size (32, 32), one for image and one for error, where the relevant spectrum is placed in the middle.
+    """
+    post_stamp = np.zeros((32, 32, 2))
+    row_range = row_max - row_min
+    center = 16 # In the post stamp
+    row_low = center - row_range // 2
+    row_high = center + row_range // 2
+    col_low = center - width//2
+    col_high = center + width//2
+    
+    if ((idx-width//2) < 0) or ((idx+width//2) >= HDU[objnum].shape[1]):
+        return post_stamp
+    
+    post_stamp[row_low:row_high, col_low:col_high, :] \
+        = np.copy(HDU[objnum])[row_min:row_max, idx-width//2:idx+width//2, :]            
+
+    im = post_stamp[:, :, 0]
+    err = post_stamp[:, :, 1]
+    
+    # ---- Perform additional pre-processing    
+    # Eliminate extreme outliers -- within non-zero footprint.
+    if remove_outlier:
+        ibool = np.abs(im) > 1e-20
+        im_strip = im[ibool].ravel()
+        val_median = np.median(im_strip) # Calculate median based on non-zero region
+        val_std = np.std(im_strip)
+        im[abs(im - val_median) > (m * val_std)] = 0
+        # im[ibool] = 0 # Set equal to zero originally zero positions.
+    
+    return im, err
+     
+
 def idx_peaks(wavegrid, redz):
     """
     Given a wavelength grid and a redshift, return the indices corresponding to
