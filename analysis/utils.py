@@ -124,6 +124,44 @@ def load_train_data_files():
     return data2D_270, data2D_600, wave_grid_270, wave_grid_600
 
 
+def bino_data_preprocess(data_fname, err_fname):
+    """
+    Import data and corresponding errors and return a list of length (Nobjs+1), where each element
+    corresponds to an image of (num_rows, num_cols, 2). +1 is for the first empty HDU.
+    num_rows and num_cols can vary.
+    
+    Note that error is set to infinity wherever NaN appears in the image.
+
+    """
+    #---- Loading in the 2D data for St82-1hr
+    data2D = fits.open(data_fname)
+    data2D_err = fits.open(err_fname)
+
+    #---- Generate the place holder list for numpy array of both data and errors
+    Nobjs = len(data2D)-1
+    data = [None] #
+
+    #---- Loop through the imported data
+    for i in range(1, Nobjs+1):
+        im = np.copy(data2D[i].data)
+        err = np.copy(data2D_err[i].data)
+        num_rows, num_cols = im.shape
+        
+        # Find pixels in the image that has NaN values
+        iNaN = np.isnan(im)
+        
+        # Set the NaN values equal to zero in the image and error to the infinity.
+        im[iNaN] = 0
+        err[iNaN] = 1e60
+        
+        # Properly save
+        data_tmp = np.zeros((num_rows, num_cols, 2))
+        data_tmp[:, :, 0] = im
+        data_tmp[:, :, 1] = err
+        
+        data.append(data_tmp)
+        
+    return data
 
 
 
