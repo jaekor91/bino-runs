@@ -204,7 +204,7 @@ def post_stamp_from_HDU(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 2
     return post_stamp
 
 
-def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 20, remove_outlier = False):
+def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 20, remove_outlier = True):
     """
     Create a post stamp of size (32, 32), one for image and one for error, where the relevant spectrum is placed in the middle.
     """
@@ -217,7 +217,9 @@ def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25,
     col_high = center + width//2
     
     if ((idx-width//2) < 0) or ((idx+width//2) >= HDU[objnum].shape[1]):
-        return post_stamp
+        im = post_stamp[:, :, 0]
+        err = post_stamp[:, :, 1]
+        return im, err
     
     post_stamp[row_low:row_high, col_low:col_high, :] \
         = np.copy(HDU[objnum])[row_min:row_max, idx-width//2:idx+width//2, :]            
