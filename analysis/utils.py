@@ -147,12 +147,12 @@ def bino_data_preprocess(data_fname, err_fname):
         err = np.copy(data2D_err[i].data)
         num_rows, num_cols = im.shape
         
-        # Find pixels in the image that has NaN values
-        iNaN = np.isnan(im)
+        # Find pixels in the image or error that has NaN values
+        iNaN = np.logical_or(np.isnan(im), np.isnan(err), err==0)
         
         # Set the NaN values equal to zero in the image and error to the infinity.
         im[iNaN] = 0
-        err[iNaN] = 1e60
+        err[iNaN] = 1e30
         
         # Properly save
         data_tmp = np.zeros((num_rows, num_cols, 2))
@@ -231,11 +231,14 @@ def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25,
     # Eliminate extreme outliers -- within non-zero footprint.
     if remove_outlier:
         ibool = np.abs(im) > 1e-20
-        im_strip = im[ibool].ravel()
-        val_median = np.median(im_strip) # Calculate median based on non-zero region
-        val_std = np.std(im_strip)
-        im[abs(im - val_median) > (m * val_std)] = 0
-        # im[ibool] = 0 # Set equal to zero originally zero positions.
+        if ibool.sum() < 5:
+            pass
+        else:
+            im_strip = im[ibool].ravel()
+            val_median = np.median(im_strip) # Calculate median based on non-zero region
+            val_std = np.std(im_strip)
+            im[abs(im - val_median) > (m * val_std)] = 0
+            # im[ibool] = 0 # Set equal to zero originally zero positions.
     
     return im, err
      
