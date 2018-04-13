@@ -56,9 +56,9 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return poisson_realization(im * 10) / 10 # Use arbitrary counts-to-flux conversion.
 
-Nsample = 256 * 2000
-SN_sim_training = np.zeros((Nsample, 32, 32, 1)) # We only provide SN information.
-im_sim_training = np.zeros((Nsample, 32, 32, 1)) # For plotting
+Nsample = 256 * 10
+# im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
+im_sim_training = np.zeros((Nsample, 32, 32, 2)) # Image and SN information provided.
 label_training = np.zeros(Nsample, dtype=bool)
 
 idx = 0 
@@ -104,12 +104,11 @@ while idx < Nsample:
             # Generate poisson noise image, add the to the blank and subtract
             im_poisson = (poisson_realization(np.ones((32, 32)) * B * 10) - B) / 10
             im += im_poisson
-            # im[(im/err) > SN_thres] = 0           
             im[ibool] = 0 # Restore zero positions
             
             # Save the SN image
             im_sim_training[idx, :, :, 0] = im
-            SN_sim_training[idx, :, :, 0] = im / err
+            im_sim_training[idx, :, :, 1] = im / err
             idx += 1
 
 
@@ -149,7 +148,7 @@ for l in range(num_panels):
         if label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -198,7 +197,7 @@ for l in range(num_panels):
         if not label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -211,7 +210,7 @@ for l in range(num_panels):
 plt.close()    
 
 
-np.savez("./blob_finder_training_data/blob_finder_train_data.npz", sample=SN_sim_training, label=label_training)
+np.savez("./blob_finder_training_data/blob_finder_train_data.npz", sample=im_sim_training, label=label_training)
 
 print("Completed")
 
@@ -232,24 +231,21 @@ N_total = N_blanks + N_blobs
 label = np.zeros(N_total, dtype=bool)
 label[:N_blanks] = False # Blank is False
 label[N_blanks:] = True
-im_arr = np.zeros((N_total, 32, 32, 1))
-SN_arr = np.zeros((N_total, 32, 32, 1))
+im_arr = np.zeros((N_total, 32, 32, 2))
 
 # ---- Blanks first
 for i in range(N_blanks):
     im = im_arr_blanks[i]
     err = err_arr_blanks[i]
-    # im[(im/err) > SN_thres] = 0
     im_arr[i, :, :, 0] = im
-    SN_arr[i, :, :, 0] = im / err
+    im_arr[i, :, :, 1] = im / err
 
 # ---- Blobs second
 for i in range(N_blobs):
     im = im_arr_blobs[i]
     err = err_arr_blobs[i]
-    # im[(im/err) > SN_thres] = 0    
     im_arr[i + N_blanks, :, :, 0] = im
-    SN_arr[i + N_blanks, :, :, 0] = im / err 
+    im_arr[i + N_blanks, :, :, 1] = im / err 
 
-np.savez("./blob_finder_training_data/blob_finder_test_data.npz", sample=SN_arr, label=label)
+np.savez("./blob_finder_training_data/blob_finder_test_data.npz", sample=im_arr, label=label)
 print("Completed")
