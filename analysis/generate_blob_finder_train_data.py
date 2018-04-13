@@ -149,7 +149,7 @@ for l in range(num_panels):
         if label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -198,7 +198,7 @@ for l in range(num_panels):
         if not label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -241,7 +241,7 @@ for i in range(N_blanks):
     err = err_arr_blanks[i]
     # im[(im/err) > SN_thres] = 0
     im_arr[i, :, :, 0] = im
-    SN_arr[i, :, :, 1] = im / err
+    SN_arr[i, :, :, 0] = im / err
 
 # ---- Blobs second
 for i in range(N_blobs):
@@ -249,7 +249,7 @@ for i in range(N_blobs):
     err = err_arr_blobs[i]
     # im[(im/err) > SN_thres] = 0    
     im_arr[i + N_blanks, :, :, 0] = im
-    SN_arr[i + N_blanks, :, :, 1] = im / err 
+    SN_arr[i + N_blanks, :, :, 0] = im / err 
 
 np.savez("./blob_finder_training_data/blob_finder_test_data.npz", sample=SN_arr, label=label)
 print("Completed")
