@@ -1,14 +1,13 @@
 from utils import *
 
 print("/---- Train set")
-im_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["image"]) * 1e16
-err_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["err"]) * 1e16
-im_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["image"]) * 1e16
-err_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["err"]) * 1e16
+im_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["image"])
+err_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["err"])
+im_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["image"])
+err_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["err"])
 
 # --- Basic parameters
-# - SN threshold set at 25
-# - Multiply everything by 1e16 factor
+# - Multiply everything by 1e16 factor in the beginning.
 
 # --- Important considerations
 # - Input both noise and values.
@@ -58,7 +57,8 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     return poisson_realization(im * 10) / 10 # Use arbitrary counts-to-flux conversion.
 
 Nsample = 256 * 10
-im_sim_training = np.zeros((Nsample, 32, 32, 2))
+SN_sim_training = np.zeros((Nsample, 32, 32, 1)) # We only provide SN information.
+im_sim_training = np.zeros((Nsample, 32, 32, 1)) # For plotting
 label_training = np.zeros(Nsample, dtype=bool)
 
 idx = 0 
@@ -107,9 +107,9 @@ while idx < Nsample:
             # im[(im/err) > SN_thres] = 0           
             im[ibool] = 0 # Restore zero positions
             
-            # Save the image
+            # Save the SN image
             im_sim_training[idx, :, :, 0] = im
-            im_sim_training[idx, :, :, 1] = err
+            SN_sim_training[idx, :, :, 0] = im / err
             idx += 1
 
 
@@ -149,7 +149,7 @@ for l in range(num_panels):
         if label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -157,7 +157,7 @@ for l in range(num_panels):
             counter += 1
         idx +=1
 
-    plt.savefig("blob_sim_training_examples_%d_err.png" % l, dpi=200, bbox_inches="tight")
+    plt.savefig("blob_sim_training_examples_%d_SN.png" % l, dpi=200, bbox_inches="tight")
 # plt.show()
 plt.close()    
 
@@ -198,7 +198,7 @@ for l in range(num_panels):
         if not label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(SN_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -206,12 +206,12 @@ for l in range(num_panels):
             counter += 1
         idx +=1
 
-    plt.savefig("blanks_sim_training_examples_%d_err.png" % l, dpi=200, bbox_inches="tight")
+    plt.savefig("blanks_sim_training_examples_%d_SN.png" % l, dpi=200, bbox_inches="tight")
 # plt.show()
 plt.close()    
 
 
-np.savez("./blob_finder_training_data/blob_finder_train_data.npz", sample=im_sim_training, label=label_training)
+np.savez("./blob_finder_training_data/blob_finder_train_data.npz", sample=SN_sim_training, label=label_training)
 
 print("Completed")
 
@@ -220,10 +220,10 @@ print("Completed")
 
 
 print("/---- Test set")
-im_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["image"]) * 1e16
-err_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["err"]) * 1e16
-im_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["image"]) * 1e16
-err_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["err"]) * 1e16
+im_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["image"])
+err_arr_blobs = np.copy(np.load("./blob_finder_training_data/real-blobs.npz")["err"])
+im_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["image"])
+err_arr_blanks = np.copy(np.load("./blob_finder_training_data/blanks-filtered.npz")["err"])
 
 
 N_blanks = im_arr_blanks.shape[0]
@@ -232,7 +232,8 @@ N_total = N_blanks + N_blobs
 label = np.zeros(N_total, dtype=bool)
 label[:N_blanks] = False # Blank is False
 label[N_blanks:] = True
-im_arr = np.zeros((N_total, 32, 32, 2))
+im_arr = np.zeros((N_total, 32, 32, 1))
+SN_arr = np.zeros((N_total, 32, 32, 1))
 
 # ---- Blanks first
 for i in range(N_blanks):
@@ -240,7 +241,7 @@ for i in range(N_blanks):
     err = err_arr_blanks[i]
     # im[(im/err) > SN_thres] = 0
     im_arr[i, :, :, 0] = im
-    im_arr[i, :, :, 1] = err
+    SN_arr[i, :, :, 1] = im / err
 
 # ---- Blobs second
 for i in range(N_blobs):
@@ -248,7 +249,7 @@ for i in range(N_blobs):
     err = err_arr_blobs[i]
     # im[(im/err) > SN_thres] = 0    
     im_arr[i + N_blanks, :, :, 0] = im
-    im_arr[i + N_blanks, :, :, 1] =  err 
+    SN_arr[i + N_blanks, :, :, 1] = im / err 
 
-np.savez("./blob_finder_training_data/blob_finder_test_data.npz", sample=im_arr, label=label)
+np.savez("./blob_finder_training_data/blob_finder_test_data.npz", sample=SN_arr, label=label)
 print("Completed")
