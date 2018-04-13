@@ -142,10 +142,10 @@ def bino_data_preprocess(data_fname, err_fname):
     data = [None] #
     header = [None]
 
-    #---- Loop through the imported data
+    #---- Loop through the imported data. Multiply by a common factor 1e16 to adjust the overall scale.
     for i in range(1, Nobjs+1):
-        im = np.copy(data2D[i].data)
-        err = np.copy(data2D_err[i].data)
+        im = np.copy(data2D[i].data) * 1e16
+        err = np.copy(data2D_err[i].data) * 1e16
         num_rows, num_cols = im.shape
         
         # Find pixels in the image or error that has NaN values
