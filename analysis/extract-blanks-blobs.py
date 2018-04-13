@@ -222,7 +222,7 @@ err_arr = data["err"]
 
 # ---- Plot them for visual inspection
 plt.close()
-for l in range(im_arr.shape[0]//81):
+for l in range(min(im_arr.shape[0]//81, 5)):
     i_start = l * 81
     i_end = i_start + 81
     fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
@@ -246,7 +246,7 @@ for l in range(im_arr.shape[0]//81):
 
 # ---- Plot them for visual inspection -- err
 plt.close()
-for l in range(im_arr.shape[0]//81):
+for l in range(min(im_arr.shape[0]//81, 5)):
     i_start = l * 81
     i_end = i_start + 81
     fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
@@ -266,7 +266,7 @@ for l in range(im_arr.shape[0]//81):
 
 # ---- Plot them for visual inspection -- err
 plt.close()
-for l in range(im_arr.shape[0]//81):
+for l in range(min(im_arr.shape[0]//81, 5)):
     i_start = l * 81
     i_end = i_start + 81
     fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
@@ -301,7 +301,7 @@ for l in range(im_arr.shape[0]):
 # ---- Plot them for visual inspection
 plt.close()
 
-for l in range(im_arr_filtered.shape[0]//81):
+for l in range(min(im_arr_filtered.shape[0]//81, 5)):
     i_start = l * 81
     i_end = i_start + 81
     fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
