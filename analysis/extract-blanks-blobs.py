@@ -6,6 +6,7 @@ z_270, z_600, objnums = parse_tanveer_file()
 data2D_270, data2D_600, header_270, header_600, wave_grid_270, wave_grid_600 = load_train_data_files()
 
 
+print("/---- Blobs")
 #---- For each spectrum, plot 2D region where Tanveer found peaks
 center_line = 16 
 wave_grids = [wave_grid_270, wave_grid_600]
@@ -85,7 +86,7 @@ for i in range(81):
     idx_row = i // 9
     idx_col = i % 9    
     if i < err_arr.shape[0]:
-        ax_list[idx_row, idx_col].imshow(err_arr[i], cmap="gray", interpolation ="none")
+        ax_list[idx_row, idx_col].imshow(1./err_arr[i], cmap="gray", interpolation ="none")
         if i in flagged:
             ax_list[idx_row, idx_col].set_title(i, fontsize=10, color="red")          
         else:
@@ -143,11 +144,12 @@ plt.close()
 np.savez("./blob_finder_training_data/real-blobs.npz", image=im_arr_filtered, err=err_arr_filtered)
 
 
+print("Completed\n")
 
 
 
 
-
+print("/---- Blanks")
 
 # Fix the random seed. Generate 10,000 random samples
 
@@ -252,7 +254,7 @@ for l in range(im_arr.shape[0]//81):
         idx_row = (i-i_start) // 9
         idx_col = (i-i_start) % 9    
         if i < im_arr.shape[0]:
-            ax_list[idx_row, idx_col].imshow(err_arr[i], cmap="gray", interpolation ="none")
+            ax_list[idx_row, idx_col].imshow(1./err_arr[i], cmap="gray", interpolation ="none")
             if i in flagged:
                 ax_list[idx_row, idx_col].set_title(i, fontsize=10, color="red")          
             else:
