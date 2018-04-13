@@ -18,7 +18,7 @@ model = load_model('classification_model.h5')
 fname = "./blob_finder_training_data/blob_finder_test_data.npz"
 samples_test = np.load(fname)
 Nsample_test = samples_test["sample"].shape[0]
-data_test = samples_test['sample'].reshape((Nsample_test, 32, 32, 2))
+data_test = samples_test['sample'].reshape((Nsample_test, 32, 32, 1))
 targets_test = samples_test['label'] # True if not blank
 data_test, targets_test = shuffle(data_test, targets_test) #, random_state=0)
 test_preds = model.predict(data_test)
