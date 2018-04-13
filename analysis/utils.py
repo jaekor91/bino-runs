@@ -142,10 +142,10 @@ def bino_data_preprocess(data_fname, err_fname):
     data = [None] #
     header = [None]
 
-    #---- Loop through the imported data. Multiply by a common factor 1e16 to adjust the overall scale.
+    #---- Loop through the imported data. Multiply by a common factor 1e15 to adjust the overall scale.
     for i in range(1, Nobjs+1):
-        im = np.copy(data2D[i].data) * 1e16
-        err = np.copy(data2D_err[i].data) * 1e16
+        im = np.copy(data2D[i].data) * 1e15
+        err = np.copy(data2D_err[i].data) * 1e15
         num_rows, num_cols = im.shape
         
         # Find pixels in the image or error that has NaN values
@@ -206,7 +206,7 @@ def post_stamp_from_HDU(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 2
     return post_stamp
 
 
-def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 20, remove_outlier = True):
+def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25, m = 10, remove_outlier = True):
     """
     Create a post stamp of size (32, 32), one for image and one for error, where the relevant spectrum is placed in the middle.
     """
