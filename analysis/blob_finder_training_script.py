@@ -11,7 +11,7 @@ from sklearn.utils import shuffle
 fname = "./blob_finder_training_data/blob_finder_train_data.npz"
 samples_train = np.load(fname)
 Nsample_train = samples_train["sample"].shape[0]
-data_train = samples_train['sample'].reshape((Nsample_train, 32, 32, 2))
+data_train = samples_train['sample'].reshape((Nsample_train, 32, 32, 1))
 targets_train = samples_train['label'] # True if not blank
 data_train, targets_train = shuffle(data_train, targets_train) #, random_state=0)
 
@@ -19,12 +19,12 @@ data_train, targets_train = shuffle(data_train, targets_train) #, random_state=0
 fname = "./blob_finder_training_data/blob_finder_test_data.npz"
 samples_test = np.load(fname)
 Nsample_test = samples_test["sample"].shape[0]
-data_test = samples_test['sample'].reshape((Nsample_test, 32, 32, 2))
+data_test = samples_test['sample'].reshape((Nsample_test, 32, 32, 1))
 targets_test = samples_test['label'] # True if not blank
 data_test, targets_test = shuffle(data_test, targets_test) #, random_state=0)
 
 # Splitting the data
-N_train = min(256 * 1000, Nsample_train)
+N_train = min(256 * 1500, Nsample_train)
 print(N_train)
 train_data = data_train[:N_train, :, :]
 train_targets = targets_train[:N_train]
@@ -74,14 +74,14 @@ plt.close()
 
 
 # ---- Making the model and training
-model = ResnetBuilder.build(input_shape=(2, 32, 32), num_outputs=1, block_fn='basic_block', repetitions=[3, 4, 6, 3])
+model = ResnetBuilder.build(input_shape=(1, 32, 32), num_outputs=1, block_fn='basic_block', repetitions=[3, 4, 6, 3])
 
 callbacks_list = [keras.callbacks.ModelCheckpoint(filepath = 'classification_model.h5', monitor = "val_loss", save_best_only=True)]
 
+model.compile(optimizer=optimizers.RMSprop(lr=1e-4), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
 
-model.compile(optimizer=optimizers.RMSprop(lr=0.00001), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
-
-history = model.fit(train_data, train_targets, epochs=2, batch_size=256, validation_data=(val_data, val_targets))
+history = model.fit(train_data, train_targets, epochs=1, batch_size=256, validation_data=(val_data, val_targets))
 
 model.save('classification_model.h5')
 
+print("Script completed")
