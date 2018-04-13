@@ -118,10 +118,10 @@ def load_train_data_files():
     fname_600 = "/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-600/obj_abs_slits_lin.fits"
     fname_err_600 = "/Users/jaehyeon/Documents/Research/binospec/data/v1/st82-1hr-600/obj_abs_err_slits_lin.fits"
 
-    data2D_270 = bino_data_preprocess(fname_270, fname_err_270)
-    data2D_600 = bino_data_preprocess(fname_600, fname_err_600)
+    data2D_270, header_270 = bino_data_preprocess(fname_270, fname_err_270)
+    data2D_600, header_600 = bino_data_preprocess(fname_600, fname_err_600)
 
-    return data2D_270, data2D_600, wave_grid_270, wave_grid_600
+    return data2D_270, data2D_600, header_270, header_600, wave_grid_270, wave_grid_600
 
 
 def bino_data_preprocess(data_fname, err_fname):
@@ -140,6 +140,7 @@ def bino_data_preprocess(data_fname, err_fname):
     #---- Generate the place holder list for numpy array of both data and errors
     Nobjs = len(data2D)-1
     data = [None] #
+    header = [None]
 
     #---- Loop through the imported data
     for i in range(1, Nobjs+1):
@@ -160,8 +161,9 @@ def bino_data_preprocess(data_fname, err_fname):
         data_tmp[:, :, 1] = err
         
         data.append(data_tmp)
+        header.append(data2D[i].header)
         
-    return data
+    return data, header
 
 
 
@@ -209,6 +211,7 @@ def post_stamp_from_imerr_arr(HDU, objnum, idx, width=32, row_min=5, row_max=25,
     Create a post stamp of size (32, 32), one for image and one for error, where the relevant spectrum is placed in the middle.
     """
     post_stamp = np.zeros((32, 32, 2))
+    post_stamp[:, :, 1] = 1e30
     row_range = row_max - row_min
     center = 16 # In the post stamp
     row_low = center - row_range // 2
