@@ -24,7 +24,7 @@ targets_test = samples_test['label'] # True if not blank
 data_test, targets_test = shuffle(data_test, targets_test) #, random_state=0)
 
 # Splitting the data
-N_train = min(256 * 1500, Nsample_train)
+N_train = min(256 * 2000, Nsample_train)
 print(N_train)
 train_data = data_train[:N_train, :, :]
 train_targets = targets_train[:N_train]
@@ -78,7 +78,7 @@ model = ResnetBuilder.build(input_shape=(1, 32, 32), num_outputs=1, block_fn='ba
 
 callbacks_list = [keras.callbacks.ModelCheckpoint(filepath = 'classification_model.h5', monitor = "val_loss", save_best_only=True)]
 
-model.compile(optimizer=optimizers.RMSprop(lr=1e-4), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
+model.compile(optimizer=optimizers.RMSprop(lr=1e-5), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
 
 history = model.fit(train_data, train_targets, epochs=1, batch_size=256, validation_data=(val_data, val_targets))
 

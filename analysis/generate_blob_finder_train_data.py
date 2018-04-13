@@ -56,7 +56,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return poisson_realization(im * 10) / 10 # Use arbitrary counts-to-flux conversion.
 
-Nsample = 256 * 10
+Nsample = 256 * 2000
 SN_sim_training = np.zeros((Nsample, 32, 32, 1)) # We only provide SN information.
 im_sim_training = np.zeros((Nsample, 32, 32, 1)) # For plotting
 label_training = np.zeros(Nsample, dtype=bool)
