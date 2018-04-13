@@ -145,7 +145,7 @@ print("Val -- Failed")
 plt.close()
 num_per_row = 6
 
-for m in range((N_fail // num_per_row**2)+1):
+for m in range(min((N_fail // num_per_row**2)+1, 5)):
     fig, ax_list = plt.subplots(num_per_row, num_per_row, figsize=(10, 10))
     i_start = m * num_per_row**2
     i_end = i_start + num_per_row**2
