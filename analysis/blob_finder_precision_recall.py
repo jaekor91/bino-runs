@@ -18,7 +18,7 @@ model = load_model('classification_model.h5')
 fname = "./blob_finder_training_data/blob_finder_test_data.npz"
 samples_test = np.load(fname)
 Nsample_test = samples_test["sample"].shape[0]
-data_test = samples_test['sample'].reshape((Nsample_test, 32, 32, 1))
+data_test = samples_test['sample'].reshape((Nsample_test, 32, 32, 2))
 targets_test = samples_test['label'] # True if not blank
 data_test, targets_test = shuffle(data_test, targets_test) #, random_state=0)
 test_preds = model.predict(data_test)
@@ -82,6 +82,26 @@ for m in range((N_fail // num_per_row**2)+1):
 #     plt.show()
     plt.close()    
 
+    fig, ax_list = plt.subplots(num_per_row, num_per_row, figsize=(10, 10))
+    i_start = m * num_per_row**2
+    i_end = i_start + num_per_row**2
+    for i in range(i_start, i_end):
+        idx_row = (i-i_start) // num_per_row
+        idx_col = (i-i_start) % num_per_row 
+        axis_off = True
+        if i < N_fail:
+            ax_list[idx_row, idx_col].imshow(test_data_fail[i, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            title_str = "%.3f" % test_targets_fail[i]
+            if targets_failed[i]: # If true positive
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="red")
+            elif (test_targets_fail[i] > 0.8): # If strong false negative 
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="orange")
+            else:
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=10)                
+        ax_list[idx_row, idx_col].axis("off")    
+    plt.savefig("blob_test_examples_failed_%d_SN.png" % m, dpi=200, bbox_inches="tight")
+#     plt.show()
+    plt.close()    
 
 
 
@@ -144,6 +164,27 @@ for m in range((N_fail // num_per_row**2)+1):
                 ax_list[idx_row, idx_col].set_title(title_str, fontsize=10)                
         ax_list[idx_row, idx_col].axis("off")    
     plt.savefig("blob_test_examples_failed_recall95_%d.png" % m, dpi=200, bbox_inches="tight")
+#     plt.show()
+    plt.close()
+
+    fig, ax_list = plt.subplots(num_per_row, num_per_row, figsize=(10, 10))
+    i_start = m * num_per_row**2
+    i_end = i_start + num_per_row**2
+    for i in range(i_start, i_end):
+        idx_row = (i-i_start) // num_per_row
+        idx_col = (i-i_start) % num_per_row 
+        axis_off = True
+        if i < N_fail:
+            ax_list[idx_row, idx_col].imshow(test_data_fail[i, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            title_str = "%.3f" % test_targets_fail[i]
+            if targets_failed[i]: # If true positive
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="red")
+            elif (test_targets_fail[i] > 0.8): # If strong false negative 
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="orange")
+            else:
+                ax_list[idx_row, idx_col].set_title(title_str, fontsize=10)                
+        ax_list[idx_row, idx_col].axis("off")    
+    plt.savefig("blob_test_examples_failed_recall95_%d_SN.png" % m, dpi=200, bbox_inches="tight")
 #     plt.show()
     plt.close()    
 
