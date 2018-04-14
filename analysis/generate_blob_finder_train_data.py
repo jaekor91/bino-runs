@@ -56,7 +56,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return im # Do not add any noise at this point.
 
-Nsample = 256 * 10
+Nsample = 256 * 100
 # im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
 im_sim_training = np.zeros((Nsample, 32, 32, 2)) # Image and SN information provided.
 label_training = np.zeros(Nsample, dtype=bool)
@@ -67,7 +67,7 @@ while idx < Nsample:
     if (idx % 5000) == 0:
         print(idx)
     idx_blank = np.random.choice(num_blanks) # Choose a random blank
-    im = np.copy(im_arr_blanks[idx_blank])  / np.sqrt(2) # Take the blank  # Sqrt of 2 factor is for noise addition below.
+    im = np.copy(im_arr_blanks[idx_blank]) * np.sqrt(0.95) # Take the blank  
     err = np.copy(err_arr_blanks[idx_blank]) # And its error
 
     ibool = np.logical_or((im == 0), (err > 1e15)) # Identify all pixels that are either zero or have crazy errors.
@@ -101,7 +101,7 @@ while idx < Nsample:
                 label_training[idx] = True
                 
             # Add Gaussian noise to the image. Note that this effectively changes the error but let's not be too concerned about it.
-            im_noise = np.random.randn(32, 32) * err / np.sqrt(2)
+            im_noise = np.random.randn(32, 32) * err * np.sqrt(0.05)
             im += im_noise
             im[ibool] = 0 # Restore zero positions
             
