@@ -54,7 +54,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
         peak2 = f * generalized_gauss_PSF(nrows, ncols, x,  y+sep_peaks/2., FWHM=FWHM, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak    
         im += (peak1 + peak2) # Add peak    
     
-    return poisson_realization(im * 100) / 100 # Use arbitrary counts-to-flux conversion.
+    return im # Do not add any noise at this point.
 
 Nsample = 256 * 10
 # im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
@@ -70,7 +70,7 @@ while idx < Nsample:
     im = np.copy(im_arr_blanks[idx_blank]) # Take the blank and err
     err = np.copy(err_arr_blanks[idx_blank])
 
-    ibool = (im == 0)
+    ibool = np.logical_or((im == 0), (err > 1e15)) # Identify all pixels that are either zero or have crazy errors.
     if (((ibool).sum() / float(32**2)) > 0.70): # If more than 70% of pixels are zeros
         pass
     else: # Otherwise continue
@@ -100,10 +100,9 @@ while idx < Nsample:
                 im += im_blob
                 label_training[idx] = True
                 
-            # Add poisson noise to the image
-            # Generate poisson noise image, add the to the blank and subtract
-            im_poisson = (poisson_realization(np.ones((32, 32)) * B * 100) - B * 100) / 100
-            im += im_poisson
+            # Add Gaussian noise to the image. Note that this effectively changes the error but let's not be too concerned about it.
+            im_noise = np.random.randn((32, 32)) * err * 0.5
+            im += im_noise
             im[ibool] = 0 # Restore zero positions
             
             # Save the SN image
