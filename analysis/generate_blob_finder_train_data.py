@@ -250,7 +250,7 @@ for i in range(N_blobs):
 plt.close()
 fig, ax_list = plt.subplots(9, 9, figsize=(10, 10))
 
-num_panels = 5
+num_panels = 1
 idx = 0
 for l in range(num_panels):
     counter = 0
