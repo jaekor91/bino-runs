@@ -33,45 +33,6 @@ train_targets = targets_train[:N_train]
 val_data = data_test
 val_targets = targets_test
 
-# print("Train")
-# # ---- View a sample of images.
-# plt.close()
-# fig, ax_list = plt.subplots(8, 8, figsize=(10, 10))
-
-# i_start = 0
-# i_end = i_start + 64
-# for i in range(i_start, i_end):
-#     idx_row = (i-i_start) // 8
-#     idx_col = (i-i_start) % 8
-#     ax_list[idx_row, idx_col].imshow(train_data[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
-# #     title_str = "%4d" % (label_training[i])
-#     title_str = train_targets[i]
-#     ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
-#     ax_list[idx_row, idx_col].axis("off")    
-# plt.savefig("blob_training_examples.png", dpi=200, bbox_inches="tight")
-# # plt.show()
-# plt.close()    
-
-# print("Val")
-# # ---- View a sample of images.
-# plt.close()
-# fig, ax_list = plt.subplots(8, 8, figsize=(10, 10))
-
-# i_start = 0
-# i_end = i_start + 64
-# for i in range(i_start, i_end):
-#     idx_row = (i-i_start) // 8
-#     idx_col = (i-i_start) % 8
-#     ax_list[idx_row, idx_col].imshow(val_data[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
-# #     title_str = "%4d" % (label_training[i])
-#     title_str = val_targets[i]
-#     ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
-#     ax_list[idx_row, idx_col].axis("off")    
-# plt.savefig("blob_val_examples.png", dpi=200, bbox_inches="tight")
-# # plt.show()
-# plt.close()    
-
-
 
 # ---- Making the model and training
 model = ResnetBuilder.build(input_shape=(2, 32, 32), num_outputs=1, block_fn='basic_block', repetitions=[3, 4, 6, 3])
