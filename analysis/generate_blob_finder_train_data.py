@@ -25,12 +25,12 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     FWHM_min = 3
     FWHM_max = 6
     FWHM = (FWHM_max - FWHM_min) * np.random.random() + FWHM_min # FWHM selection    
-    fmin = 10 * FWHM**2 * fdensity * (5 + 5 * np.random.random())
+    fmin = 10 * FWHM**2 * fdensity * (5 + 2 * (np.random.random()))
     fmax = fmin * 1.01
     rho_min = -0.6
     rho_max = 0.6
-    num_comps_min = 5
-    num_comps_max = 20    
+    num_comps_min = 10
+    num_comps_max = 25 
     # For double peaks only
     sep_peaks_min = 3
     sep_peaks_max = 10
@@ -54,7 +54,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
         peak2 = f * generalized_gauss_PSF(nrows, ncols, x,  y+sep_peaks/2., FWHM=FWHM, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak    
         im += (peak1 + peak2) # Add peak    
     
-    return poisson_realization(im * 10) / 10 # Use arbitrary counts-to-flux conversion.
+    return poisson_realization(im * 100) / 100 # Use arbitrary counts-to-flux conversion.
 
 Nsample = 256 * 10
 # im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
@@ -102,7 +102,7 @@ while idx < Nsample:
                 
             # Add poisson noise to the image
             # Generate poisson noise image, add the to the blank and subtract
-            im_poisson = (poisson_realization(np.ones((32, 32)) * B * 10) - B) / 10
+            im_poisson = (poisson_realization(np.ones((32, 32)) * B * 100) - B * 100) / 100
             im += im_poisson
             im[ibool] = 0 # Restore zero positions
             
