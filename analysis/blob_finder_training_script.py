@@ -41,7 +41,7 @@ callbacks_list = [keras.callbacks.ModelCheckpoint(filepath = 'classification_mod
 
 model.compile(optimizer=optimizers.RMSprop(lr=5e-5), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
 
-history = model.fit(train_data, train_targets, epochs=1, batch_size=256, validation_data=(val_data, val_targets))
+history = model.fit(train_data, train_targets, epochs=1, batch_size=512, validation_data=(val_data, val_targets))
 
 model.save('classification_model.h5')
 

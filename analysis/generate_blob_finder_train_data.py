@@ -56,7 +56,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return im # Do not add any noise at this point.
 
-Nsample = 256 * 10
+Nsample = 512 * 100
 # im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
 im_sim_training = np.zeros((Nsample, 32, 32, 2)) # Image and SN information provided.
 label_training = np.zeros(Nsample, dtype=bool)
