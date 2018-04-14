@@ -124,7 +124,7 @@ for l in range(num_panels):
         if label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 0], cmap="gray", interpolation="none", vmin=-5, vmax=5) # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -147,7 +147,7 @@ for l in range(num_panels):
         if label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none", vmin=-5, vmax=5) # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -172,7 +172,7 @@ for l in range(num_panels):
         if not label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 0], cmap="gray", interpolation="none", vmin=-5, vmax=5) # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -196,7 +196,7 @@ for l in range(num_panels):
         if not label_training[idx]: 
             idx_row = counter // 9
             idx_col = counter % 9
-            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(im_sim_training[idx, :, :, 1], cmap="gray", interpolation="none", vmin=-5, vmax=5) # , vmin=vmin, vmax=vmax)
         #     title_str = "%4d" % (label_training[i])
             title_str = label_training[idx]
             ax_list[idx_row, idx_col].set_title(title_str, fontsize=5)
@@ -245,6 +245,9 @@ for i in range(N_blobs):
     err = err_arr_blobs[i]
     im_arr[i + N_blanks, :, :, 0] = im
     im_arr[i + N_blanks, :, :, 1] = im / err 
+
+
+
 
 np.savez("./blob_finder_training_data/blob_finder_test_data.npz", sample=im_arr, label=label)
 print("Completed")
