@@ -71,7 +71,7 @@ for m in range(min((N_fail // num_per_row**2)+1, 5)):
         idx_col = (i-i_start) % num_per_row 
         axis_off = True
         if i < N_fail:
-            ax_list[idx_row, idx_col].imshow(test_data_fail[i, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(test_data_fail[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
             title_str = "%.3f" % test_targets_fail[i]
             if targets_failed[i]: # If true positive
                 ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="red")
@@ -137,7 +137,7 @@ for m in range(min((N_fail // num_per_row**2)+1, 5)):
         idx_col = (i-i_start) % num_per_row 
         axis_off = True
         if i < N_fail:
-            ax_list[idx_row, idx_col].imshow(test_data_fail[i, :, :, 1], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+            ax_list[idx_row, idx_col].imshow(test_data_fail[i, :, :, 0], cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
             title_str = "%.3f" % test_targets_fail[i]
             if targets_failed[i]: # If true positive
                 ax_list[idx_row, idx_col].set_title(title_str, fontsize=15, color="red")
