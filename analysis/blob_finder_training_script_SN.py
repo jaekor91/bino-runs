@@ -76,12 +76,12 @@ val_targets = targets_test
 # ---- Making the model and training
 model = ResnetBuilder.build(input_shape=(1, 32, 32), num_outputs=1, block_fn='basic_block', repetitions=[3, 4, 6, 3])
 
-callbacks_list = [keras.callbacks.ModelCheckpoint(filepath = 'classification_model.h5', monitor = "val_loss", save_best_only=True)]
+callbacks_list = [keras.callbacks.ModelCheckpoint(filepath = 'classification_model_SN.h5', monitor = "val_loss", save_best_only=True)]
 
 model.compile(optimizer=optimizers.RMSprop(lr=5e-5), loss=losses.binary_crossentropy, metrics=['binary_crossentropy', 'accuracy'])
 
 history = model.fit(train_data, train_targets, epochs=1, batch_size=256, validation_data=(val_data, val_targets))
 
-model.save('classification_model.h5')
+model.save('classification_model_SN.h5')
 
 print("Script completed")

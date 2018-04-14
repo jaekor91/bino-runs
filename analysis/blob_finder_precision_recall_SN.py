@@ -40,7 +40,7 @@ ax.set_ylim([0., 1.05])
 ax.axvline(x=recall_est, c="red", lw=2, ls="--")
 ax.set_xlabel("Recall", fontsize=15)
 ax.set_ylabel("Precision", fontsize=15)
-plt.savefig("blob_finder_model_precision_recall.png", dpi=200, bbox_inches="tight")
+plt.savefig("blob_finder_model_precision_recall_SN.png", dpi=200, bbox_inches="tight")
 plt.close()
 
 
@@ -127,7 +127,7 @@ ax.set_ylim([0., 1.05])
 ax.axvline(x=recall_thres, c="red", lw=2, ls="--")
 ax.set_xlabel("Recall", fontsize=15)
 ax.set_ylabel("Precision", fontsize=15)
-plt.savefig("blob_finder_model_precision_recall95.png", dpi=200, bbox_inches="tight")
+plt.savefig("blob_finder_model_precision_recall95_SN.png", dpi=200, bbox_inches="tight")
 plt.close()
 
 
