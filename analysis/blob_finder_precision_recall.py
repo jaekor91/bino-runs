@@ -28,7 +28,9 @@ precision, recall, thresholds = metrics.precision_recall_curve(targets_test, tes
 # ---- Compute estimated recall given thres = 0.5
 thres = 0.5
 recall_est = recall[find_nearest_idx(thresholds, thres)]
+precision_est = precision[find_nearest_idx(thresholds, thres)]
 print("Estimated recall rate: %.4f" % recall_est)
+print("Estimated precision rate: %.4f" % precision_est)
 
 # ---- Compute Precisin and Recall
 fig, ax = plt.subplots(1, figsize = (7, 5))
@@ -60,7 +62,7 @@ print("Val -- Failed")
 plt.close()
 num_per_row = 6
 
-for m in range((N_fail // num_per_row**2)+1):
+for m in range(min((N_fail // num_per_row**2)+1, 5)):
     fig, ax_list = plt.subplots(num_per_row, num_per_row, figsize=(10, 10))
     i_start = m * num_per_row**2
     i_end = i_start + num_per_row**2
@@ -111,7 +113,9 @@ for m in range((N_fail // num_per_row**2)+1):
 # ---- Compute estimated recall given thres = 0.5
 recall_thres = 0.95
 thres = thresholds[find_nearest_idx(recall, recall_thres)]
+precision_est = precision[find_nearest_idx(recall, recall_thres)]
 print("Recall rate: %.4f" % recall_thres)
+print("Precision rate: %.4f" % precision_est)
 print("Estimated thres: %.4f" % thres)
 
 
