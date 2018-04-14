@@ -38,8 +38,8 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     scatter_min = 0
     
     im = np.zeros((nrows, ncols))
-    x = nrows//2 + (np.random.random() - 0.5) * 3
-    y = ncols//2 + (np.random.random() - 0.5) * 3
+    x = nrows//2 + (np.random.random() - 0.5) * 8
+    y = ncols//2 + (np.random.random() - 0.5) * 8
     
     f = (fmax - fmin) * np.random.random() + fmin # Random flux selection
     rho = (rho_max - rho_min) * np.random.random() + rho_min # Covarince selection
@@ -56,7 +56,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return im # Do not add any noise at this point.
 
-Nsample = 256 * 100
+Nsample = 256 * 10
 # im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
 im_sim_training = np.zeros((Nsample, 32, 32, 2)) # Image and SN information provided.
 label_training = np.zeros(Nsample, dtype=bool)
