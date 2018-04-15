@@ -34,17 +34,17 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     # For double peaks only
     sep_peaks_min = 3
     sep_peaks_max = 10
-    scatter_max = 1.
+    scatter_max = .75
     scatter_min = 0
     
     im = np.zeros((nrows, ncols))
     x = nrows//2 + (np.random.random() - 0.5) * 8
     y = ncols//2 + (np.random.random() - 0.5) * 8
-    
+    scatter = np.random.random() * scatter_max        
     f = (fmax - fmin) * np.random.random() + fmin # Random flux selection
+    f *= (1 + scatter)**2
     rho = (rho_max - rho_min) * np.random.random() + rho_min # Covarince selection
     num_comps = np.random.randint(num_comps_min, num_comps_max, 1)[0]
-    scatter = np.random.random() * scatter_max    
     if not double:
         peak = f * generalized_gauss_PSF(nrows, ncols, x,  y, FWHM=FWHM, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak
         im += peak # Add peak
@@ -56,7 +56,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return im # Do not add any noise at this point.
 
-Nsample = 512 * 10
+Nsample = 256 * 1000
 # im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
 im_sim_training = np.zeros((Nsample, 32, 32, 2)) # Image and SN information provided.
 label_training = np.zeros(Nsample, dtype=bool)
