@@ -311,3 +311,26 @@ def poisson_realization(D0):
         for j in range(D0.shape[1]):
             D[i, j] = np.random.poisson(lam=D0[i, j], size=1)
     return D
+
+def wave_grid_extractor(headers):
+    """
+    Given the header output of the function bino_data_preprocess, 
+    return the corresponding linear grid.
+    """
+
+    i = 1
+    crval1 = float(str(header[i]).split("CRVAL1")[1].split("=")[1].split("/")[0])
+    cdelt1 = float(str(header[i]).split("CRVAL1")[1].split("=")[2].split("/")[0])
+
+    for i in range(2, len(header)):
+        tmp1 = float(str(header[i]).split("CRVAL1")[1].split("=")[1].split("/")[0])
+        tmp2 = float(str(header[i]).split("CRVAL1")[1].split("=")[2].split("/")[0])    
+        if np.abs(tmp1-crval1)>1e-6:
+            print(tmp1)
+        if np.abs(tmp2-cdelt1)>1e-6:
+            print(tmp2)
+
+    wave_grid = crval1 + cdelt1 * np.arange(data2D[1].shape[1])
+    wave_grid *= 10
+    
+    return wave_grid
