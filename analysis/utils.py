@@ -296,6 +296,7 @@ def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, s
     
     for _ in range(num_comps):
         dx, dy = np.random.randn(2) * scatter
+        dy *= 2
         PSF = np.exp(-(np.square(xv-x-dx) + np.square(yv-y-dy) - 2 * rho * (yv-y-dy) * (xv - x -dx))/(2*sigma**2 * (1-rho**2))) \
             /(np.pi * 2 * sigma**2 * np.sqrt(1 - rho**2))
 
