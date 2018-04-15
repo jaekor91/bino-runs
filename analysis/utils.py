@@ -312,7 +312,7 @@ def poisson_realization(D0):
             D[i, j] = np.random.poisson(lam=D0[i, j], size=1)
     return D
 
-def wave_grid_extractor(headers):
+def wave_grid_extractor(header, grid_length):
     """
     Given the header output of the function bino_data_preprocess, 
     return the corresponding linear grid.
@@ -330,7 +330,7 @@ def wave_grid_extractor(headers):
         if np.abs(tmp2-cdelt1)>1e-6:
             print(tmp2)
 
-    wave_grid = crval1 + cdelt1 * np.arange(data2D[1].shape[1])
+    wave_grid = crval1 + cdelt1 * np.arange(grid_length)
     wave_grid *= 10
     
     return wave_grid
