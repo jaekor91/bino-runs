@@ -34,7 +34,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     # For double peaks only
     sep_peaks_min = 3
     sep_peaks_max = 10
-    scatter_max = 0.5
+    scatter_max = 1.
     scatter_min = 0
     
     im = np.zeros((nrows, ncols))
@@ -56,7 +56,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     return im # Do not add any noise at this point.
 
-Nsample = 512 * 100
+Nsample = 512 * 10
 # im_sim_training = np.zeros((Nsample, 32, 32, 1)) 
 im_sim_training = np.zeros((Nsample, 32, 32, 2)) # Image and SN information provided.
 label_training = np.zeros(Nsample, dtype=bool)
@@ -89,9 +89,9 @@ while idx < Nsample:
 
             r = np.random.random()
         #     r = 0
-            if (r < 0.5): # Add the blank to the training data
+            if (r < 0.333): # Add the blank to the training data
                 pass
-            elif (r > 0.5) and (r < 0.55):
+            elif (r > 0.333) and (r < 0.666):
                 im_blob = blob_im_generator(double=False, fdensity = B)
                 im += im_blob
                 label_training[idx] = True
