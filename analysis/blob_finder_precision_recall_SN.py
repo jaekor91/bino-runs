@@ -89,8 +89,7 @@ for m in range(min((N_fail // num_per_row**2)+1, 5)):
 
 
 # ----------- Set recall rate, estimate threshold
-# ---- Compute estimated recall given thres = 0.5
-recall_thres = 0.95
+recall_thres = 0.9
 thres = thresholds[find_nearest_idx(recall, recall_thres)]
 precision_est = precision[find_nearest_idx(recall, recall_thres)]
 print("Recall rate: %.4f" % recall_thres)
