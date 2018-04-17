@@ -292,7 +292,7 @@ def idx_peaks(wavegrid, redz):
     Given a wavelength grid and a redshift, return the indices corresponding to
     the following emission line peaks: OII, Ha, Hb, OIII (1, 2)
     """
-    names = ["OII", "Ha", "Hb", "OIII1", "OIII3"]
+    names = ["OII", "Ha", "Hb", "OIII1", "OIII2"]
     OII = 3727
     Ha = 6563
     Hb = 4861
