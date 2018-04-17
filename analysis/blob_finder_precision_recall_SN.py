@@ -10,8 +10,8 @@ from sklearn import metrics
 from utils import *
 
 # ---- Load the trained model
-model = load_model('classification_model_SN.h5')
-vmin, vmax = -4, 4
+model = load_model('david/images2/classification_model_SN.h5')
+vmin, vmax = -5, 5
 
 #---- Test on the test data.
 # Loading and shuffling the test data
