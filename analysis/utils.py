@@ -260,7 +260,7 @@ def post_stamp_from_imerr(imerr, idx, width=32, row_min=5, row_max=25, m = 10, r
     col_low = center - width//2
     col_high = center + width//2
     
-    if ((idx-width//2) < 0) or ((idx+width//2) >= HDU[objnum].shape[1]):
+    if ((idx-width//2) < 0) or ((idx+width//2) >= imerr.shape[1]):
         im = post_stamp[:, :, 0]
         err = post_stamp[:, :, 1]
         return im, err
