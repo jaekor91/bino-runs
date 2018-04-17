@@ -26,7 +26,7 @@ test_preds = model.predict(data_test)
 precision, recall, thresholds = metrics.precision_recall_curve(targets_test, test_preds)
 
 # ---- Compute estimated recall given thres = 0.5
-thres = 0.5
+thres = 0.90
 recall_est = recall[find_nearest_idx(thresholds, thres)]
 precision_est = precision[find_nearest_idx(thresholds, thres)]
 print("Estimated recall rate: %.4f" % recall_est)
@@ -89,7 +89,7 @@ for m in range(min((N_fail // num_per_row**2)+1, 5)):
 
 
 # ----------- Set recall rate, estimate threshold
-recall_thres = 0.9
+recall_thres = 0.83
 thres = thresholds[find_nearest_idx(recall, recall_thres)]
 precision_est = precision[find_nearest_idx(recall, recall_thres)]
 print("Recall rate: %.4f" % recall_thres)
@@ -145,7 +145,7 @@ for m in range(min((N_fail // num_per_row**2)+1, 5)):
             else:
                 ax_list[idx_row, idx_col].set_title(title_str, fontsize=10)                
         ax_list[idx_row, idx_col].axis("off")    
-    plt.savefig("blob_test_examples_failed_recall95_%d_SN.png" % m, dpi=200, bbox_inches="tight")
+    plt.savefig("blob_test_examples_failed_recall%d_%d_SN.png" % (recall_thres * 100, m), dpi=200, bbox_inches="tight")
 #     plt.show()
     plt.close()    
 
