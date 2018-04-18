@@ -317,6 +317,35 @@ def idx_peaks(wavegrid, redz):
     return names, index_list
 
 
+def num_other_matches(detection_list, peak_wavelength, peak_proposed="OII", tol=20):
+    OII = 3727
+    Ha = 6563    
+    Hb = 4861
+    OIII1 = 4959
+    OIII2 = 5007
+    
+    if peak_proposed == "OII":
+        redz = (peak_wavelength/OII)-1
+    elif peak_proposed == "Hb":
+        redz = (peak_wavelength/Hb)-1
+    elif peak_proposed == "OIII1":
+        redz = (peak_wavelength/OIII1)-1
+    elif peak_proposed == "OIII2":
+        redz = (peak_wavelength/OIII2)-1        
+    else: 
+        assert False
+        
+    counter = 0 # Number of hits
+    expected_list = [Ha * (1+redz), Hb * (1+redz), OIII1 * (1+redz), OIII2 * (1+redz)]
+    # Check if the expected is actually detetcted.
+    for x in expected_list:
+        # Find the closest wavelength position 
+        y = detection_list[find_nearest_idx(detection_list, x)]
+        if np.abs(x-y) < tol:
+            counter += 1
+        
+    return counter
+
 
 def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, scatter = 0):
     """
