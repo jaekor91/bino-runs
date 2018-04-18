@@ -317,6 +317,8 @@ def idx_peaks(wavegrid, redz):
     return names, index_list
 
 
+
+
 def num_other_matches(detection_list, peak_wavelength, peak_proposed="OII", tol=20):
     OII = 3727
     Ha = 6563    
@@ -341,7 +343,7 @@ def num_other_matches(detection_list, peak_wavelength, peak_proposed="OII", tol=
     for x in expected_list:
         # Find the closest wavelength position 
         y = detection_list[find_nearest_idx(detection_list, x)]
-        if (np.abs(x-y) < tol) and (np.abs(x-y) > 0.5): # Should not be a duplicate.
+        if (np.abs(x-y) < tol):
             counter += 1
 #             print(x,y)
         
