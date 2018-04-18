@@ -336,13 +336,14 @@ def num_other_matches(detection_list, peak_wavelength, peak_proposed="OII", tol=
         assert False
         
     counter = 0 # Number of hits
-    expected_list = [Ha * (1+redz), Hb * (1+redz), OIII1 * (1+redz), OIII2 * (1+redz)]
+    expected_list = [OII * (1+redz), Ha * (1+redz), Hb * (1+redz), OIII1 * (1+redz), OIII2 * (1+redz)]
     # Check if the expected is actually detetcted.
     for x in expected_list:
         # Find the closest wavelength position 
         y = detection_list[find_nearest_idx(detection_list, x)]
-        if np.abs(x-y) < tol:
+        if (np.abs(x-y) < tol) and (np.abs(x-y) > 0.5): # Should not be a duplicate.
             counter += 1
+#             print(x,y)
         
     return counter
 
