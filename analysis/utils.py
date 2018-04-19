@@ -349,6 +349,22 @@ def num_other_matches(detection_list, peak_wavelength, peak_proposed="OII", tol=
         
     return counter
 
+def header2info(header):
+    """
+    Given a header return the following limited information
+    in dictionary format.
+    RA, DEC, SLITOBJ (bitcode)
+    
+    header must be a string.
+    """
+    RA = float(header.split("RA")[1].split("=")[1].split("/")[0])
+    DEC = float(header.split("DEC")[1].split("=")[1].split("/")[0])
+    BIT = (int(header.split("SLITOBJ")[1].split("=")[1].split("/")[0][2:-2]))
+#     info = {"RA": RA, "DEC": DEC, "BITNUM": BIT}
+    
+    return RA, DEC, BIT
+    
+
 
 def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, scatter = 0):
     """
