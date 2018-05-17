@@ -37,11 +37,14 @@ for i in range(len(fnames)):
 
 ra = np.concatenate(ra)
 dec = np.concatenate(dec)
-gf = np.concatenate(gf)
-gf_ivar = np.concatenate(gf_ivar)
-rf = np.concatenate(rf)
-rf_ivar = np.concatenate(rf_ivar)
-zf = np.concatenate(zf)
-zf_ivar = np.concatenate(zf_ivar)
+tychomask = apply_tycho_radec(ra, dec, tychofn="../2017C/tycho2.fits") == 0
+ra, dec = ra[tychomask], dec[tychomask]
+gf = np.concatenate(gf)[tychomask]
+gf_ivar = np.concatenate(gf_ivar)[tychomask]
+rf = np.concatenate(rf)[tychomask]
+rf_ivar = np.concatenate(rf_ivar)[tychomask]
+zf = np.concatenate(zf)[tychomask]
+zf_ivar = np.concatenate(zf_ivar)[tychomask]
 
-np.savez("dr5-tractor-combined.npz", ra=ra, dec=dec, gflux=gf, gf_ivar=gf_ivar, rflux=rf, rf_ivar=rf_ivar, zflux=zf, zf_ivar =zf_ivar)
+
+np.savez("./data/dr5-tractor-combined.npz", ra=ra, dec=dec, gflux=gf, gf_ivar=gf_ivar, rflux=rf, rf_ivar=rf_ivar, zflux=zf, zf_ivar =zf_ivar)
