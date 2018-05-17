@@ -89,7 +89,7 @@ for ra_start in ra_bounds:
 
         num_block +=1
 # --- Save matched decals file
-np.savez("dr5-tractor-combined-HSC", ra=ra_decals, dec=dec_decals, gflux=decals["gflux"], gf_ivar=decals["givar"], \
+np.savez("dr5-tractor-combined-HSC", ra=ra_decals, dec=dec_decals, gflux=decals["gflux"], gf_ivar=decals["gf_ivar"], \
         rflux=decals["rflux"], rf_ivar=decals["rf_ivar"], zflux=decals["zflux"], zf_ivar=decals["zf_ivar"], \
         HSC_object_id = HSC_object_id, HSC_ra = HSC_ra, HSC_dec = HSC_dec, \
          HSC_a_g = HSC_a_g, HSC_a_r = HSC_a_r, HSC_a_z = HSC_a_z, HSC_gcmodel_flux = HSC_gcmodel_flux, \
