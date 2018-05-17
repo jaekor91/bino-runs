@@ -327,3 +327,12 @@ def produce_spec1D(data_err, list_headers, sig_K, fname_prefix=None, verbose=Tru
 
     return data_ivar_1D
 
+def wavegrid_from_header(header, Ncols):
+    """
+    Construct a linear grid based on the header
+    and a user specified number of columns.
+    """
+    x0 = header["CRVAL1"] * 10
+    dx = header["CDELT1"] * 10
+    return x0 + np.arange(0, Ncols, 1.) * dx
+    
