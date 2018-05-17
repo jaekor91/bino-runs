@@ -1,6 +1,6 @@
 from utils import * 
 # ---- Load the combined data
-data = np.load("dr5-tractor-combined-HSC.npz")
+data = np.load("./data/dr5-tractor-combined-HSC.npz")
 
 ra = data["ra"]
 dec = data["dec"]
