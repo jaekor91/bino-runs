@@ -335,4 +335,19 @@ def wavegrid_from_header(header, Ncols):
     x0 = header["CRVAL1"] * 10
     dx = header["CDELT1"] * 10
     return x0 + np.arange(0, Ncols, 1.) * dx
+
+def extract_post_stamp(data, err):
+    """
+    Given data and err of a single spectrum, extract a 32 x 32 post stamp
+    at a random location.
+    """
+    num_rows = 32
+    idx_min, idx_max = index_edges(data)
+    idx_start = np.random.randint(idx_min, idx_max-num_rows/2, size=1)[0]
+
+    # Store the selected stamp
+    post_stamp = np.zeros((2, 32, 32))
+    post_stamp[0] = data[:, idx_start:idx_start+num_rows]
+    post_stamp[1] = err[:, idx_start:idx_start+num_rows]
     
+    return post_stamp
