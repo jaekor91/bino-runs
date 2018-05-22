@@ -131,3 +131,14 @@ np.save("./train_data/blobs_filtered2.npy", post_stamps_blob_ft2)
 for i in range(post_stamps_blob_ft2.shape[0] // 100):
     stamps = post_stamps_blob_ft2[i*100:(i+1)*100, 0] / post_stamps_blob_ft2[i*100:(i+1)*100, 1]
     plot_post_stamps(stamps, num_start=i*100, fname="./train_data/blobs/blobs-filtered2-%02d.png" % i)
+
+# ---- Looking at the last few
+counter = 700
+
+for i in range(counter, post_stamps_blob_ft2.shape[0]):
+    image = post_stamps_blob_ft2[i, 0]/ post_stamps_blob_ft2[i, 1]
+    plt.close()
+    fig, ax = plt.subplots(1, figsize=(3, 3))
+    ax.imshow(image, aspect="auto", cmap="gray", interpolation="none") # , vmin=vmin, vmax=vmax)
+    # plt.show()
+    plt.close()
