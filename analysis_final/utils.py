@@ -351,3 +351,56 @@ def extract_post_stamp(data, err):
     post_stamp[1] = err[:, idx_start:idx_start+num_rows]
     
     return post_stamp
+
+def idx_peaks(wavegrid, redz, idx_min=0, idx_max=None):
+    """
+    Given a wavelength grid and a redshift, return the indices corresponding to
+    the following emission line peaks: OII, Ha, Hb, OIII (1, 2)
+    """
+    names = ["OII", "Ha", "Hb", "OIII1", "OIII2"]
+    OII = 3727
+    Ha = 6563
+    Hb = 4861
+    OIII1 = 4959
+    OIII2 = 5007
+    peak_list = [OII, Ha, Hb, OIII1, OIII2]
+    
+    if idx_max is None:
+        idx_max = wavegrid.size-1
+    
+    # Compute redshifted location
+    peak_redshifted_list = []            
+    for pk in peak_list:
+        peak_redshifted_list.append(pk * (1+redz))
+        
+    # Compute wavegrid index corresponding to the location. Return -1 if outside the bound.
+    index_list = []
+    for pk in peak_redshifted_list:
+        idx = find_nearest_idx(wavegrid, pk)
+        if (idx >=idx_min) and (idx < idx_max):
+            index_list.append(idx)
+        else:
+            index_list.append(-1)
+    
+    return names, index_list
+
+def find_nearest_idx(arr, x):
+    return np.argmin(np.abs(arr-x))
+
+
+def plot_post_stamps(stamps, num_start=0, fname="test.png", N_stamps2plot = 100, figsize_per_stamp = 3, vmin = -3, vmax = +5):
+    """
+    Plot post stamps input in (Nstamps, 32, 32) format.
+    """
+    N_stamps_per_row = int(np.ceil(np.sqrt(100)))
+    figsize = figsize_per_stamp * N_stamps_per_row
+    plt.close()
+    fig, ax_list = plt.subplots(N_stamps_per_row, N_stamps_per_row, figsize=(figsize, figsize))
+    for i in range(N_stamps2plot):
+        idx_row = i // N_stamps_per_row
+        idx_col = i % N_stamps_per_row
+        ax_list[idx_row, idx_col].imshow(stamps[i], aspect="auto", cmap="gray", interpolation="none")# , vmin=vmin, vmax=vmax)
+        ax_list[idx_row, idx_col].axis("off")        
+        ax_list[idx_row, idx_col].set_title(i+num_start, fontsize=20)
+    plt.savefig(fname, dpi=100, bbox_inches="tight")
+    plt.close()
