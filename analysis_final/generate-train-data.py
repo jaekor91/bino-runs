@@ -21,10 +21,10 @@ def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, s
     for _ in range(num_comps):
         dx, dy = np.random.randn(2) * scatter
         dy *= 2
-        PSF = np.exp(-(np.square(xv-x-dx) + np.square(yv-y-dy) - 2 * rho * (yv-y-dy) * (xv - x -dx))/(2*sigma**2 * (1-rho**2))) \
+        im += np.exp(-(np.square(xv-x-dx) + np.square(yv-y-dy) - 2 * rho * (yv-y-dy) * (xv - x -dx))/(2*sigma**2 * (1-rho**2))) \
             /(np.pi * 2 * sigma**2 * np.sqrt(1 - rho**2))
 
-    return PSF / num_comps 
+    return im / float(num_comps)
 
 def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     """
@@ -47,7 +47,7 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     
     im = np.zeros((nrows, ncols))
     x = nrows//2 + (np.random.random() - 0.5) * 8
-    y = ncols//2 + (np.random.random() - 0.5) * 8
+    y = ncols//2 + (np.random.random() - 0.5) * 1
     scatter = np.random.random() * scatter_max        
     f = (fmax - fmin) * np.random.random() + fmin # Random flux selection
     f *= (1 + scatter)**2
@@ -70,12 +70,12 @@ iblack_list_blanks = blanks["black_list"]
 blanks = blanks["data"]
 
 N_blanks = blanks.shape[0]
-Nsample = 128 * 1000
+Nsample = 128 * 40
 SN_train = np.zeros((Nsample, 32, 32), dtype=float)
 target_train = np.zeros(Nsample, dtype=bool)
 
 i = 0
-while i < Nsample
+while i < Nsample:
     if (i % 1000) == 0:
         print("Generating %d example" % i)
 
@@ -114,18 +114,20 @@ while i < Nsample
                 B = np.std(im_strip)
 
             r = np.random.random()
-            if (r > 0.333) and (r < 0.666):
-                im_blob = blob_im_generator(double=False, fdensity = B)
+
+            if (r >= 0.333) and (r < 0.6666):
+                im_blob = blob_im_generator(double=False, fdensity = B / 15.)
                 data += im_blob
-            else:
-                im_blob = blob_im_generator(double=True, fdensity = B)
+                target_train[i] = True                
+            elif (r >= 0.6666):
+                im_blob = blob_im_generator(double=True, fdensity = B / 15.)
                 data += im_blob
+                target_train[i] = True                
                 
             # Add Gaussian noise to the image. Note that this effectively changes the error but let's not be too concerned about it.
             im_noise = np.random.randn(32, 32) * err * np.sqrt(0.05)
             data += im_noise
             data[izero] = 0 # Restore zero positions
-            target_train[i] = True
             SN_train[i] = data/err
 
             # Sample nuber increment   
@@ -140,7 +142,7 @@ blobs_train = SN_train[target_train]
 for i in range(N_panels):
     plot_post_stamps(blobs_train[i*100:(i+1)*100], fname="./train_data/fig_sim_data/blobs-%d.png" % i)
     
-# blanks_train = SN_train[~target_train]
-# for i in range(N_panels):
-#     plot_post_stamps(blanks_train[i*100:(i+1)*100], fname="./train_data/fig_sim_data/blanks-%d.png" % i)
+blanks_train = SN_train[~target_train]
+for i in range(N_panels):
+    plot_post_stamps(blanks_train[i*100:(i+1)*100], fname="./train_data/fig_sim_data/blanks-%d.png" % i)
 
