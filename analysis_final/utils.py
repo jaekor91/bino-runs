@@ -154,22 +154,22 @@ def index_edges(data, num_thres=20):
 	return idx_min, idx_max
 
 def gauss_fit2profile(K, mu_min=5., mu_max=20., sig_min=1., sig_max=3., dsig=0.05):
-    # ---- Grid search for mu and sigma for the best Gaussian representation of the empirical kernel.
-    Nrows = 32 
-    mu_arr = np.arange(mu_min, mu_max, 0.1)
-    sig_arr = np.arange(sig_min, sig_max, dsig)
-    chi_arr = np.zeros((mu_arr.size, sig_arr.size))
-    x_arr = np.arange(0, Nrows, 1)
-    for i, mu in enumerate(mu_arr):
-        for j, sig in enumerate(sig_arr):
-            A = np.exp(-np.square(x_arr-mu) / (2 * sig**2)) / (np.sqrt(2 * np.pi) * sig)
-            chi_arr[i, j] = np.sum(np.square(K - A))
-    # ---- Best fit
-    idx = np.unravel_index(np.argmin(chi_arr), chi_arr.shape)
-    mu_best = mu_arr[idx[0]] 
-    sig_best = sig_arr[idx[1]]
+	# ---- Grid search for mu and sigma for the best Gaussian representation of the empirical kernel.
+	Nrows = 32 
+	mu_arr = np.arange(mu_min, mu_max, 0.1)
+	sig_arr = np.arange(sig_min, sig_max, dsig)
+	chi_arr = np.zeros((mu_arr.size, sig_arr.size))
+	x_arr = np.arange(0, Nrows, 1)
+	for i, mu in enumerate(mu_arr):
+		for j, sig in enumerate(sig_arr):
+			A = np.exp(-np.square(x_arr-mu) / (2 * sig**2)) / (np.sqrt(2 * np.pi) * sig)
+			chi_arr[i, j] = np.sum(np.square(K - A))
+	# ---- Best fit
+	idx = np.unravel_index(np.argmin(chi_arr), chi_arr.shape)
+	mu_best = mu_arr[idx[0]] 
+	sig_best = sig_arr[idx[1]]
 
-    return mu_best, sig_best
+	return mu_best, sig_best
 
 
 def extract_stellar_profiles(data_err, list_headers):
@@ -255,213 +255,221 @@ def K_gauss_profile(mu, sig, Nrows = 32):
 
 
 def produce_spec1D(data_err, list_headers, sig_K, fname_prefix=None, verbose=True):
-    """
-    Given 2D spectrum and the extraction kernel width sig_K,
-    produce 1D spectra (Ntargets+1, 2, Ncols) and their inverse variance.
-    """
-    Ncols = 32    
-    data_ivar_1D = np.zeros((data_err.shape[0], 2, data_err.shape[3]))
+	"""
+	Given 2D spectrum and the extraction kernel width sig_K,
+	produce 1D spectra (Ntargets+1, 2, Ncols) and their inverse variance.
+	"""
+	Ncols = 32    
+	data_ivar_1D = np.zeros((data_err.shape[0], 2, data_err.shape[3]))
 
-    for specnum in range(1, len(list_headers)):
-        if verbose and ((specnum % 10) == 0):
-            print("Processing spec num: %d" % specnum)
+	for specnum in range(1, len(list_headers)):
+		if verbose and ((specnum % 10) == 0):
+			print("Processing spec num: %d" % specnum)
 
-        # ---- Extract the individual data
-        data, err, header = extract_single_data(data_err, list_headers, specnum)
-        ivar = ivar_from_err(err)
+		# ---- Extract the individual data
+		data, err, header = extract_single_data(data_err, list_headers, specnum)
+		ivar = ivar_from_err(err)
 
-        # ---- Compute the center of the extraction
-        idx_min, idx_max = index_edges(data)
+		# ---- Compute the center of the extraction
+		idx_min, idx_max = index_edges(data)
 
-        # ---- Algorithmically determine the row location of the spectra.
-        # Note that I assume the center of the spectrum falls between 10 and 20.
-        row_centers = []
-        data_tmp = np.copy(data)
-        ivar_tmp = np.copy(ivar)
-        data_tmp[:10, :] = 0.
-        data_tmp[20:, :] = 0.        
-        ivar_tmp[:10, :] = 1e-120
-        ivar_tmp[20:, :] = 1e-120        
+		# ---- Algorithmically determine the row location of the spectra.
+		# Note that I assume the center of the spectrum falls between 10 and 20.
+		row_centers = []
+		data_tmp = np.copy(data)
+		ivar_tmp = np.copy(ivar)
+		data_tmp[:10, :] = 0.
+		data_tmp[20:, :] = 0.        
+		ivar_tmp[:10, :] = 1e-120
+		ivar_tmp[20:, :] = 1e-120        
 
-        for idx in range(idx_min, idx_max-Ncols, Ncols//2):
-            # Compute naive profile based on clipped 2D (32, 32) post stamps
-            K = naive_profile(data_tmp[:, idx:idx+Ncols], ivar_tmp[:, idx:idx+Ncols], L_trim=-1)
-            # Median filtering to reduce noise
-            K = median_filter(K, size=5)
-    #             # Savgol filtering of the naive profile         
-    #             K_filtered = savgol_filter(K, window_length=9, polyorder=3)
-            # Compute the center
-            row_centers.append(np.argmax(K))
+		for idx in range(idx_min, idx_max-Ncols, Ncols//2):
+			# Compute naive profile based on clipped 2D (32, 32) post stamps
+			K = naive_profile(data_tmp[:, idx:idx+Ncols], ivar_tmp[:, idx:idx+Ncols], L_trim=-1)
+			# Median filtering to reduce noise
+			K = median_filter(K, size=5)
+	#             # Savgol filtering of the naive profile         
+	#             K_filtered = savgol_filter(K, window_length=9, polyorder=3)
+			# Compute the center
+			row_centers.append(np.argmax(K))
 
-        # Compute the extraction profile using the above computed center and using extraction width.
-        row_centers = np.asarray(row_centers)
-        row_centers = row_centers[(row_centers > 9) & (row_centers < 21)]
-        mu = np.round(np.median(row_centers))
-        K_T = K_gauss_profile(mu, sig_K).reshape((K.size, 1))
+		# Compute the extraction profile using the above computed center and using extraction width.
+		row_centers = np.asarray(row_centers)
+		row_centers = row_centers[(row_centers > 9) & (row_centers < 21)]
+		mu = np.round(np.median(row_centers))
+		K_T = K_gauss_profile(mu, sig_K).reshape((K.size, 1))
 
-        # ---- 1D extraction performed here
-        spec1D_ivar = np.sum(np.square(K_T) * ivar, axis=0)
-        spec1D = np.sum(K_T * data * ivar, axis=0) / spec1D_ivar
+		# ---- 1D extraction performed here
+		spec1D_ivar = np.sum(np.square(K_T) * ivar, axis=0)
+		spec1D = np.sum(K_T * data * ivar, axis=0) / spec1D_ivar
 
-        # ---- Save the extracted spectrum
-        data_ivar_1D[specnum, 0] = spec1D
-        data_ivar_1D[specnum, 1] = spec1D_ivar        
+		# ---- Save the extracted spectrum
+		data_ivar_1D[specnum, 0] = spec1D
+		data_ivar_1D[specnum, 1] = spec1D_ivar        
 
-        if fname_prefix is not None:
-            plt.close()
-            # ---- Spec figures
-            fname = fname_prefix + "spec%d-2D.png" %specnum
-            fig, ax = plt.subplots(1, figsize=(17, 1))
-            ax.imshow(data, aspect="auto", cmap="gray", interpolation="none", vmin=-0.5, vmax=0.5)
-            ax.axhline(y=mu+0.5, c="red", ls="--", lw=0.4)
-            plt.savefig(fname, dpi=200, bbox_inches="tight")
-            plt.close()
+		if fname_prefix is not None:
+			plt.close()
+			# ---- Spec figures
+			fname = fname_prefix + "spec%d-2D.png" %specnum
+			fig, ax = plt.subplots(1, figsize=(17, 1))
+			ax.imshow(data, aspect="auto", cmap="gray", interpolation="none", vmin=-0.5, vmax=0.5)
+			ax.axhline(y=mu+0.5, c="red", ls="--", lw=0.4)
+			plt.savefig(fname, dpi=200, bbox_inches="tight")
+			plt.close()
 
-            # ---- Histogram of centers determined
-            fname = fname_prefix + "spec%d-centers.png" %specnum
-            fig, ax = plt.subplots(1, figsize=(7, 3))
-            ax.hist(row_centers, bins=np.arange(0.5, 32.5, 1), histtype="step", color="black", normed=True)
-            ax.plot(K_T, c="red", label="K_stellar")
-            ax.axvline(x=mu, c="red", ls="--", lw=0.4)
-            plt.savefig(fname, dpi=200, bbox_inches="tight")
-            plt.close()
+			# ---- Histogram of centers determined
+			fname = fname_prefix + "spec%d-centers.png" %specnum
+			fig, ax = plt.subplots(1, figsize=(7, 3))
+			ax.hist(row_centers, bins=np.arange(0.5, 32.5, 1), histtype="step", color="black", normed=True)
+			ax.plot(K_T, c="red", label="K_stellar")
+			ax.axvline(x=mu, c="red", ls="--", lw=0.4)
+			plt.savefig(fname, dpi=200, bbox_inches="tight")
+			plt.close()
 
-    return data_ivar_1D
+	return data_ivar_1D
 
 def wavegrid_from_header(header, Ncols):
-    """
-    Construct a linear grid based on the header
-    and a user specified number of columns.
-    """
-    x0 = header["CRVAL1"] * 10
-    dx = header["CDELT1"] * 10
-    return x0 + np.arange(0, Ncols, 1.) * dx
+	"""
+	Construct a linear grid based on the header
+	and a user specified number of columns.
+	"""
+	x0 = header["CRVAL1"] * 10
+	dx = header["CDELT1"] * 10
+	return x0 + np.arange(0, Ncols, 1.) * dx
 
 def extract_post_stamp(data, err):
-    """
-    Given data and err of a single spectrum, extract a 32 x 32 post stamp
-    at a random location.
-    """
-    num_rows = 32
-    idx_min, idx_max = index_edges(data)
-    idx_start = np.random.randint(idx_min, idx_max-num_rows/2, size=1)[0]
+	"""
+	Given data and err of a single spectrum, extract a 32 x 32 post stamp
+	at a random location.
+	"""
+	num_rows = 32
+	idx_min, idx_max = index_edges(data)
+	idx_start = np.random.randint(idx_min, idx_max-num_rows/2, size=1)[0]
 
-    # Store the selected stamp
-    post_stamp = np.zeros((2, 32, 32))
-    post_stamp[0] = data[:, idx_start:idx_start+num_rows]
-    post_stamp[1] = err[:, idx_start:idx_start+num_rows]
-    
-    return post_stamp
+	# Store the selected stamp
+	post_stamp = np.zeros((2, 32, 32))
+	post_stamp[0] = data[:, idx_start:idx_start+num_rows]
+	post_stamp[1] = err[:, idx_start:idx_start+num_rows]
+	
+	return post_stamp
 
 def idx_peaks(wavegrid, redz, idx_min=0, idx_max=None):
-    """
-    Given a wavelength grid and a redshift, return the indices corresponding to
-    the following emission line peaks: OII, Ha, Hb, OIII (1, 2)
-    """
-    names = ["OII", "Ha", "Hb", "OIII1", "OIII2"]
-    OII = 3727
-    Ha = 6563
-    Hb = 4861
-    OIII1 = 4959
-    OIII2 = 5007
-    peak_list = [OII, Ha, Hb, OIII1, OIII2]
-    
-    if idx_max is None:
-        idx_max = wavegrid.size-1
-    
-    # Compute redshifted location
-    peak_redshifted_list = []            
-    for pk in peak_list:
-        peak_redshifted_list.append(pk * (1+redz))
-        
-    # Compute wavegrid index corresponding to the location. Return -1 if outside the bound.
-    index_list = []
-    for pk in peak_redshifted_list:
-        idx = find_nearest_idx(wavegrid, pk)
-        if (idx >=idx_min) and (idx < idx_max):
-            index_list.append(idx)
-        else:
-            index_list.append(-1)
-    
-    return names, index_list
+	"""
+	Given a wavelength grid and a redshift, return the indices corresponding to
+	the following emission line peaks: OII, Ha, Hb, OIII (1, 2)
+	"""
+	names = ["OII", "Ha", "Hb", "OIII1", "OIII2"]
+	OII = 3727
+	Ha = 6563
+	Hb = 4861
+	OIII1 = 4959
+	OIII2 = 5007
+	peak_list = [OII, Ha, Hb, OIII1, OIII2]
+	
+	if idx_max is None:
+		idx_max = wavegrid.size-1
+	
+	# Compute redshifted location
+	peak_redshifted_list = []            
+	for pk in peak_list:
+		peak_redshifted_list.append(pk * (1+redz))
+		
+	# Compute wavegrid index corresponding to the location. Return -1 if outside the bound.
+	index_list = []
+	for pk in peak_redshifted_list:
+		idx = find_nearest_idx(wavegrid, pk)
+		if (idx >=idx_min) and (idx < idx_max):
+			index_list.append(idx)
+		else:
+			index_list.append(-1)
+	
+	return names, index_list
 
 def find_nearest_idx(arr, x):
-    return np.argmin(np.abs(arr-x))
+	return np.argmin(np.abs(arr-x))
 
 
 def plot_post_stamps(stamps, num_start=0, fname="test.png", N_stamps2plot = 100, figsize_per_stamp = 3, vmin = -3, vmax = +5):
-    """
-    Plot post stamps input in (Nstamps, 32, 32) format.
-    """
-    N_stamps_per_row = int(np.ceil(np.sqrt(100)))
-    figsize = figsize_per_stamp * N_stamps_per_row
-    plt.close()
-    fig, ax_list = plt.subplots(N_stamps_per_row, N_stamps_per_row, figsize=(figsize, figsize))
-    for i in range(N_stamps2plot):
-        idx_row = i // N_stamps_per_row
-        idx_col = i % N_stamps_per_row
-        ax_list[idx_row, idx_col].imshow(stamps[i], aspect="auto", cmap="gray", interpolation="none")# , vmin=vmin, vmax=vmax)
-        ax_list[idx_row, idx_col].axis("off")        
-        ax_list[idx_row, idx_col].set_title(i+num_start, fontsize=20)
-    plt.savefig(fname, dpi=100, bbox_inches="tight")
-    plt.close()
+	"""
+	Plot post stamps input in (Nstamps, 32, 32) format.
+	"""
+	N_stamps_per_row = int(np.ceil(np.sqrt(100)))
+	figsize = figsize_per_stamp * N_stamps_per_row
+	plt.close()
+	fig, ax_list = plt.subplots(N_stamps_per_row, N_stamps_per_row, figsize=(figsize, figsize))
+	for i in range(N_stamps2plot):
+		idx_row = i // N_stamps_per_row
+		idx_col = i % N_stamps_per_row
+		ax_list[idx_row, idx_col].imshow(stamps[i], aspect="auto", cmap="gray", interpolation="none")# , vmin=vmin, vmax=vmax)
+		ax_list[idx_row, idx_col].axis("off")        
+		ax_list[idx_row, idx_col].set_title(i+num_start, fontsize=20)
+	plt.savefig(fname, dpi=100, bbox_inches="tight")
+	plt.close()
 
-def generalized_gauss_PSF(num_rows, num_cols, x, y, sigma_x, sigma_y, rho=0):
-    """
-    Given num_rows x num_cols of an image, generate a generalized PSF
-    at location x, y.
+def generalized_gauss_PSF(num_rows, num_cols, x, y, sigma_x, sigma_y, rho=0, num_comps=50, scatter=0.5):
+	"""
+	Given num_rows x num_cols of an image, generate a generalized PSF
+	at location x, y.
 
-    - Rho: covariance element of the 2D covariance matrix with sigma as diagonal std.
-    - num_comps: Number of components overwhich to divide up the components.
-    - scatter: The scatter in row and column direction. 
+	- Rho: covariance element of the 2D covariance matrix with sigma as diagonal std.
+	- num_comps: Number of components overwhich to divide up the components.
+	- scatter: The scatter in row and column direction. 
 
-    bivariate formula: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
-    """
-    xv = np.arange(0.5, num_rows)
-    yv = np.arange(0.5, num_cols)
-    yv, xv = np.meshgrid(xv, yv) # In my convention xv corresponds to rows and yv to columns
+	bivariate formula: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
+	"""
+	xv = np.arange(0.5, num_rows)
+	yv = np.arange(0.5, num_cols)
+	yv, xv = np.meshgrid(xv, yv) # In my convention xv corresponds to rows and yv to columns
 
-    PSF = np.exp(-( (np.square(xv-x) / sigma_x**2) + (np.square(yv-y) / sigma_y**2) \
-                - (2 * rho * (yv-y) * (xv - x) /(sigma_x * sigma_y)) )/ (2 * (1-rho**2))) \
-        / (np.pi * 2 * sigma_x * sigma_y * np.sqrt(1 - rho**2))
-
-    return PSF 
+	im = np.zeros((32, 32))
+	for _ in range(num_comps):
+		dx, dy = np.random.randn(2) * scatter
+		PSF = np.exp(-( (np.square(xv-x-dx) / sigma_x**2) + (np.square(yv-y-dy) / sigma_y**2) \
+					- (2 * rho * (yv-y-dy) * (xv - x-dx) /(sigma_x * sigma_y)) )/ (2 * (1-rho**2))) \
+			/ (np.pi * 2 * sigma_x * sigma_y * np.sqrt(1 - rho**2))
+		im += PSF
+		
+	return im/num_comps 
 
 def gen_SN_train_example(data, err, double = True):
-    """
-    Given a blank image, generate a blob image by injection.
-    """
-    # --- Sample row width from est. distribution
-    sig_sig_x = 0.382
-    mu_sig_x = 1.9
-    sig_x = max(np.random.randn() * sig_sig_x + mu_sig_x, 1.5)
+	"""
+	Given a blank image, generate a blob image by injection.
+	"""
+	# --- Sample row width from est. distribution
+	sig_sig_x = 0.382
+	mu_sig_x = 2.
+	sig_x = max(np.random.randn() * sig_sig_x + mu_sig_x, 1.5)
 
-    # --- Col width distribution
-    sig_sig_y = mu_sig_x * 1.25
-    mu_sig_y = mu_sig_x * 1.25
-    sig_y = max(np.random.randn() * sig_sig_y + mu_sig_y, 1.5)
+	# --- Col width distribution
+	sig_sig_y = mu_sig_x * 1.25
+	mu_sig_y = mu_sig_x * 1.25
+	sig_y = max(np.random.randn() * sig_sig_y + mu_sig_y, 1.5)
 
-    # --- Y up and down scatter
-    x = 10 * (np.random.random()-0.5) + 15
-    y = 15 + np.random.random() # Fixed at center
+	# --- Y up and down scatter
+	x = 10 * (np.random.random()-0.5) + 15
+	y = 15 + np.random.random() # Fixed at center
 
-    # --- Generate random angle
-    sig_rho = 0.1
-    rho = min(0.7, np.random.randn() * sig_rho)
+	# --- Generate random angle
+	sig_rho = 0.2
+	rho = np.random.randn() * sig_rho
+	if rho > 0.7:
+		rho = 0.7
+	if rho < -0.7:
+		rho = -0.7
 
-    # --- Generate a blob image
-    if double:
-        sep_min = 3
-        sep_max = 10
-        sep = np.random.random() * (sep_max - sep_min) + sep_min
-        PSF1 = generalized_gauss_PSF(32, 32, x, y-sep/2., sig_x, sig_y, rho=rho)
-        PSF2 = generalized_gauss_PSF(32, 32, x, y+sep/2., sig_x, sig_y, rho=rho)    
-        PSF = PSF1 + PSF2
-    else:
-        PSF = generalized_gauss_PSF(32, 32, x, y, sig_x, sig_y, rho=rho)
+	# --- Generate a blob image
+	if double:
+		sep_min = 3
+		sep_max = 10
+		sep = np.random.random() * (sep_max - sep_min) + sep_min
+		PSF1 = generalized_gauss_PSF(32, 32, x, y-sep/2., sig_x, sig_y, rho=rho)
+		PSF2 = generalized_gauss_PSF(32, 32, x, y+sep/2., sig_x, sig_y, rho=rho)    
+		PSF = PSF1 + PSF2
+	else:
+		PSF = generalized_gauss_PSF(32, 32, x, y, sig_x, sig_y, rho=rho)
 
-    fudge_factor = 50 * sig_x * sig_y
-    im = data + fudge_factor * np.percentile(data[4:25], 80) * PSF
+	fudge_factor = 50 * sig_x * sig_y
+	im = data + fudge_factor * np.percentile(data[4:25], 80) * PSF
 
 #     plt.close()
 #     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7, 3))
@@ -476,5 +484,5 @@ def gen_SN_train_example(data, err, double = True):
 #     ax2.imshow(im/err, aspect="auto", cmap="gray", interpolation="none") #, vmin=vmin, vmax=vmax)
 #     plt.show()
 #     plt.close()
-    SN = im/err
-    return SN
+	SN = im/err
+	return SN
