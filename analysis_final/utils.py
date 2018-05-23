@@ -153,23 +153,24 @@ def index_edges(data, num_thres=20):
 		idx_max -=1
 	return idx_min, idx_max
 
-def gauss_fit2profile(K):
-	# ---- Grid search for mu and sigma for the best Gaussian representation of the empirical kernel.
-	Nrows = 32 
-	mu_arr = np.arange(5, 20, 0.1)
-	sig_arr = np.arange(1., 3., 0.05)
-	chi_arr = np.zeros((mu_arr.size, sig_arr.size))
-	x_arr = np.arange(0, Nrows, 1)
-	for i, mu in enumerate(mu_arr):
-		for j, sig in enumerate(sig_arr):
-			A = np.exp(-np.square(x_arr-mu) / (2 * sig**2)) / (np.sqrt(2 * np.pi) * sig)
-			chi_arr[i, j] = np.sum(np.square(K - A))
-	# ---- Best fit
-	idx = np.unravel_index(np.argmin(chi_arr), chi_arr.shape)
-	mu_best = mu_arr[idx[0]] 
-	sig_best = sig_arr[idx[1]]
-	
-	return mu_best, sig_best
+def gauss_fit2profile(K, mu_min=5., mu_max=20., sig_min=1., sig_max=3., dsig=0.05):
+    # ---- Grid search for mu and sigma for the best Gaussian representation of the empirical kernel.
+    Nrows = 32 
+    mu_arr = np.arange(mu_min, mu_max, 0.1)
+    sig_arr = np.arange(sig_min, sig_max, dsig)
+    chi_arr = np.zeros((mu_arr.size, sig_arr.size))
+    x_arr = np.arange(0, Nrows, 1)
+    for i, mu in enumerate(mu_arr):
+        for j, sig in enumerate(sig_arr):
+            A = np.exp(-np.square(x_arr-mu) / (2 * sig**2)) / (np.sqrt(2 * np.pi) * sig)
+            chi_arr[i, j] = np.sum(np.square(K - A))
+    # ---- Best fit
+    idx = np.unravel_index(np.argmin(chi_arr), chi_arr.shape)
+    mu_best = mu_arr[idx[0]] 
+    sig_best = sig_arr[idx[1]]
+
+    return mu_best, sig_best
+
 
 def extract_stellar_profiles(data_err, list_headers):
 	K_collection = []
