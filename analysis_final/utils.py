@@ -501,3 +501,13 @@ def gen_post_stamp_arr(SN, query):
             counter +=1
         i+=1
     return stamps
+
+def reject_heuristics(stamps):
+    reject = np.zeros(stamps.shape[0], dtype=bool)
+    for i in range(reject.size):
+        SN = stamps[i, 4:25, :, :]
+        too_many_zeros = (np.abs(SN) < 1e-20).sum() > 32 * 20 * 0.5 
+        too_many_high_SN = (np.abs(SN) > 5).sum() > 32 * 20 * 0.25
+        if too_many_zeros or too_many_high_SN:
+            reject[i] = True
+    return reject
