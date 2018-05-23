@@ -1,7 +1,7 @@
 from utils import *
 
 # ----- Image generator functions
-def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, scatter = 0):
+def generalized_gauss_PSF(num_rows, num_cols, x, y, sigma_x, sigma_y, rho=0, num_comps=10, scatter = 0):
     """
     Given num_rows x num_cols of an image, generate a generalized PSF
     at location x, y.
@@ -12,7 +12,6 @@ def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, s
     
     bivariate formula: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
     """
-    sigma = FWHM / 2.354
     im = np.zeros((num_rows, num_cols))
     xv = np.arange(0.5, num_rows)
     yv = np.arange(0.5, num_cols)
@@ -20,9 +19,10 @@ def generalized_gauss_PSF(num_rows, num_cols, x, y, FWHM, rho=0, num_comps=10, s
     
     for _ in range(num_comps):
         dx, dy = np.random.randn(2) * scatter
-        dy *= 2
-        im += np.exp(-(np.square(xv-x-dx) + np.square(yv-y-dy) - 2 * rho * (yv-y-dy) * (xv - x -dx))/(2*sigma**2 * (1-rho**2))) \
-            /(np.pi * 2 * sigma**2 * np.sqrt(1 - rho**2))
+        PSF = np.exp(-( (np.square(xv-x-dx) / sigma_x**2) + (np.square(yv-y-dy) / sigma_y**2) \
+                    - (2 * rho * (yv-y-dy) * (xv - x-dx) /(sigma_x * sigma_y)) )/ (2 * (1-rho**2))) \
+            / (np.pi * 2 * sigma_x * sigma_y * np.sqrt(1 - rho**2))
+        im += PSF
 
     return im / float(num_comps)
 
@@ -30,10 +30,19 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     """
     Generate an emission line peak blob.
     """
-    FWHM_min = 3
-    FWHM_max = 6
-    FWHM = (FWHM_max - FWHM_min) * np.random.random() + FWHM_min # FWHM selection    
-    fmin = 12 * FWHM**2 * fdensity * (7 + 3 * (np.random.random()))
+    # --- Sample row width from est. distribution
+    sig_sig_x = 0.382
+    mu_sig_x = 2.2
+    sig_x = max(np.random.randn() * sig_sig_x + mu_sig_x, 1.5)
+
+    # --- Col width distribution
+    sig_sig_y = mu_sig_x 
+    mu_sig_y = mu_sig_x * 1.25
+    sig_y = max(np.random.randn() * sig_sig_y + mu_sig_y, 1.5)
+
+    FWHM = np.sqrt(sig_x**2 + sig_y**2) * 2.354
+
+    fmin = 12 * FWHM**2 * fdensity * (3 + 3 * (np.random.random()))
     fmax = fmin * 1.01
     rho_min = -0.6
     rho_max = 0.6
@@ -54,12 +63,12 @@ def blob_im_generator(nrows=32, ncols=32, double=False, fdensity=0):
     rho = (rho_max - rho_min) * np.random.random() + rho_min # Covarince selection
     num_comps = np.random.randint(num_comps_min, num_comps_max, 1)[0]
     if not double:
-        peak = f * generalized_gauss_PSF(nrows, ncols, x,  y, FWHM=FWHM, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak
+        peak = f * generalized_gauss_PSF(nrows, ncols, x,  y, sigma_x=sig_x, sigma_y=sig_y, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak
         im += peak # Add peak
     else:
         sep_peaks = np.random.random() * (sep_peaks_max - sep_peaks_min) + sep_peaks_min # Separation in peaks in pixels
-        peak1 = f * generalized_gauss_PSF(nrows, ncols, x,  y-sep_peaks/2., FWHM=FWHM, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak
-        peak2 = f * generalized_gauss_PSF(nrows, ncols, x,  y+sep_peaks/2., FWHM=FWHM, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak    
+        peak1 = f * generalized_gauss_PSF(nrows, ncols, x,  y-sep_peaks/2., sigma_x=sig_x, sigma_y=sig_y, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak
+        peak2 = f * generalized_gauss_PSF(nrows, ncols, x,  y+sep_peaks/2., sigma_x=sig_x, sigma_y=sig_y, rho=rho, scatter=scatter, num_comps=num_comps) # Double peak    
         im += (peak1 + peak2) # Add peak    
     
     return im # Do not add any noise at this point.
@@ -70,7 +79,7 @@ iblack_list_blanks = blanks["black_list"]
 blanks = blanks["data"]
 
 N_blanks = blanks.shape[0]
-Nsample = 128 * 40
+Nsample = 128 * 2000
 SN_train = np.zeros((Nsample, 32, 32), dtype=float)
 target_train = np.zeros(Nsample, dtype=bool)
 
@@ -88,7 +97,7 @@ while i < Nsample:
     ibool = np.logical_or((data[4:25] == 0), (err[4:25] > 1e15)) # Identify all pixels that are either zero or have crazy errors.
     frac_zero = ibool.sum() / float(32*20)
     SN = data[4:25] / err[4:25] # Identify blanks whose SN is out of wack
-    frac_SN_high = (SN > 10).sum() / float(32*20)
+    frac_SN_high = (np.abs(SN) > 10).sum() / float(32*20)
 
     # Location of zero pixels
     izero = np.abs(data) < 1e-15
@@ -116,11 +125,11 @@ while i < Nsample:
             r = np.random.random()
 
             if (r >= 0.333) and (r < 0.6666):
-                im_blob = blob_im_generator(double=False, fdensity = B / 15.)
+                im_blob = blob_im_generator(double=False, fdensity = B / 25.)
                 data += im_blob
                 target_train[i] = True                
             elif (r >= 0.6666):
-                im_blob = blob_im_generator(double=True, fdensity = B / 15.)
+                im_blob = blob_im_generator(double=True, fdensity = B / 25.)
                 data += im_blob
                 target_train[i] = True                
                 
