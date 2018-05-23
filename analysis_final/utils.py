@@ -486,3 +486,18 @@ def gen_SN_train_example(data, err, double = True):
 #     plt.close()
 	SN = im/err
 	return SN
+
+def gen_post_stamp_arr(SN, query):
+    """
+    Given (32, Ncol) image, generate Nquery post stamps
+    centered at where query vector is True.
+    """
+    stamps = np.zeros((query.sum(), 32, 32))
+    counter = 0
+    i = 0
+    while i < query.size:
+        if query[i]:
+            stamps[counter] = SN[:, i-16:i+16]        
+            counter +=1
+        i+=1
+    return stamps
