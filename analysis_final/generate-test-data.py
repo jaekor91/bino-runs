@@ -1,4 +1,4 @@
-# ----- Test data
+# ----- Test data: Based on real data.
 blobs = np.load("./train_data/blobs_filtered2.npy")
 blanks = np.load("./train_data/blanks_filtered1.npy")
 
