@@ -434,12 +434,12 @@ def gen_SN_train_example(data, err, double = True):
     # --- Sample row width from est. distribution
     sig_sig_x = 0.382
     mu_sig_x = 1.9
-    sig_x = max(np.random.randn() * sig_sig_x + mu_sig_x, 1.)
+    sig_x = max(np.random.randn() * sig_sig_x + mu_sig_x, 1.5)
 
     # --- Col width distribution
-    sig_sig_y = mu_sig_x * 1.5
-    mu_sig_y = mu_sig_x * 1.5
-    sig_y = max(np.random.randn() * sig_sig_y + mu_sig_y, 2.)
+    sig_sig_y = mu_sig_x * 1.25
+    mu_sig_y = mu_sig_x * 1.25
+    sig_y = max(np.random.randn() * sig_sig_y + mu_sig_y, 1.5)
 
     # --- Y up and down scatter
     x = 10 * (np.random.random()-0.5) + 15
