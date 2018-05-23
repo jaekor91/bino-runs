@@ -405,3 +405,76 @@ def plot_post_stamps(stamps, num_start=0, fname="test.png", N_stamps2plot = 100,
         ax_list[idx_row, idx_col].set_title(i+num_start, fontsize=20)
     plt.savefig(fname, dpi=100, bbox_inches="tight")
     plt.close()
+
+def generalized_gauss_PSF(num_rows, num_cols, x, y, sigma_x, sigma_y, rho=0):
+    """
+    Given num_rows x num_cols of an image, generate a generalized PSF
+    at location x, y.
+
+    - Rho: covariance element of the 2D covariance matrix with sigma as diagonal std.
+    - num_comps: Number of components overwhich to divide up the components.
+    - scatter: The scatter in row and column direction. 
+
+    bivariate formula: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
+    """
+    xv = np.arange(0.5, num_rows)
+    yv = np.arange(0.5, num_cols)
+    yv, xv = np.meshgrid(xv, yv) # In my convention xv corresponds to rows and yv to columns
+
+    PSF = np.exp(-( (np.square(xv-x) / sigma_x**2) + (np.square(yv-y) / sigma_y**2) \
+                - (2 * rho * (yv-y) * (xv - x) /(sigma_x * sigma_y)) )/ (2 * (1-rho**2))) \
+        / (np.pi * 2 * sigma_x * sigma_y * np.sqrt(1 - rho**2))
+
+    return PSF 
+
+def gen_SN_train_example(data, err, double = True):
+    """
+    Given a blank image, generate a blob image by injection.
+    """
+    # --- Sample row width from est. distribution
+    sig_sig_x = 0.382
+    mu_sig_x = 1.9
+    sig_x = max(np.random.randn() * sig_sig_x + mu_sig_x, 1.)
+
+    # --- Col width distribution
+    sig_sig_y = mu_sig_x * 1.5
+    mu_sig_y = mu_sig_x * 1.5
+    sig_y = max(np.random.randn() * sig_sig_y + mu_sig_y, 2.)
+
+    # --- Y up and down scatter
+    x = 10 * (np.random.random()-0.5) + 15
+    y = 15 + np.random.random() # Fixed at center
+
+    # --- Generate random angle
+    sig_rho = 0.1
+    rho = min(0.7, np.random.randn() * sig_rho)
+
+    # --- Generate a blob image
+    if double:
+        sep_min = 3
+        sep_max = 10
+        sep = np.random.random() * (sep_max - sep_min) + sep_min
+        PSF1 = generalized_gauss_PSF(32, 32, x, y-sep/2., sig_x, sig_y, rho=rho)
+        PSF2 = generalized_gauss_PSF(32, 32, x, y+sep/2., sig_x, sig_y, rho=rho)    
+        PSF = PSF1 + PSF2
+    else:
+        PSF = generalized_gauss_PSF(32, 32, x, y, sig_x, sig_y, rho=rho)
+
+    fudge_factor = 50 * sig_x * sig_y
+    im = data + fudge_factor * np.percentile(data[4:25], 80) * PSF
+
+#     plt.close()
+#     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7, 3))
+#     ax1.imshow(data, aspect="auto", cmap="gray", interpolation="none") #, vmin=vmin, vmax=vmax)
+#     ax2.imshow(data/err, aspect="auto", cmap="gray", interpolation="none") #, vmin=vmin, vmax=vmax)
+#     plt.show()
+#     plt.close()
+
+#     plt.close()
+#     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7, 3))
+#     ax1.imshow(im, aspect="auto", cmap="gray", interpolation="none") #, vmin=vmin, vmax=vmax)
+#     ax2.imshow(im/err, aspect="auto", cmap="gray", interpolation="none") #, vmin=vmin, vmax=vmax)
+#     plt.show()
+#     plt.close()
+    SN = im/err
+    return SN
