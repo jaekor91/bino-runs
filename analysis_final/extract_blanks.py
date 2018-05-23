@@ -66,10 +66,10 @@ for i in range(N_panels):
     stamps = post_stamps_random_ft1[i*100:(i+1)*100, 0, :, :] / post_stamps_random_ft1[i*100:(i+1)*100, 1, :, :]
     plot_post_stamps(stamps, num_start=i*100, fname="./train_data/blanks/blanks_panel-filtered1-%03d.png" % i)
 
----- Second filtering. Only blacklisting. If a blank is blacklisted, then the blank is injected
-into the training data set and the label is blank (or False).
+# ---- Second filtering. Only blacklisting. If a blank is blacklisted, then the blank is injected
+# into the training data set and the label is blank (or False).
 post_stamps_random_ft1 = np.load("./train_data/blanks_filtered1.npy")
-black_list = [(8029, 8059), (8260, 8299), (8700, 8799), (11880, 118999), 19289, 19290, 19806, (23052, 23066)]
+black_list = [(8029, 8059), (8260, 8299), (8700, 8799), (118800, 118999), 19289, 19290, 19806, (23052, 23066)]
 iblack_list = np.zeros(post_stamps_random_ft1.shape[0], dtype=bool)
 for x in black_list:
     if type(x) is tuple:
