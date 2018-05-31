@@ -15,7 +15,7 @@ masks = [
 
 for mask in masks:
     # ----- Retrieving results
-    fname = "./result/" + mask + "-results.npz"
+    fname = "./results/" + mask + "-results.npz"
     results = np.load(fname)
     RA = results["RA"]
     DEC = results["DEC"]
@@ -31,11 +31,11 @@ for mask in masks:
     RF = np.ones_like(RA) * -999
     ZF = np.ones_like(RA) * -999
     
-    GF[1:] = gf[idx2]
-    RF[1:] = rf[idx2]
-    ZF[1:] = zf[idx2]
+    GF[idx1] = gf[idx2]
+    RF[idx1] = rf[idx2]
+    ZF[idx1] = zf[idx2]
     
-    np.savez("./result/" + mask + "-results-grz.npz", \
+    np.savez("./results/" + mask + "-results-grz.npz", \
              RA=RA, DEC=DEC, REDZ=REDZ, CONFIDENCE=CONFIDENCE, BIT=BIT,\
             gflux=GF, rflux=RF, zflux=ZF)
     
@@ -71,7 +71,7 @@ for mask in masks:
     ZF = None
     
     # ----- Retrieving results
-    fname = "./result/" + mask + "-results.npz"
+    fname = "./results/" + mask + "-results.npz"
     results = np.load(fname)
     RA = results["RA"]
     DEC = results["DEC"]
@@ -118,7 +118,7 @@ for mask in masks:
     ZF[idx1] = zf[idx2]    
     
     
-    np.savez("./result/" + mask + "-results-grz.npz", \
+    np.savez("./results/" + mask + "-results-grz.npz", \
              RA=RA, DEC=DEC, REDZ=REDZ, CONFIDENCE=CONFIDENCE, BIT=BIT,\
             gflux=GF, rflux=RF, zflux=ZF)
 
@@ -152,7 +152,7 @@ for i, mask in enumerate(masks):
     ZF = None
     
     # ----- Retrieving results
-    fname = "./result/" + mask + "-results.npz"
+    fname = "./results/" + mask + "-results.npz"
     results = np.load(fname)
     RA = results["RA"]
     DEC = results["DEC"]
@@ -179,6 +179,6 @@ for i, mask in enumerate(masks):
     ZF[idx1] = zf[idx2]    
     
     
-    np.savez("./result/" + mask + "-results-grz.npz", \
+    np.savez("./results/" + mask + "-results-grz.npz", \
              RA=RA, DEC=DEC, REDZ=REDZ, CONFIDENCE=CONFIDENCE, BIT=BIT,\
             gflux=GF, rflux=RF, zflux=ZF)
