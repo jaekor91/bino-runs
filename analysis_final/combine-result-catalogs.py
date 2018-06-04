@@ -20,6 +20,12 @@ masks = [
 "Eisenstein-DR6-6_339_6500"]
 # ----- Must not be altered!!!
 
+# ---- Region number
+region_names = ["DES", "COSMOS", "Non-DES SGC", "Non-DES DECaLS NGC", "Bok NGC"]
+region_num_mask = [3, 0, 0, 3, 3, 3, 3, 3, 2, 2, 1, 1, 4, 4, 4, 4]
+region_colors = ["Orange", "Red", "Green", "Blue", "Black"]
+
+
 save_dir = "./results/"
 mask = masks[0]
 fname = save_dir + mask + "-results-grz.npz"
@@ -78,6 +84,13 @@ for i in range(RA.size):
             if sel3[idx2] == 1:
                 union_catalog["BIT"][i] += 2**10
             counter += 1
+
+# --- Add a vector specifying the region that the data was collected.
+REGION = np.ones(MASK_NUM.size, dtype=int) * -999
+for i in range(REGION.size):
+    REGION[i] = region_num_mask[MASK_NUM[i]]
+union_catalog["REGION"] = REGION
+
 # --- Save
 np.save("union-catalog-results.npy", union_catalog)
 
