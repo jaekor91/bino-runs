@@ -50,7 +50,8 @@ for mask in masks:
 FDR = fits.open("../2017C/DESI-ELG-FDR-targets.fits")[1].data
 NDM = fits.open("../2017C/DESI-ELG-NDM-targets.fits")[1].data
 RF_data = np.load("../2017C/DESI-ELG-RF-target.npy")
-
+stars = np.load("../2017C/DESI-ELG-standards.npy")
+ra_star, dec_star, gmag_star = stars[:, 0],stars[:, 1], stars[:, 2]
 
 def mag2flux(mag):
     return 10**(0.4*(22.5-mag))
@@ -117,6 +118,11 @@ for mask in masks:
     RF[idx1] = rf[idx2]
     ZF[idx1] = zf[idx2]    
     
+    # Match star catalog    
+    idx1, idx2 = crossmatch_cat1_to_cat2(RA[1:], DEC[1:], ra_star, dec_star)
+    idx1 += 1 # First object correction
+        
+    GF[idx1] = mag2flux(gmag_star[idx2])  
     
     np.savez("./results/" + mask + "-results-grz.npz", \
              RA=RA, DEC=DEC, REDZ=REDZ, CONFIDENCE=CONFIDENCE, BIT=BIT,\
@@ -144,6 +150,7 @@ masks_fname = [
 
 def mag2flux(mag):
     return 10**(0.4*(22.5-mag))
+
 
 
 for i, mask in enumerate(masks):
@@ -178,6 +185,17 @@ for i, mask in enumerate(masks):
     RF[idx1] = rf[idx2]
     ZF[idx1] = zf[idx2]    
     
+    # Match star catalog    
+    for i in range(1, 7):
+        stars = np.load("../2018A-DESI/data/DR6-%d-sdss-gals.npz" % i)
+        ra_star, dec_star, gmag_star = stars["ra"] ,stars["dec"], stars["g"]
+
+        idx1, idx2 = crossmatch_cat1_to_cat2(RA[1:], DEC[1:], ra_star, dec_star)
+        if idx1.size > 0:
+            idx1 += 1 # First object correction
+                
+            GF[idx1] = mag2flux(gmag_star[idx2])  
+
     
     np.savez("./results/" + mask + "-results-grz.npz", \
              RA=RA, DEC=DEC, REDZ=REDZ, CONFIDENCE=CONFIDENCE, BIT=BIT,\
