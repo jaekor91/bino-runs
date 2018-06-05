@@ -2,27 +2,29 @@ from utils import *
 
 # ---- Must not be altered!!!
 masks = [
-"2-8h30m-270",
 "st82-1hr-270",
 "st82-3hr-125-270",
+"Eisenstein-COSMOS-1_325_6500",
+"Eisenstein-COSMOS-2_326_6500",
+"sgc-0hr-1-1_600_6300",
+"sgc-3hr-6-1_600_6300",
+"2-8h30m-270",
 "ngc-1-1_600_6300",
 "NGC-3-1_317_6500",
 "ngc-5-1_600_6300",
 "NGC-6-1_318_6500",
 "NGC-7-1-updated_319_6500",
-"sgc-0hr-1-1_600_6300",
-"sgc-3hr-6-1_600_6300",
-"Eisenstein-COSMOS-1_325_6500",
-"Eisenstein-COSMOS-2_326_6500",
 "Eisenstein-DR6-2_334_6500",
 "Eisenstein-DR6-3_335_6500",
 "Eisenstein-DR6-5_338_6500",
 "Eisenstein-DR6-6_339_6500"]
 # ----- Must not be altered!!!
 
+
+
 # ---- Region number
 region_names = ["DES", "COSMOS", "Non-DES SGC", "Non-DES DECaLS NGC", "Bok NGC"]
-region_num_mask = [3, 0, 0, 3, 3, 3, 3, 3, 2, 2, 1, 1, 4, 4, 4, 4]
+region_num_mask = [ 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3,  4, 4, 4, 4]
 region_colors = ["Orange", "Red", "Green", "Blue", "Black"]
 
 
