@@ -169,7 +169,7 @@ def index_edges(data, num_thres=20):
 		idx_max -=1
 	return idx_min, idx_max
 
-def gauss_fit2profile(K, mu_min=5., mu_max=20., sig_min=1., sig_max=3., dsig=0.05):
+def gauss_fit2profile(K, mu_min=2., mu_max=20., sig_min=1., sig_max=3., dsig=0.05):
 	# ---- Grid search for mu and sigma for the best Gaussian representation of the empirical kernel.
 	Nrows = 32 
 	mu_arr = np.arange(mu_min, mu_max, 0.05)
@@ -212,7 +212,7 @@ def remove_outlier(arr, std_thres = 2):
 	return arr[(arr - mu) < (std_thres * std)]
 
 
-def extraction_kernel_sig(K_collection, all_sigs=False, dsig=0.01, sig_min=0, sig_max=5):
+def extraction_kernel_sig(K_collection, all_sigs=False, dsig=0.01, sig_min=0.5, sig_max=5):
 	"""
 	Based on the extracted stellar profiles, 
 	compute a reasonable gaussian extraction kernal
