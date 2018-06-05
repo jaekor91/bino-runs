@@ -77,7 +77,7 @@ for i in range(RA.size):
     # Fix the bit if
     # - Mask number is 0, 1, or 2: Immediately set 256 or higher to zero.
     # - Find the matching RA and use the entry in RF list to fix the bit
-    if (RA[i] > 0) and (MASK_NUM[i] in [0, 1, 2]) and bit_true(BIT[i], 2**8 + 2**9 + 2**10):
+    if (RA[i] > 0) and (MASK_NUM[i] in [0, 1, 6]) and bit_true(BIT[i], 2**8 + 2**9 + 2**10):
         idx1, idx2 = crossmatch_cat1_to_cat2(np.array([RA[i]]), np.array([DEC[i]]), ra_RF, dec_RF, tol=1./(deg2arcsec+1e-12))
         if (idx1.size > 0):
             union_catalog["BIT"][i] = np.bitwise_and(2**1 + 2**2 + 2**3 + 2**4 + 2**5 + 2**6 + 2**7, BIT[i])
