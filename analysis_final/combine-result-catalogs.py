@@ -37,14 +37,14 @@ for key in catalog.keys():
     union_catalog[key] = [catalog[key]]
 
 union_catalog["MASK_NUM"] = [np.zeros(catalog["RA"].size, dtype=int)]
-union_catalog["OBJ_NUM"] = [range(catalog["RA"].size+1)]
+union_catalog["OBJ_NUM"] = [range(catalog["RA"].size)]
 
 for i, mask in enumerate(masks[1:]):
     fname = save_dir + mask + "-results-grz.npz"
     catalog = np.load(fname)
     for key in catalog.keys():
         union_catalog[key].append(catalog[key])
-    union_catalog["OBJ_NUM"].append(range(catalog["RA"].size+1))
+    union_catalog["OBJ_NUM"].append(range(catalog["RA"].size))
     union_catalog["MASK_NUM"].append(np.ones(catalog["RA"].size, dtype=int) * (i+1))
 
 # --- Concatenate all the info into single arrays
