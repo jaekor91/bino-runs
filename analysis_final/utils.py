@@ -63,7 +63,7 @@ def preprocess_bino(fname_data, fname_err, data_dir):
 		err_tmp = err[i].data * unit_conversion
 
 		# ---- Apply preprocessing
-		ibool = np.logical_or(np.isnan(err_tmp), np.isnan(data_tmp), err_tmp <=0.)
+		ibool = np.logical_or.reduce((np.isnan(err_tmp), np.isnan(data_tmp), err_tmp <=0., data_tmp > 10**4))
 		data_tmp[ibool] = 0
 		err_tmp[ibool] = infinity
 
