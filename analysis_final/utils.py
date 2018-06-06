@@ -657,3 +657,11 @@ def bit_true(bit1, bit2):
     Compare if the two ints have any common number
     """
     return np.bitwise_and(bit1, bit2).sum() > 0
+
+def FDR_cut(grz):
+    """
+    Given a list [g,r,z] magnitudes, apply the cut and return an indexing boolean vector.
+    """
+    g,r,z=grz; yrz = (r-z); xgr = (g-r)
+    ibool = (r<23.4) & (yrz>.3) & (yrz<1.6) & (xgr < (1.15*yrz)-0.15) & (xgr < (1.6-1.2*yrz))
+    return ibool
