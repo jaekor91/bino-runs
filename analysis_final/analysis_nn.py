@@ -57,7 +57,7 @@ fname_data = "obj_abs_slits_lin.fits"
 fname_err = "obj_abs_err_slits_lin.fits"
 
 # ---- For each set
-for q in range(1, 2): #len(dirs)//2):
+for q in range(1, len(dirs)//2):
     print(q, dirs[2*q:2*(q+1)])
 
     # ---- Load the data 
