@@ -527,7 +527,7 @@ def reject_heuristics(stamps):
     for i in range(reject.size):
         SN = stamps[i, 4:25, :, :]
         too_many_zeros = (np.abs(SN) < 1e-20).sum() > 32 * 20 * 0.5 
-        too_many_high_SN = (np.abs(SN) > 5).sum() > 32 * 20 * 0.25
+        too_many_high_SN = (np.abs(SN) > 50).sum() > 32 * 20 * 0.5
         if too_many_zeros or too_many_high_SN:
             reject[i] = True
     return reject
