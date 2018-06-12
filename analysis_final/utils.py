@@ -559,31 +559,36 @@ def z_candidates(wavegrid1, wavegrid2, detection1, detection2, z_min = 0., z_max
     # ---- Perform cluster reduction
     z_final = [] 
     hits_final = []
+    cluster_sizes = []
     # Neighbors are defined as any other zs that are separated within 1.5 * dz =1.5e-4
     i = 0 
     while i < z_arr.size:
         cluster_z = [z_arr[i]]
         cluster_hits = [hits_arr[i]]
+        cluster_size = 1 
         j = 1
         while ((i+j) < z_arr.size) and ((z_arr[i+j] - z_arr[i+j-1]) < 1.5e-4):
             cluster_z.append(z_arr[i+j])
             cluster_hits.append(hits_arr[i+j])            
+            cluster_size += 1
             j+=1
         # Save the mean of the clusters
         z_final.append(np.mean(cluster_z))
         hits_final.append(np.mean(cluster_hits))        
+        cluster_sizes.append(cluster_size)
         
         # Move on to the next cluster
         i += j
         
     zs = np.asarray(z_final)
     num_hits = np.asarray(hits_final)
+    cluster_sizes = np.asarray(cluster_sizes)    
 
     # Do not sort by number of hits    
     # idx_sort = np.argsort(hits_final)[::-1]
     # zs = z_final[idx_sort]
     # num_hits = hits_final[idx_sort]
-    return zs, num_hits
+    return zs, num_hits, cluster_sizes
 
 
 def crossmatch_cat1_to_cat2(ra1, dec1, ra2, dec2, tol=1./(deg2arcsec+1e-12)):
