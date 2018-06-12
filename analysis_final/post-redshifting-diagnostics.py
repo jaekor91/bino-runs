@@ -99,13 +99,11 @@ CONFIDENCE = data["CONFIDENCE"]
 
 # --------- Make 2D Diagnostic plots
 spec2d_panels = "spec2d_panels/"
-vmin_2D_data = -0.5
-vmax_2D_data = 0.5
-vmin_2D_SN = -3
-vmax_2D_SN = 3
-vmin_2D_err = -0.5
-vmax_2D_err = +0.5
-aspect_ratio = 5
+vmin_2D_data = -0.75
+vmax_2D_data = 0.75
+vmin_2D_SN = -4
+vmax_2D_SN = 4
+aspect_ratio = 3
 
 plt.close()
 
@@ -113,7 +111,7 @@ mask_dirs_trimmed = [x[:-5] for x in mask_dirs]
 lw1 = 1.
 
 # For each mask, make a plot with each object getting a histogram
-for k in range(3, len(mask_dirs)):
+for k in range(10, len(mask_dirs)):
     mask = mask_dirs[k] # Mask name
     data_dir = "../../data/" + mask + "/" # Mask data dir
 
@@ -143,8 +141,9 @@ for k in range(3, len(mask_dirs)):
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
 
-    # Split the spectra into two halves when displaying
-    idx_middle = wavegrid.size // 2
+    # Split the spectra into three chunks
+    idx_1st = wavegrid.size // 3
+    idx_2nd = 2 * wavegrid.size // 3         
     
     # ---- Make 2d diagnostic plot only for stars.
     for specnum in range(1, data_err.shape[0]):
@@ -154,23 +153,30 @@ for k in range(3, len(mask_dirs)):
         # Bit number
         bit = bit_from_header(header)
 
-        fig, ax_list = plt.subplots(4, 1, figsize=(25, 9))
+        fig, ax_list = plt.subplots(6, 1, figsize=(20, 13))
         # Spectrum -- first
-        ax_list[0].imshow(data[:, :idx_middle], vmin=vmin_2D_data, vmax=vmax_2D_data, interpolation="none", cmap="gray",aspect=aspect_ratio)
-        ax_list[0].axhline(y=data.shape[0]/2., c="red", lw=lw1)
+        ax_list[0].imshow(data[:, :idx_1st], vmin=vmin_2D_data, vmax=vmax_2D_data, interpolation="none", cmap="gray",aspect=aspect_ratio)
+        ax_list[0].axhline(y=data.shape[0]/2., c="red", lw=lw1, ls="--")
         ax_list[0].set_title("Data. v [%.2f, %.2f] -- first" % (vmin_2D_data, vmax_2D_data),fontsize=ft_size)
-        ax_list[1].imshow(data[:, idx_middle:], vmin=vmin_2D_data, vmax=vmax_2D_data, interpolation="none", cmap="gray",aspect=aspect_ratio)
-        ax_list[1].axhline(y=data.shape[0]/2., c="red", lw=lw1)
+        ax_list[1].imshow(data[:, idx_1st:idx_2nd], vmin=vmin_2D_data, vmax=vmax_2D_data, interpolation="none", cmap="gray",aspect=aspect_ratio)
+        ax_list[1].axhline(y=data.shape[0]/2., c="red", lw=lw1, ls="--")
         ax_list[1].set_title("Data. v [%.2f, %.2f] -- second" % (vmin_2D_data, vmax_2D_data),fontsize=ft_size)        
-        # Signal to noise
-        ax_list[2].imshow(data[:, :idx_middle]/err[:, :idx_middle], vmin=vmin_2D_SN, vmax=vmax_2D_SN, interpolation="none", cmap="gray",aspect=aspect_ratio)
-        ax_list[2].axhline(y=data.shape[0]/2., c="red", lw=lw1)
-        ax_list[2].set_title("SN. v [%.2f, %.2f] -- first" % (vmin_2D_SN, vmax_2D_SN),fontsize=ft_size)
-        ax_list[3].imshow(data[:, idx_middle:]/err[:, idx_middle:], vmin=vmin_2D_SN, vmax=vmax_2D_SN, interpolation="none", cmap="gray",aspect=aspect_ratio)
-        ax_list[3].axhline(y=data.shape[0]/2., c="red", lw=lw1)
+        ax_list[2].imshow(data[:, idx_2nd:], vmin=vmin_2D_data, vmax=vmax_2D_data, interpolation="none", cmap="gray",aspect=aspect_ratio)
+        ax_list[2].axhline(y=data.shape[0]/2., c="red", lw=lw1, ls="--")
+        ax_list[2].set_title("Data. v [%.2f, %.2f] -- third" % (vmin_2D_data, vmax_2D_data),fontsize=ft_size)        
+
+        # Signal to noise - first
+        ax_list[3].imshow(data[:, :idx_1st]/err[:, :idx_1st], vmin=vmin_2D_SN, vmax=vmax_2D_SN, interpolation="none", cmap="gray",aspect=aspect_ratio)
+        ax_list[3].axhline(y=data.shape[0]/2., c="red", lw=lw1, ls="--")
         ax_list[3].set_title("SN. v [%.2f, %.2f] -- first" % (vmin_2D_SN, vmax_2D_SN),fontsize=ft_size)
+        ax_list[4].imshow(data[:, idx_1st:idx_2nd]/err[:, idx_1st:idx_2nd], vmin=vmin_2D_SN, vmax=vmax_2D_SN, interpolation="none", cmap="gray",aspect=aspect_ratio)
+        ax_list[4].axhline(y=data.shape[0]/2., c="red", lw=lw1, ls="--")
+        ax_list[4].set_title("SN. v [%.2f, %.2f] -- second" % (vmin_2D_SN, vmax_2D_SN),fontsize=ft_size)
+        ax_list[5].imshow(data[:, idx_2nd:]/err[:, idx_2nd:], vmin=vmin_2D_SN, vmax=vmax_2D_SN, interpolation="none", cmap="gray",aspect=aspect_ratio)
+        ax_list[5].axhline(y=data.shape[0]/2., c="red", lw=lw1, ls="--")
+        ax_list[5].set_title("SN. v [%.2f, %.2f] -- third" % (vmin_2D_SN, vmax_2D_SN),fontsize=ft_size)
         
-        plt.suptitle(title_str, fontsize=ft_size, y = 0.95)
+        plt.suptitle(title_str, fontsize=ft_size, y = 0.9)
         
 
         if bit_true(bit, 2**1): # If a star
@@ -181,12 +187,15 @@ for k in range(3, len(mask_dirs)):
             if conf[specnum] > -1:
                 _, idx_list = idx_peaks(wavegrid, redz[specnum], idx_min=0, idx_max=None)            
                 for idx in idx_list:
-                    if (idx > 10) and (idx < idx_middle):
+                    if (idx > 10) and (idx < idx_1st):
                         ax_list[0].axvline(x=idx, c="red", ls="--", lw=1.)                        
-                        ax_list[2].axvline(x=idx, c="red", ls="--", lw=1.)
-                    elif (idx > idx_middle):
-                        ax_list[1].axvline(x=idx-idx_middle, c="red", ls="--", lw=1.)                        
-                        ax_list[3].axvline(x=idx-idx_middle, c="red", ls="--", lw=1.)                        
+                        ax_list[3].axvline(x=idx, c="red", ls="--", lw=1.)
+                    elif (idx > idx_1st) and (idx < idx_2nd):
+                        ax_list[1].axvline(x=idx-idx_1st, c="red", ls="--", lw=1.)                        
+                        ax_list[4].axvline(x=idx-idx_1st, c="red", ls="--", lw=1.)                        
+                    elif (idx > idx_2nd) and (idx < wavegrid.size):
+                        ax_list[2].axvline(x=idx-idx_2nd, c="red", ls="--", lw=1.)                        
+                        ax_list[5].axvline(x=idx-idx_2nd, c="red", ls="--", lw=1.)                                                
             plt.savefig(save_dir + ("/targets-sepcnum%d.png" % specnum), dpi=100, bbox_inches="tight")
         # Close 
         plt.close()    
