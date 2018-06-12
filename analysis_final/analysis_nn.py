@@ -132,7 +132,7 @@ for q in range(1, len(dirs)//2):
             if zs.size == 0: 
             	print("No candidate detected")
             else:
-	            print("Number of candidates %d" % len(zs))
+	            print("Number of candidates %d" % zs.size)
 	            print("Max hits (cluster average): %.3f" % num_hits[0])
 	            # Only look at top five
 	            for i, z in enumerate(zs):
@@ -172,4 +172,4 @@ for q in range(1, len(dirs)//2):
 	            end = time.time()
 	            print("time taken: %d sec" % (end-start))
 	            print("\n")
-	        print("\n")
+        print("\n")
