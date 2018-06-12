@@ -533,7 +533,7 @@ def reject_heuristics(stamps):
     return reject
 
 def z_candidates(wavegrid1, wavegrid2, detection1, detection2, z_min = 0., z_max = 2.,\
-	idx_min1=0, idx_max1=None, idx_min2=0, idx_max2=None):
+    idx_min1=0, idx_max1=None, idx_min2=0, idx_max2=None):
     """
     Based on detection/wavegrid arrays, determine candidates.
     """
@@ -542,55 +542,50 @@ def z_candidates(wavegrid1, wavegrid2, detection1, detection2, z_min = 0., z_max
 
     for i, z in enumerate(z_arr):
         # Count the number of hits from first data
-        _, peaks = idx_peaks(wavegrid1, z, idx_min=idx_min1, idx_max=idx_max1)
-        for idx in peaks:
-            if detection1[idx]:
-                hits_arr[i] += 1
+        _, idx_list = idx_peaks(wavegrid1, z, idx_min=idx_min1, idx_max=idx_max1)
+        for idx in idx_list:
+            if (idx > 10) and (detection1[idx-2:idx+3].sum()>0):
+                    hits_arr[i] += 1
 
         # Second
-        _, peaks = idx_peaks(wavegrid2, z, idx_min=idx_min2, idx_max=idx_max2)
-        for idx in peaks:
-            if detection2[idx]:
-                hits_arr[i] += 1    
+        _, idx_list = idx_peaks(wavegrid2, z, idx_min=idx_min2, idx_max=idx_max2)
+        for idx in idx_list:
+            if (idx > 10) and (detection2[idx-2:idx+3].sum()>0):
+                    hits_arr[i] += 1    
     # Concentrate on those that have detections
     z_arr = z_arr[hits_arr>0]
     hits_arr = hits_arr[hits_arr>0]
 
+    # ---- Perform cluster reduction
+    z_final = [] 
+    hits_final = []
+    # Neighbors are defined as any other zs that are separated within 1.5 * dz =1.5e-4
+    i = 0 
+    while i < z_arr.size:
+        cluster_z = [z_arr[i]]
+        cluster_hits = [hits_arr[i]]
+        j = 1
+        while ((i+j) < z_arr.size) and ((z_arr[i+j] - z_arr[i+j-1]) < 1.5e-4):
+            cluster_z.append(z_arr[i+j])
+            cluster_hits.append(hits_arr[i+j])            
+            j+=1
+        # Save the mean of the clusters
+        z_final.append(np.mean(cluster_z))
+        hits_final.append(np.mean(cluster_hits))        
+        
+        # Move on to the next cluster
+        i += j
+        
     # Sort by number of hits
-    idx_sort = np.argsort(hits_arr)[::-1]
-    zs = list(z_arr[idx_sort])
-    num_hits = list(hits_arr[idx_sort])
+    z_final = np.asarray(z_final)
+    hits_final = np.asarray(hits_final)
+    
+    idx_sort = np.argsort(hits_final)[::-1]
+    zs = z_final[idx_sort]
+    num_hits = hits_final[idx_sort]
 
-    # ---- Condense array by eliminating redundancy
-    zs_final = []
-    num_hits_final = []
-    while len(zs) > 0:
-        # Pick the first element and remove it from the original list
-        z = zs[0] 
-        hit = num_hits[0]
-        del zs[0]
-        del num_hits[0]
 
-        # See if there is any other redshift is within 5-4 
-        # If so compare the number of hits and save only one.
-        none_same = False
-        while not none_same:
-            none_same = True
-            for i in range(len(num_hits)):
-                if np.abs(zs[i]-z) < 5e-3:
-                    # Compare the number of hits
-                    if hit < num_hits[i]:
-                        z = zs[i]
-                        hit = num_hits[i]                    
-                    del zs[i]
-                    del num_hits[i]
-                    none_same = False
-                    break
-
-        zs_final.append(z)
-        num_hits_final.append(hit)
-
-    return zs_final, num_hits_final
+    return zs, num_hits
 
 
 def crossmatch_cat1_to_cat2(ra1, dec1, ra2, dec2, tol=1./(deg2arcsec+1e-12)):
