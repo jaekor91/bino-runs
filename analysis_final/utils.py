@@ -576,15 +576,13 @@ def z_candidates(wavegrid1, wavegrid2, detection1, detection2, z_min = 0., z_max
         # Move on to the next cluster
         i += j
         
-    # Sort by number of hits
-    z_final = np.asarray(z_final)
-    hits_final = np.asarray(hits_final)
-    
-    idx_sort = np.argsort(hits_final)[::-1]
-    zs = z_final[idx_sort]
-    num_hits = hits_final[idx_sort]
+    zs = np.asarray(z_final)
+    num_hits = np.asarray(hits_final)
 
-
+    # Do not sort by number of hits    
+    # idx_sort = np.argsort(hits_final)[::-1]
+    # zs = z_final[idx_sort]
+    # num_hits = hits_final[idx_sort]
     return zs, num_hits
 
 

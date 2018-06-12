@@ -75,7 +75,6 @@ for q in range(1, len(dirs)//2):
     data, err, header = extract_single_data(data_err_2, list_headers_2, 1)
     wavegrid2 = wavegrid_from_header(header, data.shape[1])
 
-
     # ---- Analyze each spectrum
     for specnum in range(1, Nobjs):
         start = time.time()
@@ -125,52 +124,52 @@ for q in range(1, len(dirs)//2):
             detection1[query1] = P1 > thres
             detection2[query2] = P2 > thres
             
-
-
             # ----- Find redshift candidate based on the detections
             zs, num_hits = z_candidates(wavegrid1, wavegrid2, detection1, detection2, \
                             idx_min1=idx_min1, idx_max1=idx_max1, idx_min2=idx_min2, idx_max2=idx_max2)
 
-            
             # ---- For each redshift candidate create a review panel
-            print("Number of candidates %d" % len(zs))
-            print("Max hits (cluster average): %.3f" % num_hits[0])
-            # Only look at top five
-            for i, z in enumerate(zs):
-                print(i, z, num_hits[i])
-                plt.close()
-                fig, ax_list = plt.subplots(4, N_peaks, figsize=(7, 7))
-                # Location of peaks in data 1 given the redshift.
-                peaks, indices = idx_peaks(wavegrid1, z, idx_min=idx_min1, idx_max=idx_max1)
-                for j in range(len(peaks)):
-                    idx = indices[j]
-                    if idx > 0: # If peak is within data region.
-                        ax_list[0, peak2int[peaks[j]]].imshow(data1[:, idx-16:idx+16], cmap="gray", interpolation="None")                    
-                        ax_list[0, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)            
-                        ax_list[1, peak2int[peaks[j]]].imshow(SN1[:, idx-16:idx+16], cmap="gray", interpolation="None")                                
-                        ax_list[1, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)            
-                    ax_list[0, j].axis("off")
-                    ax_list[1, j].axis("off")        
+            if zs.size == 0: 
+            	print("No candidate detected")
+            else:
+	            print("Number of candidates %d" % len(zs))
+	            print("Max hits (cluster average): %.3f" % num_hits[0])
+	            # Only look at top five
+	            for i, z in enumerate(zs):
+	                print(i, z, num_hits[i])
+	                plt.close()
+	                fig, ax_list = plt.subplots(4, N_peaks, figsize=(7, 7))
+	                # Location of peaks in data 1 given the redshift.
+	                peaks, indices = idx_peaks(wavegrid1, z, idx_min=idx_min1, idx_max=idx_max1)
+	                for j in range(len(peaks)):
+	                    idx = indices[j]
+	                    if idx > 0: # If peak is within data region.
+	                        ax_list[0, peak2int[peaks[j]]].imshow(data1[:, idx-16:idx+16], cmap="gray", interpolation="None")                    
+	                        ax_list[0, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)            
+	                        ax_list[1, peak2int[peaks[j]]].imshow(SN1[:, idx-16:idx+16], cmap="gray", interpolation="None")                                
+	                        ax_list[1, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)            
+	                    ax_list[0, j].axis("off")
+	                    ax_list[1, j].axis("off")        
 
-                # Location of peaks in data 2 given the redshift.
-                peaks, indices = idx_peaks(wavegrid2, z, idx_min=idx_min2, idx_max=idx_max2)
-                for j in range(len(peaks)):
-                    idx = indices[j]
-                    if idx > 0: # If peak is within data region.
-                        ax_list[2, peak2int[peaks[j]]].imshow(data2[:, idx-16:idx+16], cmap="gray", interpolation="None")  
-                        ax_list[2, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)                        
-                        ax_list[3, peak2int[peaks[j]]].imshow(SN2[:, idx-16:idx+16], cmap="gray", interpolation="None")  
-                        ax_list[3, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)                        
-                    ax_list[2, j].axis("off")
-                    ax_list[3, j].axis("off")        
+	                # Location of peaks in data 2 given the redshift.
+	                peaks, indices = idx_peaks(wavegrid2, z, idx_min=idx_min2, idx_max=idx_max2)
+	                for j in range(len(peaks)):
+	                    idx = indices[j]
+	                    if idx > 0: # If peak is within data region.
+	                        ax_list[2, peak2int[peaks[j]]].imshow(data2[:, idx-16:idx+16], cmap="gray", interpolation="None")  
+	                        ax_list[2, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)                        
+	                        ax_list[3, peak2int[peaks[j]]].imshow(SN2[:, idx-16:idx+16], cmap="gray", interpolation="None")  
+	                        ax_list[3, peak2int[peaks[j]]].axvline(x=15.5, c="red", ls="--", lw=1)                        
+	                    ax_list[2, j].axis("off")
+	                    ax_list[3, j].axis("off")        
 
-                for m in range(N_peaks):
-                    ax_list[0, m].set_title(name[m], fontsize=15)
-                title_str = "specnum%03d-cand%d-hits%.3f-z%.5f" % (specnum, i, num_hits[i], z)
-                plt.suptitle(title_str, fontsize=15)
-                plt.savefig(save_dir+"/" + title_str + ".png", dpi=100, bbox_inches="tight")
-                plt.close()
-            end = time.time()
-            print("time taken: %d sec" % (end-start))
-            print("\n")
-        print("\n")
+	                for m in range(N_peaks):
+	                    ax_list[0, m].set_title(name[m], fontsize=15)
+	                title_str = "specnum%03d-cand%d-hits%.3f-z%.5f" % (specnum, i, num_hits[i], z)
+	                plt.suptitle(title_str, fontsize=15)
+	                plt.savefig(save_dir+"/" + title_str + ".png", dpi=100, bbox_inches="tight")
+	                plt.close()
+	            end = time.time()
+	            print("time taken: %d sec" % (end-start))
+	            print("\n")
+	        print("\n")
