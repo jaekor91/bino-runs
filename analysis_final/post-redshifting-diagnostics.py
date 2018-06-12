@@ -154,7 +154,7 @@ for k in range(3, len(mask_dirs)):
         # Bit number
         bit = bit_from_header(header)
 
-        fig, ax_list = plt.subplots(4, 1, figsize=(25, 10))
+        fig, ax_list = plt.subplots(4, 1, figsize=(25, 9))
         # Spectrum -- first
         ax_list[0].imshow(data[:, :idx_middle], vmin=vmin_2D_data, vmax=vmax_2D_data, interpolation="none", cmap="gray",aspect=aspect_ratio)
         ax_list[0].axhline(y=data.shape[0]/2., c="red", lw=lw1)
@@ -187,7 +187,7 @@ for k in range(3, len(mask_dirs)):
                     elif (idx > idx_middle):
                         ax_list[1].axvline(x=idx-idx_middle, c="red", ls="--", lw=1.)                        
                         ax_list[3].axvline(x=idx-idx_middle, c="red", ls="--", lw=1.)                        
-            plt.savefig(save_dir + ("/targets-sepcnum%d.png" % specnum), dpi=150, bbox_inches="tight")
+            plt.savefig(save_dir + ("/targets-sepcnum%d.png" % specnum), dpi=100, bbox_inches="tight")
         # Close 
         plt.close()    
             
