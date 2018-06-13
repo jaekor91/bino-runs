@@ -126,4 +126,12 @@ for i, mask in enumerate(mask_dirs):
                     # Save the extracted spectrum and its error
                     giant_dict[mask][specnum]["spec1D"] = (spec1D, spec1D_ivar) 
 
+# ---- Black list rejection (confirmed by looking at the naive and fitted kernels)
+black_list = {"Eisenstein-DR6-6_339_8750": [161, 164], \
+"ngc-1-1_600_8700": [2, 31], "ngc-5-1_600_6300": [14], "NGC-6-1_318_8750": [75]}
+
+for mask in black_list.keys():
+    for specnum in black_list[mask]:
+        del giant_dict[mask][specnum]
+
 np.save("./stars/all-stars", giant_dict)
