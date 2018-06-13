@@ -34,7 +34,9 @@ SELECTIONS_COMPACT  = ["FDR", "NDM", "RF"]
 data = np.load("union-catalog-results-penultimate.npy").item()
 RA = data["RA"]
 BIT = data["BIT"]
-ibool = BIT == 2
+DEC = data["DEC"]
+ibool_RADEC = (RA > 149.8) & (RA < 150) & (DEC > 2.05) & (DEC < 2.225) # Zero redshift success region.
+ibool = (BIT == 2) & ~ibool_RADEC
 # ---- Subset: Only targets
 RA = data["RA"][ibool]
 DEC = data["DEC"][ibool]
@@ -97,7 +99,7 @@ for i, mask in enumerate(mask_dirs):
             if bit_from_header(header) == 2**1: # If it's a star
                 print(specnum)
                 idx = (MASK_NUM == mask_num) & (OBJ_NUM == specnum) # Retreive the corresponding entry in the union catalog.
-                if GFLUX[idx][0] > 0:# gflux is available
+                if (idx.sum() >0) and (GFLUX[idx][0] > 0):# gflux is available
                     giant_dict[mask][specnum] = {"RA": RA[idx][0], "DEC": DEC[idx][0], "gflux": GFLUX[idx][0]} # Create a dictionary entry for the star
 
                     # ----- Compute the extraction kernel 
