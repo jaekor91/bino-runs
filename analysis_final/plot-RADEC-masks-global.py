@@ -52,7 +52,7 @@ SELECTIONS_COMPACT  = ["FDR", "NDM", "RF"]
 data = np.load("union-catalog-results-penultimate.npy").item()
 RA = data["RA"]
 BIT = data["BIT"]
-ibool = (RA != -999) & (BIT !=2) & (BIT !=4)
+ibool = (RA != -999) & (BIT !=2) & (BIT !=4) # Fiilter our non-targets
 # ---- Subset: Only targets
 RA = data["RA"][ibool]
 DEC = data["DEC"][ibool]
@@ -81,13 +81,14 @@ save_dir = "./figures/RADEC-plots/"
 for i, mask in enumerate(masks_trimmed): # For each of the 16 masks
     # --- RA/DEC of Success vs. Failure for each masks --- In aggregate separately.
     fig, ax = plt.subplots(1, figsize=(5, 5))
-    # Redshift Failure
-    ibool2 = (REDZ == -999) & (MASK_NUM == i) 
+    # All objects
+    ibool2 = (MASK_NUM == i) 
     ax.scatter(RA[ibool2], DEC[ibool2], c="black", edgecolors="none")
     # Redshift Success    
-    ibool1 = (REDZ > 0) & (MASK_NUM == i) 
+    ibool1 = (REDZ > 0.6) & (MASK_NUM == i) 
     ax.scatter(RA[ibool1], DEC[ibool1], c="red", edgecolors="none")
     ax.axis("equal")
+    # Compute succccess rate
     z_success_rate = ibool1.sum() / (MASK_NUM == i).sum() * 100
     plt.suptitle(mask + (", z-rate: %.1f%%" % z_success_rate), fontsize=15)
     plt.savefig(save_dir + "RADEC-targets-%s.pdf" % mask, dpi=200, bbox_inches="tight")
