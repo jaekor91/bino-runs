@@ -22,8 +22,8 @@ masks = [
 masks_trimmed = [
 "st82-1hr",
 "st82-3hr",
-"Eisenstein",
-"Eisenstein",
+"Eisenstein-COSMOS-1",
+"Eisenstein-COSMOS-2",
 "sgc-0hr",
 "sgc-3hr",
 "2-8h30m",
@@ -32,10 +32,10 @@ masks_trimmed = [
 "ngc-5",
 "NGC-6",
 "NGC-7",
-"Eisenstein-DR6",
-"Eisenstein-DR6",
-"Eisenstein-DR6",
-"Eisenstein-DR6",]
+"Eisenstein-DR6-2",
+"Eisenstein-DR6-3",
+"Eisenstein-DR6-5",
+"Eisenstein-DR6-6",]
 # ----- Must not be altered!!!
 
 # ---- Region number
