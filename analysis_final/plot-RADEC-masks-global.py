@@ -18,6 +18,24 @@ masks = [
 "Eisenstein-DR6-3_335_6500",
 "Eisenstein-DR6-5_338_6500",
 "Eisenstein-DR6-6_339_6500"]
+
+masks_trimmed = [
+"st82-1hr",
+"st82-3hr",
+"Eisenstein",
+"Eisenstein",
+"sgc-0hr",
+"sgc-3hr",
+"2-8h30m",
+"ngc-1",
+"NGC-3",
+"ngc-5",
+"NGC-6",
+"NGC-7",
+"Eisenstein-DR6",
+"Eisenstein-DR6",
+"Eisenstein-DR6",
+"Eisenstein-DR6",]
 # ----- Must not be altered!!!
 
 # ---- Region number
@@ -56,3 +74,22 @@ ax.axis("equal")
 plt.savefig("./figures/RADEC-plots/RADEC-masks.pdf", dpi=200, bbox_inches="tight")
 # plt.show()
 plt.close()
+
+
+save_dir = "./figures/RADEC-plots/"
+
+for i, mask in enumerate(masks_trimmed): # For each of the 16 masks
+    # --- RA/DEC of Success vs. Failure for each masks --- In aggregate separately.
+    fig, ax = plt.subplots(1, figsize=(5, 5))
+    # Redshift Failure
+    ibool2 = (REDZ == -999) & (MASK_NUM == i) 
+    ax.scatter(RA[ibool2], DEC[ibool2], c="black", edgecolors="none")
+    # Redshift Success    
+    ibool1 = (REDZ > 0) & (MASK_NUM == i) 
+    ax.scatter(RA[ibool1], DEC[ibool1], c="red", edgecolors="none")
+    ax.axis("equal")
+    z_success_rate = ibool1.sum() / (MASK_NUM == i).sum() * 100
+    plt.suptitle(mask + (", z-rate: %.1f%%" % z_success_rate), fontsize=15)
+    plt.savefig(save_dir + "RADEC-targets-%s.pdf" % mask, dpi=200, bbox_inches="tight")
+#     plt.show()    
+    plt.close()
