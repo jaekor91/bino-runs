@@ -20,13 +20,10 @@ masks = [
 "Eisenstein-DR6-6_339_6500"]
 # ----- Must not be altered!!!
 
-
-
 # ---- Region number
 region_names = ["DES", "COSMOS", "Non-DES SGC", "Non-DES DECaLS NGC", "Bok NGC"]
 region_num_mask = [ 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3,  4, 4, 4, 4]
 region_colors = ["Orange", "Red", "Green", "Blue", "Black"]
-
 
 save_dir = "./results/"
 mask = masks[0]
