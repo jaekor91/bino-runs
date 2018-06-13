@@ -87,7 +87,7 @@ masks_ordered = [
 # ----- Must not be altered!!!
 
 # Load the union catalog data
-data = np.load("union-catalog-results.npy").item()
+data = np.load("union-catalog-results-penultimate.npy").item()
 BIT = data["BIT"]
 GMAG = flux2mag(data["gflux"])
 MASK_NUM = data["MASK_NUM"]
@@ -111,7 +111,7 @@ mask_dirs_trimmed = [x[:-5] for x in mask_dirs]
 lw1 = 1.
 
 # For each mask, make a plot with each object getting a histogram
-for k in range(10, len(mask_dirs)):
+for k in range(2, len(mask_dirs)):
     mask = mask_dirs[k] # Mask name
     data_dir = "../../data/" + mask + "/" # Mask data dir
 
