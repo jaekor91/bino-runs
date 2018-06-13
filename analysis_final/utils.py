@@ -20,6 +20,8 @@ mpl.rcParams['ytick.labelsize'] = 15
 def flux2mag(flux):
     return 22.5-2.5*np.log10(flux)    
 
+def mag2flux(mag):
+    return 10**(0.4*(22.5-mag))
 
 def preprocess_bino(fname_data, fname_err, data_dir):
 	"""
@@ -172,7 +174,7 @@ def index_edges(data, num_thres=20):
 def gauss_fit2profile(K, mu_min=2., mu_max=20., sig_min=1., sig_max=3., dsig=0.05):
 	# ---- Grid search for mu and sigma for the best Gaussian representation of the empirical kernel.
 	Nrows = 32 
-	mu_arr = np.arange(mu_min, mu_max, 0.05)
+	mu_arr = np.arange(mu_min, mu_max, 0.5)
 	sig_arr = np.arange(sig_min, sig_max, dsig)
 	chi_arr = np.zeros((mu_arr.size, sig_arr.size))
 	x_arr = np.arange(0, Nrows, 1)
