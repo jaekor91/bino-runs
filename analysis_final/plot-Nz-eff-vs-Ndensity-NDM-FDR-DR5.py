@@ -213,6 +213,9 @@ for zpair in zpairs:
     plt.savefig("eff-vs-ndensity-NDM-diff-z%.1f-%.1f.png" % (z_cut1, z_cut2), dpi=200, bbox_inches="tight")
     plt.close()
 
+ibool = ~ibool_RADEC & (BIT != -999) & (BIT != 2) & (BIT !=4) & ibool_mask & (REGION != 4) & \
+np.logical_or((CONFIDENCE==-999), (CONFIDENCE==2))
+
 # ---- Compute redz histogram with 600 increment
 bins = np.arange(0.0, 2, 0.04)
 
@@ -240,6 +243,7 @@ for l in range(3):
         Nz = iselect.sum()
         avg_eff = Nz/float(Nsample)
         Norm_constant = Ndensity * avg_eff
+#         print(Ndensity, avg_eff, Ndensity * avg_eff)
         ax.hist(REDZ[iselect], bins=bins, weights=np.ones(Nz) / Nz * Norm_constant, histtype="step", lw=1.5,
                label="NDM%d %d" % (NDM_sel[l], Ndensity))
         
