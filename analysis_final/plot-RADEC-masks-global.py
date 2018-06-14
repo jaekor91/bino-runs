@@ -63,14 +63,25 @@ REDZ = data["REDZ"][ibool]
 
 # ---- Plot RA/DEC location of fields.
 plt.close()
-fig, ax = plt.subplots(1, figsize = (15, 3))
+fig, (ax1, ax2) = plt.subplots(2, figsize = (15, 15))
+ibool_mask = (MASK_NUM != 9) & (MASK_NUM !=14) & (MASK_NUM !=10) & (MASK_NUM !=8)    
 for k in range(5):
     ibool = (REGION == k) # & (MASK_NUM == 11)
-    ax.scatter(RA[ibool], DEC[ibool], c=region_colors[k], label=region_names[k], s=20, edgecolors="none")
+    ax1.scatter(RA[ibool], DEC[ibool], c=region_colors[k], label=region_names[k], s=100, edgecolors="none")
+    ibool = (REGION == k) &  ibool_mask
+    ax2.scatter(RA[ibool], DEC[ibool], c=region_colors[k], label=region_names[k], s=100, edgecolors="none")    
 # ax.axhline(y=1)
 # ax.axhline(y=-1)
-ax.legend(loc="upper left")
-ax.axis("equal")
+ax1.set_title("All observed masks", fontsize=20)
+ax1.legend(loc="upper left", fontsize=20)
+ax1.set_xlabel("RA", fontsize=20)
+ax1.set_ylabel("DEC", fontsize=20)
+ax1.axis("equal")
+ax2.set_title("After cutting low quality masks", fontsize=20)
+ax2.legend(loc="upper left", fontsize=20)
+ax2.set_xlabel("RA", fontsize=20)
+ax2.set_ylabel("DEC", fontsize=20)
+ax2.axis("equal")
 plt.savefig("./figures/RADEC-plots/RADEC-masks.pdf", dpi=200, bbox_inches="tight")
 # plt.show()
 plt.close()
@@ -90,7 +101,7 @@ for i, mask in enumerate(masks_trimmed): # For each of the 16 masks
     ax.axis("equal")
     # Compute succccess rate
     z_success_rate = ibool1.sum() / (MASK_NUM == i).sum() * 100
-    plt.suptitle(mask + (", z-rate: %.1f%%" % z_success_rate), fontsize=15)
+    plt.suptitle(mask + (", z-rate: %.1f%%" % z_success_rate), fontsize=20)
     plt.savefig(save_dir + "RADEC-targets-%s.pdf" % mask, dpi=200, bbox_inches="tight")
 #     plt.show()    
     plt.close()
