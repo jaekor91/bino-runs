@@ -86,8 +86,8 @@ for m in range(len(save_dirs)):
             print_str = "%-15s" % (MASK_NAMES[i])
             for j, bit in enumerate(BIT_CODES):
                 iselect = (np.bitwise_and(2**bit, BIT) > 0) & ibool
-                Nsample = iselect.sum()# Number of samples in the selection
-                Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
+                Nsample = iselect.sum() # Number of samples in the selection
+                Nz = ((REDZ[iselect] > 0.6) & (REDZ[iselect] < 1.6)).sum() # Number with redshift
                 if Nsample == 0:
                     rate = 0
                 else:
@@ -111,11 +111,11 @@ for m in range(len(save_dirs)):
     for j, bit in enumerate(BIT_CODES):
         iselect = (np.bitwise_and(2**bit, BIT) > 0)
         Nsample = iselect.sum()# Number of samples in the selection
-        Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
+        Nz = ((REDZ[iselect] > 0.6) & (REDZ[iselect] < 1.6)).sum() # Number with redshift [0.6, 1.6]
         redz = REDZ[iselect] # All the redshifts in the selection
         Nz001 = ((redz < 0.6) & (redz > 0)).sum() # Number of samples with redshift < 0.6
         Nz002 = ((redz > 0.6) & (redz < 1.1)).sum() # Number of samples with redshift < 0.6
-        Nz003 = ((redz > 1.1)).sum() # Number of samples with redshift < 0.6
+        Nz003 = ((redz > 1.1) & (redz < 1.6)).sum() # Number of samples with redshift < 0.6
         Nsample_true = Nsample        
         if Nsample == 0:
             Nsample = 1
@@ -163,7 +163,7 @@ for m in range(len(save_dirs)):
             for j, bits in enumerate(BIT_CODES_COMPACT):
                 iselect = (np.bitwise_and(np.sum(np.power(2, bits)), BIT) > 0) & ibool
                 Nsample = iselect.sum()# Number of samples in the selection
-                Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
+                Nz = ((REDZ[iselect] > 0.6) & (REDZ[iselect] < 1.6)).sum() # Number with redshift
                 if Nsample == 0:
                     rate = 0
                 else:
@@ -187,11 +187,11 @@ for m in range(len(save_dirs)):
     for j, bits in enumerate(BIT_CODES_COMPACT):
         iselect = (np.bitwise_and(np.sum(np.power(2, bits)), BIT) > 0)
         Nsample = iselect.sum()# Number of samples in the selection
-        Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
+        Nz = ((REDZ[iselect] > 0.6) & (REDZ[iselect] < 1.6)).sum() # Number with redshift
         redz = REDZ[iselect] # All the redshifts in the selection
         Nz001 = ((redz < 0.6) & (redz > 0)).sum() # Number of samples with redshift < 0.6
         Nz002 = ((redz > 0.6) & (redz < 1.1)).sum() # Number of samples with redshift < 0.6
-        Nz003 = ((redz > 1.1)).sum() # Number of samples with redshift < 0.6
+        Nz003 = ((redz > 1.1) & (redz < 1.6)).sum() # Number of samples with redshift < 0.6
         Nsample_true = Nsample        
         if Nsample == 0:
             Nsample = 1
