@@ -16,9 +16,21 @@ for fname in os.listdir(DR6_data_dir):
         print("Working on %s" % fname)
         data = fits.open(DR6_data_dir + fname)[1].data
         dec= data["dec"]        
-        gflux = data["FLUX_G"]/data["MW_TRANSMISSION_G"]        
+        gflux = data["FLUX_G"]/data["MW_TRANSMISSION_G"]     
+        rflux = data["FLUX_R"]/data["MW_TRANSMISSION_R"]     
+        zflux = data["FLUX_Z"]/data["MW_TRANSMISSION_Z"]             
+        givar = data["FLUX_IVAR_G"]   
+        rivar = data["FLUX_IVAR_R"]   
+        zivar = data["FLUX_IVAR_Z"]  
+        gallmask = data["ALLMASK_G"]
+        rallmask = data["ALLMASK_R"]
+        zallmask = data["ALLMASK_Z"]
+
         # Make g-flux cut to reduce file size.        
-        data = data[(gflux > mag2flux(24.)) & (dec > 20.)] # Cut g < 24. cut
+        ibool = (gflux > mag2flux(24.)) & (dec > 20.) & (gflux>0) & (rflux>0) & (zflux>0) &\
+            (givar>0) & (rivar >0) & (zivar>0) & (gallmask==0) & (rallmask==0)& (zallmask==0)
+        data = data[ibool]
+
         
         if data.shape[0] > 0:
             # Eliminate Tycho2 masked objects
