@@ -254,7 +254,7 @@ for l in range(3):
     plt.show()
     plt.close()
 
-# ---- Compute different redz histogram with increment of 600
+# ---- Compute different redz histogram with increment of 1000
 bins = np.arange(0.0, 2, 0.04)
 
 NDM_sel = [4, 6, 7]
