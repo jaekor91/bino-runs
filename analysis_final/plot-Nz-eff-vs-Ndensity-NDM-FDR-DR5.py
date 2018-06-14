@@ -94,6 +94,7 @@ for i in range(1, Nchunks+1):
     iselected = model7.apply_selection_fast(gflux, rflux, zflux)
     data["NDM7"][i-1] = iselected
 
+
 # ---- Load and unpack data
 # Import auxilary info
 BIT_CODES = data["BIT_CODES"]
@@ -137,8 +138,6 @@ diff_eff7 = np.zeros(3100//200)
 diff_eff_list = [diff_eff4, diff_eff6, diff_eff7]
 
 NDM_list = ["NDM4", "NDM6", "NDM7"]
-ibool = (BIT != 2) & (BIT != 4) & (BIT != -999)  & ~ibool_RADEC  & (MASK_NUM != 9) \
-     & (MASK_NUM !=14) & (MASK_NUM !=10) & (MASK_NUM !=8) 
     
 NDMs = [NDM4, NDM6, NDM7]
 zpairs = [(0.6, 1.6), (0.6, 1.1), (1.1, 1.6)]
@@ -188,7 +187,7 @@ for zpair in zpairs:
     ax.plot(NDM6[:, 1], eff6, label="NDM6", c="red", lw=1.5)
     ax.plot(NDM7[:, 1], eff7, label="NDM7", c="blue", lw=1.5)
     ax.scatter(2460, eff_FDR, c="green", s=300, marker="x", label="FDR", edgecolors="none")
-    ax.legend(loc = "upper left", fontsize=15)
+    ax.legend(loc = "upper right", fontsize=10)
     ax.set_xlim([0, 3000])
     ax.set_ylim([0, 1.])
     ax.set_xlabel("Ndensity", fontsize=15)
@@ -205,7 +204,7 @@ for zpair in zpairs:
     ax.scatter(range(200, 3100, 200), diff_eff6, c="red", s=30, edgecolors="none")
     ax.scatter(range(200, 3100, 200), diff_eff7, c="blue", s=30, edgecolors="none")
 
-    ax.legend(loc = "upper left", fontsize=15)
+    ax.legend(loc = "upper right", fontsize=10)
     ax.set_xlim([0, 3000])
     ax.set_ylim([0, 1.])
     ax.set_xlabel("Ndensity", fontsize=15)
@@ -247,11 +246,11 @@ for l in range(3):
     ax.legend(loc="upper right", fontsize=15)
     ax.set_xlabel("Redshift", fontsize=15)
     ax.set_xlim([0.4, 1.8])
-    ax.set_ylim([0, 210])    
+    ax.set_ylim([0, 250])    
     ax.set_ylabel("Counts per bin", fontsize=15)
     ax.set_title("N(z) normalized by expected density", fontsize=15)
     plt.savefig("hist-redz-NDM%d-vs-FDR.png" % (NDM_sel[l]), dpi=200, bbox_inches="tight")
-    plt.show()
+    # plt.show()
     plt.close()
 
 # ---- Compute different redz histogram with increment of 1000
@@ -278,10 +277,10 @@ for l in range(3):
     ax.legend(loc="upper right", fontsize=13)
     ax.set_xlabel("Redshift", fontsize=15)
     ax.set_xlim([0.4, 1.8])
-    ax.set_ylim([0, 60])    
+    ax.set_ylim([0, 100])    
     ax.set_ylabel("Counts per bin", fontsize=15)
     ax.set_title("N(z) normalized by expected density", fontsize=15)
     plt.savefig("hist-redz-NDM%d-differential.png" % (NDM_sel[l]), dpi=200, bbox_inches="tight")
-    plt.show()
+    # plt.show()
     plt.close()
 
