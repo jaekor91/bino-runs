@@ -92,6 +92,17 @@ for i in range(REGION.size):
     REGION[i] = region_num_mask[MASK_NUM[i]]
 union_catalog["REGION"] = REGION
 
+# ---- Save auxilary info
+
+# --- Nominal number density
+union_catalog["BIT_CODES"] = [3, 4, 6, 7, 8, 9, 10]
+union_catalog["SELECTIONS"] = ["FDR", "NDM1", "NDM2", "NDM3", "RF1", "RF2", "RF3"]
+union_catalog["BIT_CODES_AGGREGATE"] = [(3,), (4, 6, 7), (8, 9, 10)]
+union_catalog["SELECTIONS_AGGREGATE"] = ["FDR", "NDM", "RF"]
+union_catalog["MASK_NAMES"] = ["st82-1hr", "st82-3hr", "COSMOS-1", "COSMOS-2", "sgc-0hr-1", "sgc-3hr-6", \
+            "2-8h30m", "ngc-1-1", "NGC-3-1", "ngc-5-1", "NGC-6-1", "NGC-7-1", "DR6-2", "DR6-3", "DR6-5", "DR6-6"]
+union_catalog["REGION_NAMES"] = {0: "DES", 1: "COSMOS", 2: "Non-DES DECaLS SGC", 3: "Non-DES DECaLS NGC", 4: "Bok NGC"}
+union_catalog["NOMINAL_DENSITY"] = [2400] + [3000] * 3 + [2400] + [3000] * 2
 # --- Save
 np.save("union-catalog-results.npy", union_catalog)
 
