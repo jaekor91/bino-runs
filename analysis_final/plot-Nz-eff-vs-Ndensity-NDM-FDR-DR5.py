@@ -221,7 +221,7 @@ iFDR = ibool & (np.bitwise_and(2**3, BIT) > 0)
 Nsample_FDR = iFDR.sum()
 Nz_FDR = (iFDR & (REDZ>0)).sum()
 eff_FDR = Nz_FDR / float(Nsample_FDR)
-print("FDR", Nz, Nsample, eff_FDR)
+print("FDR", Nz_FDR, Nsample_FDR, eff_FDR)
 
 NDM_sel = [4, 6, 7]
 # For each selection
