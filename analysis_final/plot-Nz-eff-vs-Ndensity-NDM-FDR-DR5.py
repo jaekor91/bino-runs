@@ -138,7 +138,7 @@ diff_eff_list = [diff_eff4, diff_eff6, diff_eff7]
 
 NDM_list = ["NDM4", "NDM6", "NDM7"]
 ibool = (BIT != 2) & (BIT != 4) & (BIT != -999)  & ~ibool_RADEC  & (MASK_NUM != 9) \
-     & (MASK_NUM !=14) & (MASK_NUM !=10) & (MASK_NUM !=8) & np.logical_or((CONFIDENCE==2), (CONFIDENCE==-999))
+     & (MASK_NUM !=14) & (MASK_NUM !=10) & (MASK_NUM !=8) 
     
 NDMs = [NDM4, NDM6, NDM7]
 zpairs = [(0.6, 1.6), (0.6, 1.1), (1.1, 1.6)]
