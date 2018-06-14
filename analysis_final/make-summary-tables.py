@@ -99,12 +99,12 @@ for m in range(len(save_dirs)):
     # --- Total tally by selection
     # Tally by redshift bin
     print_str = "%-15s" % ("z [0.6 1.6]")
-    print_str001 = "%-15s" % ("z < 0.6 ")
+    print_str001 = "%-15s" % ("z [0, 0.6]")
     print_str002 = "%-15s" % ("z [0.6, 1.1]")
     print_str003 = "%-15s" % ("z [1.1, 1.6]")    
     # Tally by redshift bin - total expected number
     print_str2 = "%-15s" %   ("z [0.6 1.6]")
-    print_str004 = "%-15s" % ("z < 0.6 ")
+    print_str004 = "%-15s" % ("z [0, 0.6]")
     print_str005 = "%-15s" % ("z [0.6, 1.1]")
     print_str006 = "%-15s" % ("z [1.1, 1.6]")    
 
@@ -175,12 +175,12 @@ for m in range(len(save_dirs)):
     # --- Total tally by selection
     # Tally by redshift bin
     print_str = "%-15s" % ("z [0.6, 1.6]")
-    print_str001 = "%-15s" % ("z < 0.6 ")
+    print_str001 = "%-15s" % ("z [0., 0.6]")
     print_str002 = "%-15s" % ("z [0.6, 1.1]")
     print_str003 = "%-15s" % ("z [1.1, 1.6]")    
     # Tally by redshift bin - total expected number
     print_str2 = "%-15s" %   ("z [0.6, 1.6]")
-    print_str004 = "%-15s" % ("z < 0.6 ")
+    print_str004 = "%-15s" % ("z [0., 0.6]")
     print_str005 = "%-15s" % ("z [0.6, 1.1]")
     print_str006 = "%-15s" % ("z [1.1, 1.6]")    
 
