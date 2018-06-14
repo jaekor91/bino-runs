@@ -87,7 +87,7 @@ for m in range(len(save_dirs)):
             for j, bit in enumerate(BIT_CODES):
                 iselect = (np.bitwise_and(2**bit, BIT) > 0) & ibool
                 Nsample = iselect.sum()# Number of samples in the selection
-                Nz = (REDZ[iselect] > 0).sum() # Number with redshift
+                Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
                 if Nsample == 0:
                     rate = 0
                 else:
@@ -98,20 +98,20 @@ for m in range(len(save_dirs)):
         
     # --- Total tally by selection
     # Tally by redshift bin
-    print_str = "%-15s" % ("Total")
+    print_str = "%-15s" % ("z [0.6 1.6]")
     print_str001 = "%-15s" % ("z < 0.6 ")
     print_str002 = "%-15s" % ("z [0.6, 1.1]")
-    print_str003 = "%-15s" % ("z > 1.1")    
+    print_str003 = "%-15s" % ("z [1.1, 1.6]")    
     # Tally by redshift bin - total expected number
-    print_str2 = "%-15s" %   ("Exp. z-dens.")
+    print_str2 = "%-15s" %   ("z [0.6 1.6]")
     print_str004 = "%-15s" % ("z < 0.6 ")
     print_str005 = "%-15s" % ("z [0.6, 1.1]")
-    print_str006 = "%-15s" % ("z > 1.1")    
+    print_str006 = "%-15s" % ("z [1.1, 1.6]")    
 
     for j, bit in enumerate(BIT_CODES):
         iselect = (np.bitwise_and(2**bit, BIT) > 0)
         Nsample = iselect.sum()# Number of samples in the selection
-        Nz = (REDZ[iselect] > 0).sum() # Number with redshift
+        Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
         redz = REDZ[iselect] # All the redshifts in the selection
         Nz001 = ((redz < 0.6) & (redz > 0)).sum() # Number of samples with redshift < 0.6
         Nz002 = ((redz > 0.6) & (redz < 1.1)).sum() # Number of samples with redshift < 0.6
@@ -129,15 +129,17 @@ for m in range(len(save_dirs)):
         print_str006 += ("%15d \t") % (Nz003/Nsample * Ndensity_nominal[j])
 
     output.write("-" * 165 + "\n")
-    output.write(print_str + "\n")
+    output.write("Expected efficiency\n")    
     output.write(print_str001 + "\n")
     output.write(print_str002 + "\n")
     output.write(print_str003 + "\n") 
+    output.write(print_str + "\n")
     output.write("-" * 165 + "\n")
-    output.write(print_str2 + "\n")    
+    output.write("Expected z-density\n")        
     output.write(print_str004 + "\n")
     output.write(print_str005 + "\n")
     output.write(print_str006 + "\n")        
+    output.write(print_str2 + "\n")        
     output.close()
 
 
@@ -161,7 +163,7 @@ for m in range(len(save_dirs)):
             for j, bits in enumerate(BIT_CODES_COMPACT):
                 iselect = (np.bitwise_and(np.sum(np.power(2, bits)), BIT) > 0) & ibool
                 Nsample = iselect.sum()# Number of samples in the selection
-                Nz = (REDZ[iselect] > 0).sum() # Number with redshift
+                Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
                 if Nsample == 0:
                     rate = 0
                 else:
@@ -172,20 +174,20 @@ for m in range(len(save_dirs)):
         
     # --- Total tally by selection
     # Tally by redshift bin
-    print_str = "%-15s" % ("Total")
+    print_str = "%-15s" % ("z [0.6, 1.6]")
     print_str001 = "%-15s" % ("z < 0.6 ")
     print_str002 = "%-15s" % ("z [0.6, 1.1]")
-    print_str003 = "%-15s" % ("z > 1.1")    
+    print_str003 = "%-15s" % ("z [1.1, 1.6]")    
     # Tally by redshift bin - total expected number
-    print_str2 = "%-15s" %   ("Exp. z-dens.")
+    print_str2 = "%-15s" %   ("z [0.6, 1.6]")
     print_str004 = "%-15s" % ("z < 0.6 ")
     print_str005 = "%-15s" % ("z [0.6, 1.1]")
-    print_str006 = "%-15s" % ("z > 1.1")    
+    print_str006 = "%-15s" % ("z [1.1, 1.6]")    
 
     for j, bits in enumerate(BIT_CODES_COMPACT):
         iselect = (np.bitwise_and(np.sum(np.power(2, bits)), BIT) > 0)
         Nsample = iselect.sum()# Number of samples in the selection
-        Nz = (REDZ[iselect] > 0).sum() # Number with redshift
+        Nz = (REDZ[iselect] > 0.6).sum() # Number with redshift
         redz = REDZ[iselect] # All the redshifts in the selection
         Nz001 = ((redz < 0.6) & (redz > 0)).sum() # Number of samples with redshift < 0.6
         Nz002 = ((redz > 0.6) & (redz < 1.1)).sum() # Number of samples with redshift < 0.6
@@ -203,14 +205,16 @@ for m in range(len(save_dirs)):
         print_str006 += ("%15d \t") % (Nz003/Nsample * Ndensity_nominal[j])
 
     output.write("-" * 75 + "\n")
-    output.write(print_str + "\n")
+    output.write("Expected efficiency\n")       
     output.write(print_str001 + "\n")
     output.write(print_str002 + "\n")
     output.write(print_str003 + "\n") 
-    output.write("-" * 75 + "\n")
-    output.write(print_str2 + "\n")    
+    output.write(print_str + "\n")    
+    output.write("-" * 75 + "\n")  
+    output.write("Expected z-density\n")    
     output.write(print_str004 + "\n")
     output.write(print_str005 + "\n")
     output.write(print_str006 + "\n")        
+    output.write(print_str2 + "\n")    
     output.close()
 
