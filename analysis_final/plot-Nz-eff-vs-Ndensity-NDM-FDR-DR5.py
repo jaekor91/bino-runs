@@ -213,13 +213,15 @@ for zpair in zpairs:
     plt.savefig("eff-vs-ndensity-NDM-diff-z%.1f-%.1f.png" % (z_cut1, z_cut2), dpi=200, bbox_inches="tight")
     plt.close()
 
-ibool = ~ibool_RADEC & (BIT != -999) & (BIT != 2) & (BIT !=4) & ibool_mask & (REGION != 4) & \
-np.logical_or((CONFIDENCE==-999), (CONFIDENCE==2))
 
 # ---- Compute redz histogram with 600 increment
-bins = np.arange(0.0, 2, 0.04)
+# When computing the overall efficiency do not use the confidence cut
+# When plot use the cut
+iconfidence = CONFIDENCE==2
+bins = np.arange(0.0, 2, 0.05)
 
 # ---- FDR eff. 
+ibool = ~ibool_RADEC & (BIT != -999) & (BIT != 2) & (BIT !=4) & ibool_mask & (REGION != 4)
 iFDR = ibool & (np.bitwise_and(2**3, BIT) > 0) 
 Nsample_FDR = iFDR.sum()
 Nz_FDR = (iFDR & (REDZ>0)).sum()
@@ -234,7 +236,8 @@ for l in range(3):
     NDM = data[NDM_list[l]]
     NDM_density = NDMs[l][:, 1]
     # Plot FDR histogram
-    ax.hist(REDZ[iFDR & (REDZ>0)], bins=bins, weights=np.ones(Nz_FDR)/Nz_FDR * (2400 * eff_FDR),
+    Nz_conf_FDR = (iFDR & (REDZ>0) & iconfidence).sum()
+    ax.hist(REDZ[iFDR & (REDZ>0) & iconfidence], bins=bins, weights=np.ones(Nz_conf_FDR)/Nz_conf_FDR * (2400 * eff_FDR),
                label="FDR 2400", alpha=0.25, color="red", edgecolor="none")
     for Ndensity in range(3000, 300, -600):
         i = find_nearest_idx(NDM_density, Ndensity)
@@ -243,14 +246,15 @@ for l in range(3):
         Nz = iselect.sum()
         avg_eff = Nz/float(Nsample)
         Norm_constant = Ndensity * avg_eff
+        Nz_conf = (iselect & iconfidence).sum()
 #         print(Ndensity, avg_eff, Ndensity * avg_eff)
-        ax.hist(REDZ[iselect], bins=bins, weights=np.ones(Nz) / Nz * Norm_constant, histtype="step", lw=1.5,
+        ax.hist(REDZ[iselect & iconfidence], bins=bins, weights=np.ones(Nz_conf) / Nz_conf * Norm_constant, histtype="step", lw=1.5,
                label="NDM%d %d" % (NDM_sel[l], Ndensity))
         
     ax.legend(loc="upper right", fontsize=15)
     ax.set_xlabel("Redshift", fontsize=15)
     ax.set_xlim([0.4, 1.8])
-    ax.set_ylim([0, 250])    
+    ax.set_ylim([0, 300])    
     ax.set_ylabel("Counts per bin", fontsize=15)
     ax.set_title("N(z) normalized by expected density", fontsize=15)
     plt.savefig("hist-redz-NDM%d-vs-FDR.png" % (NDM_sel[l]), dpi=200, bbox_inches="tight")
@@ -258,7 +262,7 @@ for l in range(3):
     plt.close()
 
 # ---- Compute different redz histogram with increment of 1000
-bins = np.arange(0.0, 2, 0.04)
+bins = np.arange(0.0, 2, 0.05)
 
 NDM_sel = [4, 6, 7]
 # For each selection
@@ -281,7 +285,7 @@ for l in range(3):
     ax.legend(loc="upper right", fontsize=13)
     ax.set_xlabel("Redshift", fontsize=15)
     ax.set_xlim([0.4, 1.8])
-    ax.set_ylim([0, 100])    
+    ax.set_ylim([0, 120])    
     ax.set_ylabel("Counts per bin", fontsize=15)
     ax.set_title("N(z) normalized by expected density", fontsize=15)
     plt.savefig("hist-redz-NDM%d-differential.png" % (NDM_sel[l]), dpi=200, bbox_inches="tight")
