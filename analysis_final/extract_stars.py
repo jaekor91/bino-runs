@@ -46,6 +46,7 @@ BIT = data["BIT"][ibool]
 REDZ = data["REDZ"][ibool]
 OBJ_NUM = data["OBJ_NUM"][ibool]
 GFLUX = data["SDSS_flux_g"][ibool]
+IFLUX = data["SDSS_flux_i"][ibool]
 
 
 ######## Planning #########
@@ -101,7 +102,7 @@ for i, mask in enumerate(mask_dirs):
                 print(specnum)
                 idx = (MASK_NUM == mask_num) & (OBJ_NUM == specnum) # Retreive the corresponding entry in the union catalog.
                 if (idx.sum() >0) and (GFLUX[idx][0] > 0):# gflux is available
-                    giant_dict[mask][specnum] = {"RA": RA[idx][0], "DEC": DEC[idx][0], "gflux": GFLUX[idx][0]} # Create a dictionary entry for the star
+                    giant_dict[mask][specnum] = {"RA": RA[idx][0], "DEC": DEC[idx][0], "SDSS_gflux": GFLUX[idx][0], "SDSS_iflux": IFLUX[idx][0]} # Create a dictionary entry for the star
 
                     # ----- Compute the extraction kernel 
                     data, err, header = extract_single_data(data_err, list_headers, specnum)
