@@ -75,10 +75,10 @@ def make_model(obswave, obsspec, obsunc, libwave, libspec, z=0.0, order=10, mask
     a = 1 + z
     # can replace the following line with a call to prospect.utils.smoothing.smoothspec
     # spec = np.interp(obswave, libwave * a, libspec)
-    spec = smoothspec(libwave, libspec, resolution=resolution, outwave=obswave, smoothtype="R")
+    spec = smoothspec(libwave, libspec, resolution=resolution, outwave=obswave, smoothtype="R", inres=5000)
     cal, coeffs = optimal_polynomial(obswave, spec, obsspec, obsunc, order=order, mask=mask)
 
     if cal is not None:
-        return cal * spec
+        return cal, spec
     else:
-        return None
+        return None, None
