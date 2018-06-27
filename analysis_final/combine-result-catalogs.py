@@ -105,5 +105,3 @@ union_catalog["REGION_NAMES"] = {0: "DES", 1: "COSMOS", 2: "Non-DES DECaLS SGC",
 union_catalog["NOMINAL_DENSITY"] = [2400] + [3000] * 3 + [2400] + [3000] * 2
 # --- Save
 np.save("union-catalog-results.npy", union_catalog)
-
-data = np.load("union-catalog-results.npy").item()
