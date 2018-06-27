@@ -10,13 +10,13 @@ masks = [
 "sgc-3hr-6-1_600_6300",
 "2-8h30m-270",
 "ngc-1-1_600_6300",
-"NGC-3-1_317_6500",
-"ngc-5-1_600_6300",
-"NGC-6-1_318_6500",
+"NGC-3-1_317_6500", # bad
+"ngc-5-1_600_6300", # bad
+"NGC-6-1_318_6500", # bad
 "NGC-7-1-updated_319_6500",
 "Eisenstein-DR6-2_334_6500",
 "Eisenstein-DR6-3_335_6500",
-"Eisenstein-DR6-5_338_6500",
+"Eisenstein-DR6-5_338_6500", # bad
 "Eisenstein-DR6-6_339_6500"]
 # ----- Must not be altered!!!
 
@@ -31,7 +31,7 @@ SELECTIONS = ["FDR", "NDM1", "NDM2", "NDM3", "RF1", "RF2", "RF3"]
 SELECTIONS_COMPACT  = ["FDR", "NDM", "RF"]
 
 # ---- Load and unpack data
-data = np.load("union-catalog-results-penultimate.npy").item()
+data = np.load("union-catalog-results.npy").item()
 RA = data["RA"]
 BIT = data["BIT"]
 DEC = data["DEC"]
@@ -45,14 +45,15 @@ MASK_NUM = data["MASK_NUM"][ibool]
 BIT = data["BIT"][ibool]
 REDZ = data["REDZ"][ibool]
 OBJ_NUM = data["OBJ_NUM"][ibool]
-GFLUX = data["gflux"][ibool]
+GFLUX = data["SDSS_flux_g"][ibool]
 
 
 ######## Planning #########
 # - For each mask, look up all stars.
-# - For each star, check if its g-mag is available. Otherwise, do not consider it.
+# - For each star, check if its SDSS g-mag is available. Otherwise, do not consider it.
 # - For each star, construct a stellar profile---that is, perform kernel extraction and estimate mu and sig.
-# - Extract 1D stellar spectra using the computed extraction kernels and save them along with accompanying info.
+# - (Previously) Extract 1D stellar spectra using the computed extraction kernels and save them along with accompanying info.
+# - (Now) Use box kernel centered at int(mu) to extract the 1D spectrum.
 # - Plot sigs collected for each mask. 
 # - Plot extracted stellar spectrum and its signal to noise
 # - Plot SN (1D) histogram
@@ -119,6 +120,10 @@ for i, mask in enumerate(mask_dirs):
                     giant_dict[mask][specnum]["K_gauss"] = K
                     giant_dict[mask][specnum]["K_gauss_mu"] = mu_best
                     giant_dict[mask][specnum]["K_gauss_sig"] = sig_best       
+
+                    # Construct a box kernel of size 9 which corresponds to 2 arcsec
+                    K = np.zeros(32, dtype=float)
+                    K[int(mu_best)-4: int(mu_best)+5] = 1/9.
 
                     # Perform 1D extraction
                     K_T = K.reshape((K.size, 1))
