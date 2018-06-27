@@ -33,7 +33,7 @@ SELECTIONS = ["FDR", "NDM1", "NDM2", "NDM3", "RF1", "RF2", "RF3"]
 SELECTIONS_COMPACT  = ["FDR", "NDM", "RF"]
 
 # ---- Load and unpack data
-data = np.load("union-catalog-results-penultimate.npy").item()
+data = np.load("union-catalog-results.npy").item()
 RA = data["RA"]
 BIT = data["BIT"]
 ibool = BIT == 2
@@ -45,7 +45,9 @@ MASK_NUM = data["MASK_NUM"][ibool]
 BIT = data["BIT"][ibool]
 REDZ = data["REDZ"][ibool]
 OBJ_NUM = data["OBJ_NUM"][ibool]
-GFLUX = data["gflux"][ibool]
+GFLUX = data["SDSS_flux_g"][ibool]
+IFLUX = data["SDSS_flux_i"][ibool]
+
 
 
 # ---- Star info
@@ -93,7 +95,7 @@ for i, mask in enumerate(mask_dirs[2:]):
             # Plot data
             ax_list[idx_row, idx_col].plot(giant_dict[mask][specnum]["K_naive"], c="black")
             ax_list[idx_row, idx_col].plot(giant_dict[mask][specnum]["K_gauss"], c="red")            
-            ax_list[idx_row, idx_col].set_title("OBJNUM: %d / gmag: %.2f" % (specnum, flux2mag(giant_dict[mask][specnum]["gflux"])), fontsize=10)            
+            ax_list[idx_row, idx_col].set_title("OBJNUM: %d / gmag: %.2f" % (specnum, flux2mag(giant_dict[mask][specnum]["SDSS_gflux"])), fontsize=10)            
             counter += 1
     plt.savefig("./stars/kernels/" + mask + "-kernels.png", dpi=200, bbox_inches="tight")
 #     plt.show()
@@ -120,11 +122,11 @@ for i, mask in enumerate(mask_dirs[2:]):
     ax1.set_title(mask, fontsize=10)
     ax1.set_xlabel("Wavelength (AA)", fontsize=15)
     ax1.set_ylabel("Flux (absolute cal.)", fontsize=15)
-    ax1.set_ylim([0, 500])
+    ax1.set_ylim([0, 300])
     ax2.set_title(mask, fontsize=15)
     ax2.set_xlabel("Wavelength (AA)", fontsize=15)
     ax2.set_ylabel("SN", fontsize=15)
-    ax2.set_ylim([0, 200])
+    ax2.set_ylim([0, 120])
     plt.savefig("./stars/spectra-data-AND-SN/" +mask +"spec-data-SN.png", dpi=200, bbox_inches="tight")
 #     plt.show()
     plt.close()
@@ -147,7 +149,7 @@ for i, mask in enumerate(mask_dirs[2:]):
             ax1.hist(SN, bins=bins, histtype="step")
     ax1.set_title(mask, fontsize=10)
     ax1.set_xlabel("SN", fontsize=15)
-    ax1.set_xlim([-50, 200])
+    ax1.set_xlim([-50, 120])
     plt.savefig("./stars/hist1D-SN/" +mask +"-SN-hist.png", dpi=200, bbox_inches="tight")
 #     plt.show()
     plt.close()
@@ -170,7 +172,7 @@ for i, mask in enumerate(mask_dirs[2:]):
             SN = spec1d_data * np.sqrt(spec1d_ivar)
             SN = SN[np.logical_or(SN>1, SN<-1)] # Consider only nonzero region
             SN_median.append(np.median(SN))
-            gflux.append(giant_dict[mask][specnum]["gflux"])
+            gflux.append(giant_dict[mask][specnum]["SDSS_gflux"])
     # Fit a line using least squares
     p = np.polyfit(gflux, SN_median, 1)
     
@@ -185,7 +187,7 @@ for i, mask in enumerate(mask_dirs[2:]):
     ax.set_title(mask, fontsize=15)
     ax.set_xlabel("g flux", fontsize=15)
     ax.set_ylabel("SN median", fontsize=15)    
-    ax.set_ylim([0, 140])
+    ax.set_ylim([0, 120])
     ax.set_xlim([0, mag2flux(18)])
     ax.legend(loc="upper left", fontsize=15)
     plt.savefig("./stars/gflux-vs-SN/" + mask +"-gflux-vs-SN.png", dpi=200, bbox_inches="tight")
@@ -199,8 +201,8 @@ fig, ax = plt.subplots(1,figsize=(12, 5))
 ax.scatter(range(len(SN_at_18)), SN_at_18)
 ax.set_xticks(np.arange(len(mask_dirs)))
 ax.set_xticklabels(mask_names, rotation="vertical", fontsize=10)
-ax.axhline(y=65, c="red", ls="--")
-ax.set_ylim([30, 140])
+ax.axhline(y=45, c="red", ls="--")
+ax.set_ylim([0, 120])
 # ax.set_yscale("log")
 ax.set_ylabel("SN at gmag=18", fontsize=15)
 plt.savefig("./stars/gflux-vs-SN/all-SN-at-gmag18.png", dpi=200, bbox_inches="tight")
