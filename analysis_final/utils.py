@@ -1,4 +1,4 @@
-from astropy.io import fits, ascii
+from astropy.io import fits # , ascii
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
