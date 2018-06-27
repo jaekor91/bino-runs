@@ -49,7 +49,7 @@ SELECTIONS = ["FDR", "NDM1", "NDM2", "NDM3", "RF1", "RF2", "RF3"]
 SELECTIONS_COMPACT  = ["FDR", "NDM", "RF"]
 
 # ---- Load and unpack data
-data = np.load("union-catalog-results-penultimate.npy").item()
+data = np.load("union-catalog-results.npy").item()
 RA = data["RA"]
 BIT = data["BIT"]
 ibool = (RA != -999) & (BIT !=2) & (BIT !=4) # Fiilter our non-targets
