@@ -2,7 +2,7 @@
 from utils import * 
 
 # ---- Load and unpack data
-data = np.load("union-catalog-results-penultimate.npy").item()
+data = np.load("union-catalog-results.npy").item()
 # Import auxilary info
 BIT_CODES = data["BIT_CODES"]
 SELECTIONS = data["SELECTIONS"]
@@ -28,7 +28,7 @@ gr = gmag - rmag
 rz = rmag - zmag
 # Eliminate blanks, stars, galaxies, objects with colors we don't want.
 ibool = ~ibool_RADEC & (BIT != -999) & (BIT != 2) & (BIT !=4)
-ibool_mask = (MASK_NUM !=8) & (MASK_NUM != 9) & (MASK_NUM !=10) & (MASK_NUM !=14)
+ibool_mask = (MASK_NUM !=8) & (MASK_NUM != 9) & (MASK_NUM !=10) & (MASK_NUM !=14) # Bad masks.
 
 save_dirs = ["no-cuts/", "bad-mask-cuts/", "bad-mask-cuts-DR5/", "bad-mask-cuts-DR6/"]
 save_dirs = ["./figures/" + x for x in save_dirs]
@@ -51,7 +51,7 @@ for m in range(len(save_dirs)):
         os.mkdir(save_dir)
 
     # Concentrate on objects of interest
-    data = np.load("union-catalog-results-penultimate.npy").item()
+    data = np.load("union-catalog-results.npy").item()
     BIT = data["BIT"][ibool]
     RA = data["RA"][ibool]
     DEC = data["DEC"][ibool]
