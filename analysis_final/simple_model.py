@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.polynomial.chebyshev import chebval, chebvander
-from observate import load_filters, getSED
+from sedpy.observate import load_filters, getSED
 from smoothing import smoothspec
 
 
