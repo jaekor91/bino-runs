@@ -2,7 +2,7 @@ from astropy.io import fits # , ascii
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
-from scipy.ndimage.filters import median_filter
+from scipy.ndimage.filters import median_filter, uniform_filter
 import os
 import time
 from astropy.coordinates import SkyCoord
