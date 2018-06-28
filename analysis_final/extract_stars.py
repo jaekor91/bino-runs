@@ -135,8 +135,8 @@ for i, mask in enumerate(mask_dirs):
                     giant_dict[mask][specnum]["spec1D"] = (spec1D, spec1D_ivar) 
 
 # ---- Black list rejection (confirmed by looking at the naive and fitted kernels)
-black_list = {"Eisenstein-DR6-6_339_8750": [161, 164, 105, 76], "Eisenstein-DR6-2_334_8750-kernels": [20], \
-"ngc-1-1_600_8700": [2, 8, 31], "ngc-5-1_600_6300": [14], "NGC-6-1_318_8750": [75], "st82-1hr-600-kernels": [111]}
+black_list = {"Eisenstein-DR6-6_339_8750": [161, 164, 105, 76], "Eisenstein-DR6-2_334_8750": [20], \
+"ngc-1-1_600_8700": [2, 8, 31], "ngc-5-1_600_6300": [14], "NGC-6-1_318_8750": [75], "st82-1hr-600": [111]}
 
 for mask in black_list.keys():
     for specnum in black_list[mask]:
