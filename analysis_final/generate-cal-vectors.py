@@ -51,6 +51,30 @@ def sky_mask(wavegrid):
 
     return mask
 
+
+def bad_pixel_mask(sepc1d, err1d, ratio_low=0.25, ratio_high=4.):
+    """
+    Flag bad pixels by making them false.
+    """
+    mask = (err1d < 10.) # Unusually high errors
+    # Extremely high variation in signal to noise
+    SN = spec1d / err1d
+    SN_median = median_filter(SN, size=301)
+    SN2SN_med = SN/SN_median
+    mask &=  np.logical_or((SN2SN_med > ratio_low), (SN2SN_med < ratio_high))
+    
+    # Extremely high spectral values compare to the median
+    spec1d_med = median_filter(spec1d, size=301)
+    spec2spec_med = spec1d/spec1d_med
+    mask &= np.logical_or((spec2spec_med> ratio_low), (spec2spec_med < ratio_high))
+
+    # Extremely high error values compare to the median
+    err1d_med = median_filter(err1d, size=301)
+    err2err_med = err1d/err1d_med
+    mask &= np.logical_or((err2err_med> ratio_low), (err2err_med < ratio_high))
+    
+    return mask
+
 # ----- Load all the stars
 all_stars =np.load("stars/all-stars.npy").item()
 mask_names_sorted = sorted(list(all_stars.keys()))
@@ -91,9 +115,9 @@ for mask_name in mask_names_sorted:
         # Retrieve mask and construct spectrum
         spec1d = star["spec1D"][0]
         err1d = 1./np.sqrt(star["spec1D"][1])
-        mask = ~np.logical_or.reduce((np.abs(spec1d) < 1e-6, np.abs(err1d) > 1e60, sky_mask(wavegrid)))
-        SN_med = np.median(spec1d/err1d)
-        # mask = slice(None)
+        mask = ~np.logical_or.reduce((np.abs(spec1d) < 1e-6, np.abs(err1d) > 1e60, sky_mask(wavegrid), spec1d <= 0.))
+        # Additional bad masks
+        mask &= bad_pixel_mask(spec1d, err1d)
 
         plt.close()
         fig, ax = plt.subplots(1, figsize=(15, 7))
@@ -135,6 +159,7 @@ for mask_name in mask_names_sorted:
     all_stars[mask_name]["mask_list"] = mask_list
     all_stars[mask_name]["model_index_list"] = model_index_list
 
+    
 # ---- Compute and save the calibration vector
 cal_dict = {} 
 for mask_name in mask_names_sorted:
@@ -201,11 +226,12 @@ for mask_name in mask_names_sorted:
     cal_vec[idx_max:] = np.median(cal_vec[idx_max-1000:idx_max])
     # cal_vec = savgol_filter(cal_vec, window_length=101, polyorder=5)
     cal_vec = median_filter(cal_vec, size=1001)
-    for _ in range(5):
+    for _ in range(3):
         cal_vec = uniform_filter(cal_vec, size=501)
 
-    ax.scatter(wavegrid, cal_vec, s=50, edgecolors="none", c="black")
+    ax.scatter(wavegrid, cal_vec, s=20, edgecolors="none", c="black")
     plt.savefig(save_dir + "calvec-" + mask_name+".png", dpi=200, bbox_inches="tight")
+#     plt.show()
     plt.close()
     
     # --- Save
