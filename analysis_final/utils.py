@@ -174,7 +174,7 @@ def index_edges(data, num_thres=20):
 def gauss_fit2profile(K, mu_min=2., mu_max=20., sig_min=1., sig_max=3., dsig=0.05):
 	# ---- Grid search for mu and sigma for the best Gaussian representation of the empirical kernel.
 	Nrows = 32 
-	mu_arr = np.arange(mu_min, mu_max, 0.5)
+	mu_arr = np.arange(mu_min, mu_max, 0.1)
 	sig_arr = np.arange(sig_min, sig_max, dsig)
 	chi_arr = np.zeros((mu_arr.size, sig_arr.size))
 	x_arr = np.arange(0, Nrows, 1)
@@ -379,13 +379,13 @@ def idx_peaks(wavegrid, redz, idx_min=0, idx_max=None):
 	Given a wavelength grid and a redshift, return the indices corresponding to
 	the following emission line peaks: OII, Ha, Hb, OIII (1, 2)
 	"""
-	names = ["OII", "Ha", "Hb", "OIII1", "OIII2"]
+	names = ["OII", "Hb", "OIII1", "OIII2", "Ha"]
 	OII = 3727
 	Ha = 6563
 	Hb = 4861
 	OIII1 = 4959
 	OIII2 = 5007
-	peak_list = [OII, Ha, Hb, OIII1, OIII2]
+	peak_list = [OII, Hb, OIII1, OIII2, Ha]
 	
 	if idx_max is None:
 		idx_max = wavegrid.size-1
@@ -665,3 +665,76 @@ def FDR_cut(grz):
     g,r,z=grz; yrz = (r-z); xgr = (g-r)
     ibool = (r<23.4) & (yrz>.3) & (yrz<1.6) & (xgr < (1.15*yrz)-0.15) & (xgr < (1.6-1.2*yrz))
     return ibool
+
+
+def emission_line_model(wg, w, z, peak_name="OII"):
+    """
+    Return a model normalized to 1 evaluated over a grid wg, width w, and redshift z.
+    """
+    line_dict = {"Ha": 6563, "Hb": 4861, "OIII1": 4959, "OIII2": 5007}
+    
+    w *= (1+z)
+
+    # Construct a model first
+    if peak_name == "OII":                
+    # ---- Double gaussian
+        mu1 = 3726.1 * (1+z) # Restframe wavelength position
+        mu2 = 3728.8 * (1+z)
+        model = 0.73 * np.exp(-(wg - mu1)**2 / (2 * w**2)) / (np.sqrt(2 * np.pi) * w)
+        model += np.exp(-(wg - mu2)**2 / (2 * w**2)) / (np.sqrt(2 * np.pi) * w)
+        model /= 1.73
+    else:
+        # ---- Single gaussian
+        mu = line_dict[peak_name] * (1+z)
+        model = np.exp(-(wg - mu)**2 / (2 * w**2)) / (np.sqrt(2 * np.pi) * w)
+    return model
+
+def fit_emission_line(wg, spec1D, spec1D_ivar, z_initial=0., peak_name="OII", continuum=0.):
+    """
+    Given a 1D spectrum and the corresponding spec1D_ivar, estimate the best fitting
+    Gaussian model by a brute force calculation.
+    - Given wavegrid, wg, compute wavegrid resolution and the corresponding redshift increment dz.
+    - Redshift search range is equal to z_initial pm 10 * dz with redshift grid defined over dz/10.
+    - The fit parambers are A_best, sig_best, and z_best. Given the last two, A_best can be estimated and
+    so can its uncertainty.
+    """
+    # Subtract the continuum level from the spectrum
+    spec1D = np.copy(spec1D) - continuum
+
+    # Construct redshift grid to fit
+    dz = (wg[1] - wg[0]) / 3727.
+    zrange = np.arange(z_initial-10*dz, z_initial+10*dz, dz/10.)
+
+    # Construct width grid to fit
+    widths = np.arange(0.5, 2.5, 0.05)
+
+    # ---- Make a fit     
+    # Best is judged by chi-sq (the smaller the better)    
+    chi_sq_best = np.infty
+    A_best = 0.
+    sig_A_best = np.infty
+    width_best = 5.
+    z_best = z_initial
+    SN_best = 0.
+    for z in zrange:
+        for w in widths:
+            model = emission_line_model(wg, w, z, peak_name=peak_name) # Normalized to 1
+            invar_A = np.sum(model**2 * spec1D_ivar)
+            A = np.sum(spec1D * model * spec1D_ivar) / invar_A
+            sig_A = 1./np.sqrt(invar_A)
+            chi_sq = np.sum((spec1D - A * model)**2 * spec1D_ivar)
+            SN = A/sig_A
+            if SN_best < SN:
+                A_best = A
+                sig_A_best = sig_A
+                width_best = w
+                z_best = z
+                SN_best = SN
+                chi_sq_best = chi_sq
+
+    if (chi_sq_best - np.sum(spec1D**2 * spec1D_ivar)) > -10: # Some minimum chi-square difference
+        A_best = 0.
+        sig_A_best = 999.
+        width_best = 999.
+        z_best = -999.
+    return A_best, sig_A_best, width_best, z_best
