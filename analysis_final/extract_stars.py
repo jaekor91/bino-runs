@@ -117,14 +117,15 @@ for i, mask in enumerate(mask_dirs):
 
                     # Fit gaussian to it
                     mu_best, sig_best = gauss_fit2profile(K, mu_min=2., mu_max=20., sig_min=0.5, sig_max=5., dsig=0.05)
-                    K = K_gauss_profile(mu_best, sig_best, Nrows = 32)
+                    K = K_gauss_profile(mu_best, 2.257, Nrows = 32)
                     giant_dict[mask][specnum]["K_gauss"] = K
                     giant_dict[mask][specnum]["K_gauss_mu"] = mu_best
                     giant_dict[mask][specnum]["K_gauss_sig"] = sig_best       
+                    giant_dict[mask][specnum]["K_gauss_sig_used"] = 2.257
 
-                    # Construct a box kernel of size 9 which corresponds to 2 arcsec
-                    K = np.zeros(32, dtype=float)
-                    K[int(mu_best)-4: int(mu_best)+5] = 1/9.
+                    # # Construct a box kernel of size 9 which corresponds to 2 arcsec
+                    # K = np.zeros(32, dtype=float)
+                    # K[int(mu_best)-4: int(mu_best)+5] = 1/9.
 
                     # Perform 1D extraction
                     K_T = K.reshape((K.size, 1))
