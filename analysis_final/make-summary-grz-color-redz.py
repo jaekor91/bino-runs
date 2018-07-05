@@ -1,8 +1,9 @@
 # Script used to create summary tables.
 from utils import * 
-
+OII_thres = 8e-17
+peak2int = {"OII": 0, "Hb": 1, "OIII1": 2, "OIII2":3 , "Ha":4}
 # ---- Load and unpack data
-data = np.load("union-catalog-results-penultimate.npy").item()
+data = np.load("union-catalog-results-fluxed.npy").item()
 # Import auxilary info
 BIT_CODES = data["BIT_CODES"]
 SELECTIONS = data["SELECTIONS"]
@@ -22,6 +23,7 @@ MASK_NUM = data["MASK_NUM"]
 REGION = data["REGION"]
 RA = data["RA"]
 DEC = data["DEC"]
+OII = np.maximum(data["FLUXES"][:, 0, peak2int["OII"], 1], data["FLUXES"][:, 1, peak2int["OII"], 1])
 ibool_RADEC = (RA > 149.8) & (RA < 150) & (DEC > 2.05) & (DEC < 2.225) # Mask bad objects
 gmag, rmag, zmag = flux2mag(gflux), flux2mag(rflux), flux2mag(zflux)
 gr = gmag - rmag
@@ -49,13 +51,14 @@ for m in range(len(save_dirs)):
         os.mkdir(save_dir)
 
     # Concentrate on objects of interest
-    data = np.load("union-catalog-results-penultimate.npy").item()
+    data = np.load("union-catalog-results-fluxed.npy").item()
     BIT = data["BIT"][ibool]
     RA = data["RA"][ibool]
     DEC = data["DEC"][ibool]
     gflux = data["gflux"][ibool]
     rflux = data["rflux"][ibool]
     zflux = data["zflux"][ibool]
+    oii = OII[ibool]
     REDZ = data["REDZ"][ibool]
     MASK_NUM = data["MASK_NUM"][ibool]
     CONFIDENCE = data["CONFIDENCE"][ibool]
@@ -78,7 +81,7 @@ for m in range(len(save_dirs)):
     ibool_gmag = [np.ones(gmag.size, dtype=bool), gmag < 23.0, (gmag > 23.) & (gmag <23.3), \
                       (gmag > 23.3) & (gmag< 23.5), (gmag > 23.5)]
     ibool_redz = [REDZ < 0, (REDZ >= 0) & (REDZ < 0.6), (REDZ >= 0.6) & (REDZ < 1.1), (REDZ > 1.1)]
-    ibool_conf = np.logical_or((CONFIDENCE == 2), (CONFIDENCE == -999)) # Failures...
+    # ibool_conf = np.logical_or((CONFIDENCE == 2), (CONFIDENCE == -999)) # Failures...
     gmins = [0 , 0, 23, 23.3, 23.5]
     gmaxs = [24, 23, 23.3, 23.5, 24]  
     
@@ -91,12 +94,14 @@ for m in range(len(save_dirs)):
             for i in range(4): # Four redshift bins
                 idx_row = i // 2
                 idx_col = i % 2
-                ibool = ibool_g & ibool_redz[i] & ibool_conf & ibool_sel
+                ibool = ibool_g & ibool_redz[i] & ibool_sel # & ibool_conf
+                ibool2 = ibool & (oii > OII_thres) 
                 # Mesh
                 for x in np.arange(-1, 3, 0.5):
                     ax_list[idx_row, idx_col].axvline(x=x, c="black", ls="--", lw=0.5)
                     ax_list[idx_row, idx_col].axhline(y=x, c="black", ls="--", lw=0.5)            
-                ax_list[idx_row, idx_col].scatter(rz[ibool], gr[ibool], s=10, c="black")        
+                ax_list[idx_row, idx_col].scatter(rz[ibool], gr[ibool], s=20, c="black", edgecolor="None")        
+                ax_list[idx_row, idx_col].scatter(rz[ibool2], gr[ibool2], s=20, c="red", edgecolor="None")                       
                 ax_list[idx_row, idx_col].legend(loc = "upper left", fontsize=20)
                 ax_list[idx_row, idx_col].axis("equal")
                 ax_list[idx_row, idx_col].set_title(names[i], fontsize=25)
@@ -116,18 +121,20 @@ for m in range(len(save_dirs)):
     # Only confidence level 2
     names = ["No redshift", "z < 0.6" , "z [0.6, 1.1]", "z > 1.1"]    
     ibool_redz = [REDZ < 0, (REDZ >= 0) & (REDZ < 0.6), (REDZ >= 0.6) & (REDZ < 1.1), (REDZ > 1.1)]
-    ibool_conf = np.logical_or((CONFIDENCE == 2), (CONFIDENCE == -999)) # Failures...
+    # ibool_conf = np.logical_or((CONFIDENCE == 2), (CONFIDENCE == -999)) # Failures...
     
     fig, ax_list = plt.subplots(2, 2, figsize = (15, 15))    
     for i in range(4): # Four redshift bins
         idx_row = i // 2
         idx_col = i % 2
-        ibool = ibool_redz[i] & ibool_conf 
+        ibool = ibool_redz[i] #& ibool_conf
+        ibool2 = ibool & (oii > OII_thres)
         # Mesh
         for x in np.arange(-1, 3, 0.5):
             ax_list[idx_row, idx_col].axvline(x=x, c="black", ls="--", lw=0.5)
             ax_list[idx_row, idx_col].axhline(y=x, c="black", ls="--", lw=0.5)            
-        ax_list[idx_row, idx_col].scatter(rz[ibool], gr[ibool], s=10, c="black")        
+        ax_list[idx_row, idx_col].scatter(rz[ibool], gr[ibool], s=20, c="black", edgecolor="None")        
+        ax_list[idx_row, idx_col].scatter(rz[ibool2], gr[ibool2], s=20, c="red", edgecolor="None")                
         ax_list[idx_row, idx_col].legend(loc = "upper left", fontsize=20)
         ax_list[idx_row, idx_col].axis("equal")
         ax_list[idx_row, idx_col].set_title(names[i], fontsize=25)
