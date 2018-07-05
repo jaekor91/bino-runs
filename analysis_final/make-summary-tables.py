@@ -1,8 +1,8 @@
 # Script used to create summary tables.
 from utils import * 
-
+peak2int = {"OII": 0, "Hb": 1, "OIII1": 2, "OIII2":3 , "Ha":4}
 # ---- Load and unpack data
-data = np.load("union-catalog-results.npy").item()
+data = np.load("union-catalog-results-fluxed.npy").item()
 # Import auxilary info
 BIT_CODES = data["BIT_CODES"]
 SELECTIONS = data["SELECTIONS"]
@@ -20,7 +20,7 @@ rflux = data["rflux"]
 zflux = data["zflux"]
 MASK_NUM = data["MASK_NUM"]
 REGION = data["REGION"]
-OII = np.maximum(union_catalog["FLUXES"][:, 0, peak2int["OII"], 1], union_catalog["FLUXES"][:, 1, peak2int["OII"], 1])
+OII = np.maximum(data["FLUXES"][:, 0, peak2int["OII"], 1], data["FLUXES"][:, 1, peak2int["OII"], 1])
 RA = data["RA"]
 DEC = data["DEC"]
 ibool_RADEC = (RA > 149.8) & (RA < 150) & (DEC > 2.05) & (DEC < 2.225) # Mask bad objects
