@@ -159,7 +159,10 @@ for mask_name in mask_names_sorted:
     all_stars[mask_name]["mask_list"] = mask_list
     all_stars[mask_name]["model_index_list"] = model_index_list
 
-    
+np.save("stars/all-stars.npy", all_stars) 
+
+all_stars = np.load("stars/all-stars.npy").item()
+
 # ---- Compute and save the calibration vector
 cal_dict = {} 
 for mask_name in mask_names_sorted:
@@ -221,13 +224,13 @@ for mask_name in mask_names_sorted:
     while tally[idx_max] < 1:
         idx_max -=1
     for idx in range(idx_min, idx_max+1):
-        cal_vec[idx] = np.median(cal_arr[:, idx][mask_arr[:, idx]])
-    cal_vec[:idx_min] = np.median(cal_vec[idx_min:idx_min+500])
-    cal_vec[idx_max:] = np.median(cal_vec[idx_max-500:idx_max])
+        cal_vec[idx] = np.percentile(cal_arr[:, idx][mask_arr[:, idx]], 25)
+    cal_vec[:idx_min] = np.median(cal_vec[idx_min:idx_min+1000])
+    cal_vec[idx_max:] = np.median(cal_vec[idx_max-1000:idx_max])
     # cal_vec = savgol_filter(cal_vec, window_length=101, polyorder=5)
     cal_vec = median_filter(cal_vec, size=501)
     for _ in range(2):
-        cal_vec = uniform_filter(cal_vec, size=501)
+        cal_vec = uniform_filter(cal_vec, size=1001)
 
     ax.scatter(wavegrid, cal_vec, s=20, edgecolors="none", c="black")
     plt.savefig(save_dir + "calvec-" + mask_name+".png", dpi=200, bbox_inches="tight")
