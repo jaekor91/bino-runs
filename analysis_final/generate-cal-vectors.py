@@ -222,11 +222,11 @@ for mask_name in mask_names_sorted:
         idx_max -=1
     for idx in range(idx_min, idx_max+1):
         cal_vec[idx] = np.median(cal_arr[:, idx][mask_arr[:, idx]])
-    cal_vec[:idx_min] = np.median(cal_vec[idx_min:idx_min+1000])
-    cal_vec[idx_max:] = np.median(cal_vec[idx_max-1000:idx_max])
+    cal_vec[:idx_min] = np.median(cal_vec[idx_min:idx_min+500])
+    cal_vec[idx_max:] = np.median(cal_vec[idx_max-500:idx_max])
     # cal_vec = savgol_filter(cal_vec, window_length=101, polyorder=5)
-    cal_vec = median_filter(cal_vec, size=1001)
-    for _ in range(3):
+    cal_vec = median_filter(cal_vec, size=501)
+    for _ in range(2):
         cal_vec = uniform_filter(cal_vec, size=501)
 
     ax.scatter(wavegrid, cal_vec, s=20, edgecolors="none", c="black")
