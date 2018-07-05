@@ -20,6 +20,7 @@ rflux = data["rflux"]
 zflux = data["zflux"]
 MASK_NUM = data["MASK_NUM"]
 REGION = data["REGION"]
+OII = np.maximum(union_catalog["FLUXES"][:, 0, peak2int["OII"], 1], union_catalog["FLUXES"][:, 1, peak2int["OII"], 1])
 RA = data["RA"]
 DEC = data["DEC"]
 ibool_RADEC = (RA > 149.8) & (RA < 150) & (DEC > 2.05) & (DEC < 2.225) # Mask bad objects
